@@ -5,6 +5,7 @@ import re
 # import ctypes.wintypes as wintypes
 import subprocess
 import sys
+import time
 import winreg
 
 import psutil
@@ -19,20 +20,46 @@ from packaging import version
 
 
 class JIVLogic:
-    def __init__(self):
+    def __init__(self, config):
+        self.authority_admin = None
         self.system_info = None
         self.studentmain_directory = None
         self.studentmain_path = None
+        self.config = config
 
         self.preparation()
 
     def preparation(self):
+        self.authority_admin = self.is_admin()
+        if not self.authority_admin:
+            if self.privilege_escalation():
+                time.sleep(3)
+                sys.exit()
+            else:
+                print("Run without admin")
+        else:
+            print('Run as admin')
+
         self.system_info = self.get_system_info()
         key_path = r"SOFTWARE\TopDomain\e-Learning Class Standard\1.00"
         value_name = "TargetDirectory"
         self.studentmain_directory = self.read_registry_value(key_path, value_name)
         self.studentmain_path = os.path.join(self.studentmain_directory, "studentmain.exe")
         print(self.studentmain_path)
+
+    @staticmethod
+    def is_admin():
+        """Checking whether programme has administrator privilege"""
+
+        authority = ctypes.windll.shell32.IsUserAnAdmin()
+        return bool(authority)
+
+    @staticmethod
+    def privilege_escalation():
+        result = ctypes.windll.shell32.ShellExecuteW(
+            None, 'runas', sys.executable, ' '.join(sys.argv), None, 1
+        )
+        return result > 32
 
     def get_system_info(self):
         win_ver = sys.getwindowsversion()
@@ -85,13 +112,6 @@ class JIVLogic:
         return hotfixes
 
     @staticmethod
-    def is_admin():
-        """Checking whether programme has administrator privilege"""
-
-        authority = ctypes.windll.shell32.IsUserAnAdmin()
-        return bool(authority)
-
-    @staticmethod
     def read_registry_value(key_path, value_name):
         try:
             with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, key_path, 0,
@@ -108,6 +128,15 @@ class JIVLogic:
             pass
 
         return None
+
+    def after_ui_launched(self, hwnd):
+        self.set_window_display_affinity(hwnd)
+
+    def set_window_display_affinity(self, hwnd):
+        if self.system_info["major"] >= 10 and self.system_info["build"] >= 19041:
+            ctypes.windll.user32.SetWindowDisplayAffinity(int(hwnd), 0x11)
+        else:
+            ctypes.windll.user32.SetWindowDisplayAffinity(int(hwnd), 0)
 
     @staticmethod
     def get_studentmain_state():
@@ -127,12 +156,6 @@ class JIVLogic:
         win32gui.SetWindowPos(hwnd, win32con.HWND_TOPMOST,
                               0, 0, 0, 0,
                               win32con.SWP_NOMOVE | win32con.SWP_NOSIZE)
-
-    def set_window_display_affinity(self, hwnd):
-        if self.system_info["major"] >= 10 and self.system_info["build"] >= 19041:
-            ctypes.windll.user32.SetWindowDisplayAffinity(int(hwnd), 0x11)
-        else:
-            ctypes.windll.user32.SetWindowDisplayAffinity(int(hwnd), 0)
 
     def start_studentmain(self):
         if os.path.exists(self.studentmain_path):
