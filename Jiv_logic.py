@@ -310,3 +310,38 @@ class JIVLogic:
     #     CloseHandle(hProcess)
     # else:
     #     print("cannot open process")
+
+    def get_current_version(self):
+        return self.config.VERSION
+
+    def get_latest_version(self):
+        response = requests.get(self.config.UPDATE_URL)
+        if response.status_code == 200:
+            data = response.json()
+            tag = data.get("tag_name")  # Avoiding KeyError
+            if tag:
+                return tag.lstrip("v")
+            else:
+                return "0.0"
+
+        else:
+            raise Exception("Unable to obtain the latest version information")
+
+        # tags_resp = requests.get(tags_url)
+        # if tags_resp.status_code == 200:
+        #     tags_data = tags_resp.json()
+        #     if tags_data:
+        #         return tags_data[0]["name"].lstrip("v")
+        # raise Exception("No release or tag")
+
+    def check_update(self):
+        """Is latest version"""
+        current = version.parse(self.get_current_version())
+        latest = version.parse(self.get_latest_version())
+
+        return latest > current
+
+
+# self.floatwin.setText(
+#     f"窗口标题：{GetWindowText(hwnd)}\n窗口类名：{GetClassName(hwnd)}\n窗口位置：{str(GetWindowRect(hwnd))}\n窗口句柄：{int(hwnd)}\n窗口进程：{procname}")
+
