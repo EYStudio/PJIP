@@ -38,7 +38,7 @@ class AdapterManager(QObject):
             thread.started.connect(adapter.start)
             # Wrap with lambda and send the adapter class name and result together
             adapter.changed.connect(lambda result, w=adapter:
-                                   self.ui_change.emit(type(w).__name__, result))
+                                    self.ui_change.emit(type(w).__name__, result))
 
             self.lifelong_threads[adapter] = thread
             thread.start()
@@ -55,7 +55,6 @@ class AdapterManager(QObject):
 
     def start_studentmain(self):
         self.start_adapter.start()
-
 
 
 class BaseAdapterInterface:
@@ -145,6 +144,7 @@ class SuspendMonitorAdapter(QObject, BaseAdapterInterface):
             return None
         return self.logic.is_suspended(pid)
 
+
 # class UpdateAdapter(QObject, BaseAdapterInterface):
 #     changed = Signal(str)
 #
@@ -179,6 +179,7 @@ class TerminateAdapter:
     def check_state(self):
         return self.logic.get_studentmain_state()
 
+
 class StartStudentmainAdapter:
     def __init__(self, logic):
         super().__init__()
@@ -186,3 +187,28 @@ class StartStudentmainAdapter:
 
     def start(self):
         return self.logic.start_studentmain()
+
+
+class SuspendStudentmainAdapter:
+    def __init__(self, logic):
+        super().__init__()
+        self.logic = logic
+
+    def start(self):
+        pid = self.logic.get_pid_form_process_name('studentmain.exe')
+
+        if pid is None:
+            print('studentmain not found')
+            return
+
+        suspend_state = self.logic.is_suspended(pid)
+        if suspend_state:
+            self.suspend(pid)
+        else:
+            self.resume(pid)
+
+    def suspend(self, pid):
+        self.logic.suspend_process(pid)
+
+    def resume(self, pid):
+        self.logic.resume_process(pid)
