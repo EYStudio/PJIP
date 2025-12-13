@@ -37,7 +37,7 @@ class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.studentmain_state = None
-        self.kill_run = self.suspend_resume = None
+        self.kill_run_btn = self.suspend_resume_btn = None
         self.label_studentmain_state = None
         self.adapter = None
         self.init_ui()
@@ -62,13 +62,19 @@ class MainWidget(QWidget):
 
         button_layout = QGridLayout()
 
-        self.kill_run = QPushButton("Kill studentmain")
-        self.kill_run.clicked.connect(self.handle_studentmain)
+        self.kill_run_btn = QPushButton("Kill studentmain")
+        self.kill_run_btn.clicked.connect(self.handle_studentmain)
 
-        self.suspend_resume = QPushButton("Not detect")
-        self.suspend_resume.clicked.connect(self.handle_studentmain_suspend)
+        self.suspend_resume_btn = QPushButton("Not detect")
+        self.suspend_resume_btn.clicked.connect(self.handle_studentmain_suspend)
 
-        for i, btn in enumerate([self.kill_run, self.suspend_resume]):
+        self.run_taskmgr_btn = QPushButton("Run Taskmgr")
+        self.run_taskmgr_btn.clicked.connect(self.run_taskmgr)
+
+        test_button = QPushButton("Test")
+        test_button.clicked.connect(lambda : print('Test button triggered'))
+
+        for i, btn in enumerate([self.kill_run_btn, self.suspend_resume_btn, self.run_taskmgr_btn, test_button]):
             btn.setMinimumHeight(50)
             button_layout.addWidget(btn, i // 2, i % 2)
             btn.setStyleSheet("""
@@ -120,7 +126,7 @@ class MainWidget(QWidget):
                                         border: 3px solid #cccccc;
                                         color: #E66926;   
                                         """)
-            self.kill_run.setText("Kill studentmain")
+            self.kill_run_btn.setText("Kill studentmain")
         else:
             self.label_studentmain_state.setStyleSheet("""
                                         background-color: #D3FDE3; 
@@ -129,7 +135,7 @@ class MainWidget(QWidget):
                                         border: 3px solid #cccccc;
                                         color: #16DC2D;   
                                         """)
-            self.kill_run.setText("Run studentmain")
+            self.kill_run_btn.setText("Run studentmain")
 
 
     def handle_studentmain(self):
@@ -141,14 +147,18 @@ class MainWidget(QWidget):
     def set_studentmain_suspend_state(self, state):
         match state:
             case SuspendState.NOT_FOUND:
-                self.suspend_resume.setText('Not found')
-                self.suspend_resume.setDisabled(True)
+                self.suspend_resume_btn.setText('Not found')
+                # self.suspend_resume_btn.setDisabled(True)
             case SuspendState.RUNNING:
-                self.suspend_resume.setText('Suspend')
-                self.suspend_resume.setEnabled(True)
+                self.suspend_resume_btn.setText('Suspend')
+                # self.suspend_resume_btn.setEnabled(True)
             case SuspendState.SUSPENDED:
-                self.suspend_resume.setText('Resume')
+                self.suspend_resume_btn.setText('Resume')
 
     def handle_studentmain_suspend(self):
         self.adapter.suspend_resume_studentmain()
 
+    def run_taskmgr(self):
+        # self.run_taskmgr_btn.setDisabled(True)
+        self.adapter.run_taskmgr()
+        # self.run_taskmgr_btn.setEnabled(True)
