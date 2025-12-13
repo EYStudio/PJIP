@@ -28,7 +28,7 @@ class ServiceManager:
     def stop_all(self):
         """Stop services and quit"""
         for service, thread in self.threads.items():
-            print(service, thread)
+            # print(service, thread)
             service.stop()
 
             # May cause deadlock
