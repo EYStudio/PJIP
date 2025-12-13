@@ -96,24 +96,6 @@ class AdapterManager(QObject):
     #
     #     thread.start()
 
-    # def run_taskmgr(self):
-    #     adapter = RunTaskmgrAdapter(self.logic)  # 每次新建
-    #     thread = QThread()
-    #     adapter.moveToThread(thread)
-    #
-    #     thread.started.connect(adapter.start)
-    #     adapter.finished.connect(adapter.stop)
-    #     adapter.finished.connect(thread.quit)
-    #     thread.finished.connect(thread.deleteLater)
-    #     adapter.finished.connect(adapter.deleteLater)
-    #
-    #     adapter.changed.connect(lambda result, w=adapter:
-    #                             self.ui_change.emit(type(w).__name__, result))
-    #
-    #     adapter.request_top.connect(self.logic.top_taskmgr)
-    #
-    #     thread.start()
-
     def run_taskmgr(self):
         adapter = RunTaskmgrAdapter(self.logic)
         thread = QThread()
@@ -317,7 +299,6 @@ class RunTaskmgrAdapter(QObject):
     def is_taskmgr_alive(self):
         self.cnt += 1
         if self.logic.get_process_state('taskmgr.exe'):
-
             self.request_top.emit()
             self.timer.stop()
             self.finished.emit()
@@ -325,15 +306,6 @@ class RunTaskmgrAdapter(QObject):
             print("Find taskmgr Time out")
             self.timer.stop()
             self.finished.emit()
-        # self.cnt += 1
-        # print("tick", self.cnt)
-        # if self.cnt >= 5:
-        #     print("adapter finishing")
-        #     self.timer.stop()
-        #     QTimer.singleShot(0, self.finished.emit)
-
-    # def top_taskmgr(self):
-    #     self.logic.top_taskmgr()
 
     def stop(self):
         self.timer.stop()

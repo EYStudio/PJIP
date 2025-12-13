@@ -148,10 +148,10 @@ class MainWidget(QWidget):
         match state:
             case SuspendState.NOT_FOUND:
                 self.suspend_resume_btn.setText('Not found')
-                # self.suspend_resume_btn.setDisabled(True)
+                self.suspend_resume_btn.setDisabled(True)
             case SuspendState.RUNNING:
                 self.suspend_resume_btn.setText('Suspend')
-                # self.suspend_resume_btn.setEnabled(True)
+                self.suspend_resume_btn.setEnabled(True)
             case SuspendState.SUSPENDED:
                 self.suspend_resume_btn.setText('Resume')
 
@@ -159,6 +159,6 @@ class MainWidget(QWidget):
         self.adapter.suspend_resume_studentmain()
 
     def run_taskmgr(self):
-        # self.run_taskmgr_btn.setDisabled(True)
+        self.run_taskmgr_btn.setDisabled(True)
         self.adapter.run_taskmgr()
-        # self.run_taskmgr_btn.setEnabled(True)
+        self.run_taskmgr_btn.setEnabled(True)
