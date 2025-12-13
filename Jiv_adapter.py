@@ -2,7 +2,6 @@
 # from threading import Thread
 
 from PySide6.QtCore import QObject, Signal, QTimer, QThread
-from PySide6.QtWidgets import QApplication
 
 from Jiv_enmus import SuspendState
 
@@ -75,18 +74,18 @@ class AdapterManager(QObject):
             adapter.deleteLater()
             thread.deleteLater()
 
-    def pop_ondemand_object(self, adapter):
-        if adapter in self.on_demand_objects:
-            return self.on_demand_objects.pop(adapter, None)
-        # if thread in self.on_demand_objects:
-        #     self.on_demand_objects.pop(thread)
-        # adapter.deleteLater() and thread.deleteLater()
-
-    def cleanup_on_demand(self, adapter, thread):
-        self.pop_ondemand_object(adapter)
-        adapter.moveToThread(QApplication.instance().thread())
-        # adapter.deleteLater()
-        # thread.deleteLater()
+    # def pop_ondemand_object(self, adapter):
+    #     if adapter in self.on_demand_objects:
+    #         return self.on_demand_objects.pop(adapter, None)
+    #     # if thread in self.on_demand_objects:
+    #     #     self.on_demand_objects.pop(thread)
+    #     # adapter.deleteLater() and thread.deleteLater()
+    #
+    # def cleanup_on_demand(self, adapter, thread):
+    #     self.pop_ondemand_object(adapter)
+    #     adapter.moveToThread(QApplication.instance().thread())
+    #     # adapter.deleteLater()
+    #     # thread.deleteLater()
 
     def terminate_studentmain(self):
         self.terminate_adapter.start()
@@ -97,6 +96,7 @@ class AdapterManager(QObject):
     def suspend_resume_studentmain(self):
         self.suspend_studentmain_adapter.start()
 
+    # WILL BE DELETED IN v0.1a3
     # def run_taskmgr(self):
     #     thread = QThread()
     #     self.run_taskmgr_adapter.moveToThread(thread)
@@ -144,6 +144,7 @@ class BaseAdapterInterface:
         raise NotImplementedError("Subclasses must implement run_task()")
 
 
+# WILL BE DELETED IN v0.1a3
 # class BaseAdapterInterface(ABC):
 #     @abstractmethod
 #     def start(self):
@@ -184,6 +185,57 @@ class MonitorAdapter(QObject, BaseAdapterInterface):
 
     def check_state(self):
         return self.logic.get_process_state('studentmain.exe')
+
+
+class RunTaskmgrAdapter(QObject):
+    trigger_run = Signal()
+    changed = Signal()
+    request_top = Signal()
+    finished = Signal()
+
+    def __init__(self, logic):
+        super().__init__()
+        # self.running = False
+        # self.cnt = 0
+        self.running = None
+        self.cnt = None
+        self.timer = None
+        self.logic = logic
+
+    def start(self):
+        self.running = False
+        self.cnt = 0
+        self.timer = QTimer(self)
+
+        self.timer.setInterval(100)
+        self.timer.timeout.connect(self.is_taskmgr_alive)
+
+        self.trigger_run.connect(self.run_task)
+
+    def run_task(self):
+        self.cnt = 0
+        self.running = True
+        self.logic.start_file("taskmgr")
+        print("adapter.start called")
+        self.timer.start()
+        print('timer started')
+
+    def is_taskmgr_alive(self):
+        print(f'cnt: {self.cnt}')
+        self.cnt += 1
+        if self.logic.get_process_state('taskmgr.exe'):
+            self.request_top.emit()
+            self.stop()
+        if self.cnt >= 30:  # 3s time out
+            print("Find taskmgr Time out")
+            self.stop()
+
+    def stop(self):
+        self.running = False
+        self.timer.stop()
+
+    def is_running(self):
+        return self.running
 
 
 class SuspendMonitorAdapter(QObject, BaseAdapterInterface):
@@ -290,54 +342,3 @@ class SuspendStudentmainAdapter:
 
     def resume(self, pid):
         self.logic.resume_process(pid)
-
-
-class RunTaskmgrAdapter(QObject):
-    trigger_run = Signal()
-    changed = Signal()
-    request_top = Signal()
-    finished = Signal()
-
-    def __init__(self, logic):
-        super().__init__()
-        # self.running = False
-        # self.cnt = 0
-        self.running = None
-        self.cnt = None
-        self.timer = None
-        self.logic = logic
-
-    def start(self):
-        self.running = False
-        self.cnt = 0
-        self.timer = QTimer(self)
-
-        self.timer.setInterval(100)
-        self.timer.timeout.connect(self.is_taskmgr_alive)
-
-        self.trigger_run.connect(self.run_task)
-
-    def run_task(self):
-        self.cnt = 0
-        self.running = True
-        self.logic.start_file("taskmgr")
-        print("adapter.start called")
-        self.timer.start()
-        print('timer started')
-
-    def is_taskmgr_alive(self):
-        print(f'cnt: {self.cnt}')
-        self.cnt += 1
-        if self.logic.get_process_state('taskmgr.exe'):
-            self.request_top.emit()
-            self.stop()
-        if self.cnt >= 30: # 3s time out
-            print("Find taskmgr Time out")
-            self.stop()
-
-    def stop(self):
-        self.running = False
-        self.timer.stop()
-
-    def is_running(self):
-        return self.running
