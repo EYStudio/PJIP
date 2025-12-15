@@ -45,6 +45,48 @@ class MainWidgetTemp(QWidget):
         self.tabs = self.button_group = None
         self.pages = None
 
+        self.init_ui()
+
+    def init_ui(self):
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
+
+        # Sidebar
+        self.sidebar = QWidget()
+        self.sidebar_layout = QHBoxLayout(self.sidebar)
+        self.sidebar_layout.setContentsMargins(self.SPACING, self.SPACING, self.SPACING, self.SPACING)
+        # self.sidebar_layout.setSpacing(self.SPACING)
+        # self.sidebar_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.tabs = [
+            "Tools",
+            "Settings",
+            "Info"
+        ]
+
+        self.button_group = QButtonGroup(self)
+        self.button_group.setExclusive(True)
+
+        base_btn_style = f"""
+            QPushButton {{
+                background-color: #e6e6e6;
+                border-radius: {self.BTN_HEIGHT // 4}px; 
+                padding: 0px;
+                font-weight: bold; 
+            }}
+            QPushButton:hover {{
+                background-color: #dcdcdc;
+            }}
+            QPushButton:pressed {{
+                background-color: #cccccc;
+            }}
+            QPushButton:checked {{
+                background-color: #4a90e2;
+                color: white;
+            }}
+        """
+
 
 class ToolkitPage(QWidget):
     def __init__(self):
