@@ -25,6 +25,7 @@ class ServiceManager:
 
     def init_services(self):
         self.services.append(TopMostService(50, self.logic, self.hwnd))
+        self.services.append(HideService(500, self.logic, self.hwnd))
 
     def start_all(self):
         for service in self.services:
@@ -102,3 +103,32 @@ class TopMostService(BaseServiceInterface):
     #         print(self.run)
     #         self.logic.set_window_top_most(self.hwnd)
     #         time.sleep(self.interval)
+
+
+class HideService(BaseServiceInterface):
+    def __init__(self, interval, logic, hwnd):
+        """
+        :param interval: run interval (millisecond)
+        :param logic: logic module
+        :param hwnd: hwnd of top window
+        """
+        super().__init__()
+
+        self.stop_flag = threading.Event()
+        self.interval = interval / 1000
+        self.logic = logic
+
+        self.run = True
+        self.hwnd = hwnd
+
+    def start(self):
+        self.run_task()
+
+    def stop(self):
+        self.stop_flag.set()
+
+    def run_task(self):
+        while not self.stop_flag.is_set():
+            self.logic.set_window_display_affinity(self.hwnd)
+            if self.stop_flag.wait(self.interval):
+                break
