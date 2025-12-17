@@ -20,7 +20,7 @@ class JIVMain:
 
         self.gui.show()
 
-        self.logic.after_ui_launched(self.gui.winId())
+        # self.logic.after_ui_launched(self.gui.winId())
 
         self.services = Jiv_service.ServiceManager(self.logic, self.gui)
 

@@ -1,5 +1,6 @@
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QMainWindow, QWidget, QLabel, QPushButton, QGridLayout, QVBoxLayout
+from PySide6.QtWidgets import QMainWindow, QWidget, QLabel, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, \
+    QSizePolicy, QStackedWidget, QLayout, QButtonGroup
 
 from Jiv_enmus import SuspendState
 
@@ -11,7 +12,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.initialization_window()
 
-        self.adapter = None
+        # self.adapter = None
 
         # Set central widget
         self.main_widget = MainWidget()
@@ -29,15 +30,127 @@ class MainWindow(QMainWindow):
         self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)
 
     def adapter_signal_connect(self, adapter):
-        self.adapter = adapter
+        # self.adapter = adapter
         self.main_widget.adapter_signal_connect(adapter)
 
 
 class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
+        self.adapter = None
+
+        self.BTN_HEIGHT = 32
+        self.BTN_WIDTH = int(self.BTN_HEIGHT * 2)
+        self.SPACING = 4
+
+        self.SIDEBAR_HEIGHT = self.BTN_HEIGHT + self.SPACING * 2  # Fixed height
+
+        self.sidebar = self.sidebar_layout = None
+        self.tabs = self.button_group = None
+        self.pages = None
+        self.toolkit_page = self.about_page = None
+
+        self.init_ui()
+
+    def init_ui(self):
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
+
+        # Sidebar
+        self.sidebar = QWidget()
+        self.sidebar_layout = QHBoxLayout(self.sidebar)
+        self.sidebar_layout.setContentsMargins(self.SPACING, self.SPACING, self.SPACING, self.SPACING)
+        # self.sidebar_layout.setSpacing(self.SPACING)
+        # self.sidebar_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.tabs = [
+            "Tools",
+            # "Settings",
+            "Info"
+        ]
+
+        self.button_group = QButtonGroup(self)
+        self.button_group.setExclusive(True)
+
+        base_btn_style = f"""
+            QPushButton {{
+                background-color: #e6e6e6;
+                border-radius: {self.BTN_HEIGHT // 4}px; 
+                padding: 0px;
+                font-weight: bold; 
+            }}
+            QPushButton:hover {{
+                background-color: #dcdcdc;
+            }}
+            QPushButton:pressed {{
+                background-color: #cccccc;
+            }}
+            QPushButton:checked {{
+                background-color: #4a90e2;
+                color: white;
+            }}
+        """
+
+        container = QWidget()
+        container_layout = QHBoxLayout(container)
+        container_layout.setContentsMargins(0, 0, 0, 0)
+        container_layout.setSpacing(self.SPACING)
+
+        container.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        container_layout.setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
+
+        for i, name in enumerate(self.tabs):
+            btn = QPushButton(name)
+            btn.setFixedSize(self.BTN_WIDTH, self.BTN_HEIGHT)
+            btn.setCheckable(True)
+            btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            btn.setStyleSheet(base_btn_style)
+            btn.setToolTip(name)
+            self.button_group.addButton(btn, i)
+            container_layout.addWidget(btn)
+
+        self.button_group.buttons()[0].setChecked(True)
+
+        self.sidebar_layout.addWidget(container, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        # Issue in placing sidebar buttons in center
+        # self.sidebar_layout.addStretch()
+
+        self.sidebar.setFixedHeight(self.SIDEBAR_HEIGHT)
+        self.sidebar.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+
+        self.sidebar.setObjectName("sidebar")
+        self.sidebar.setStyleSheet("""
+            #sidebar {
+                border-bottom: 1px solid #cccccc;
+            }
+        """)
+
+        # Stack pages
+        self.pages = QStackedWidget()
+        self.toolkit_page = ToolkitPage()
+        self.pages.addWidget(self.toolkit_page)
+        self.about_page = UpdatingPage()
+        self.pages.addWidget(self.about_page)
+
+        self.button_group.idClicked.connect(self.pages.setCurrentIndex)
+
+        main_layout.addWidget(self.sidebar)
+        main_layout.addWidget(self.pages, 1)
+
+        self.setLayout(main_layout)
+
+    def adapter_signal_connect(self, adapter):
+        self.adapter = adapter
+        self.toolkit_page.adapter_signal_connect(adapter)
+
+
+class ToolkitPage(QWidget):
+    def __init__(self):
+        super().__init__()
         self.studentmain_state = None
-        self.kill_run_btn = self.suspend_resume_btn = None
+        self.kill_run_btn = self.suspend_resume_btn = self.run_taskmgr_btn = None
         self.label_studentmain_state = None
         self.adapter = None
         self.init_ui()
@@ -72,7 +185,7 @@ class MainWidget(QWidget):
         self.run_taskmgr_btn.clicked.connect(self.run_taskmgr)
 
         test_button = QPushButton("Test")
-        test_button.clicked.connect(lambda : print('Test button triggered'))
+        test_button.clicked.connect(lambda: print('Test button triggered'))
 
         for i, btn in enumerate([self.kill_run_btn, self.suspend_resume_btn, self.run_taskmgr_btn, test_button]):
             btn.setMinimumHeight(50)
@@ -112,12 +225,11 @@ class MainWidget(QWidget):
             case 'SuspendMonitorAdapter':
                 self.set_studentmain_suspend_state(value)
 
-
     def set_studentmain_state(self, state):
         status = "not running" if not state else "running"
         self.label_studentmain_state.setText(f"Studentmain: {status}")
         self.studentmain_state = state
-        
+
         if state:
             self.label_studentmain_state.setStyleSheet("""
                                         background-color: #FFE5E0; 
@@ -133,10 +245,10 @@ class MainWidget(QWidget):
                                         border-radius: 10px;
                                         font-size: 24px;
                                         border: 3px solid #cccccc;
-                                        color: #16DC2D;   
+                                        /* color: #16DC2D;   */
+                                        color: green;
                                         """)
             self.kill_run_btn.setText("Run studentmain")
-
 
     def handle_studentmain(self):
         if self.studentmain_state:
@@ -162,3 +274,30 @@ class MainWidget(QWidget):
         self.run_taskmgr_btn.setDisabled(True)
         self.adapter.run_taskmgr()
         self.run_taskmgr_btn.setEnabled(True)
+
+
+class UpdatingPage(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.updating_label = None
+
+        self.init_ui()
+
+    def init_ui(self):
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(5, 5, 5, 5)
+        main_layout.setSpacing(5)
+
+        self.updating_label = QLabel()
+        self.updating_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.updating_label.setText('Updating')
+        self.updating_label.setStyleSheet("""
+                                        background-color: #efefef; 
+                                        border-radius: 10px;
+                                        font-size: 24px;
+                                        border: 3px solid #cccccc;
+                                        color: green;   
+                                        """)
+
+        main_layout.addWidget(self.updating_label)
+        self.setLayout(main_layout)

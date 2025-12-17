@@ -4,6 +4,7 @@
 from PySide6.QtCore import QObject, Signal, QTimer, QThread
 
 from Jiv_enmus import SuspendState
+import Jiv_build_config
 
 
 class AdapterManager(QObject):
@@ -45,7 +46,7 @@ class AdapterManager(QObject):
         self.run_taskmgr_adapter.changed.connect(lambda result, w=self.run_taskmgr_adapter:
                                                  self.ui_change.emit(type(w).__name__, result))
         self.run_taskmgr_adapter.request_top.connect(self.logic.top_taskmgr)
-        self.run_taskmgr_adapter.request_top.connect(lambda: print('request_top received'))
+        # self.run_taskmgr_adapter.request_top.connect(lambda: print('request_top received'))
 
         self.lifelong_objects[self.run_taskmgr_adapter] = thread
         self.on_demand_objects[self.run_taskmgr_adapter] = thread
@@ -95,24 +96,6 @@ class AdapterManager(QObject):
 
     def suspend_resume_studentmain(self):
         self.suspend_studentmain_adapter.start()
-
-    # WILL BE DELETED IN v0.1a3
-    # def run_taskmgr(self):
-    #     thread = QThread()
-    #     self.run_taskmgr_adapter.moveToThread(thread)
-    #
-    #     thread.started.connect(self.run_taskmgr_adapter.start)
-    #     # Wrap with lambda and send the adapter class name and result together
-    #     self.run_taskmgr_adapter.changed.connect(lambda result, w=self.run_taskmgr_adapter:
-    #                             self.ui_change.emit(type(w).__name__, result))
-    #
-    #     self.run_taskmgr_adapter.finished.connect(self.run_taskmgr_adapter.stop)
-    #     self.run_taskmgr_adapter.finished.connect(thread.quit)
-    #     self.run_taskmgr_adapter.finished.connect(
-    #         self.run_taskmgr_adapter.moveToThread(QApplication.instance().thread()))
-    #     thread.finished.connect(thread.deleteLater)
-    #
-    #     thread.start()
 
     def run_taskmgr(self):
         print('Topmost taskmgr triggered')
@@ -184,14 +167,13 @@ class MonitorAdapter(QObject, BaseAdapterInterface):
             self.changed.emit(state)
 
     def check_state(self):
-        return self.logic.get_process_state('studentmain.exe')
+        return self.logic.get_process_state(Jiv_build_config.E_CLASSROOM_NAME)
 
 
 class RunTaskmgrAdapter(QObject):
     trigger_run = Signal()
     changed = Signal()
     request_top = Signal()
-    finished = Signal()
 
     def __init__(self, logic):
         super().__init__()
@@ -221,7 +203,6 @@ class RunTaskmgrAdapter(QObject):
         print('timer started')
 
     def is_taskmgr_alive(self):
-        print(f'cnt: {self.cnt}')
         self.cnt += 1
         if self.logic.get_process_state('taskmgr.exe'):
             self.request_top.emit()
@@ -266,7 +247,7 @@ class SuspendMonitorAdapter(QObject, BaseAdapterInterface):
         """
         :return: Studentmain suspend state
         """
-        pid = self.logic.get_pid_form_process_name('studentmain.exe')
+        pid = self.logic.get_pid_form_process_name(Jiv_build_config.E_CLASSROOM_NAME)
         if pid is None:
             return SuspendState.NOT_FOUND
         if self.logic.is_suspended(pid):
@@ -300,14 +281,14 @@ class TerminateAdapter:
         self.run_task()
 
     def run_task(self):
-        pid = self.logic.get_pid_form_process_name('studentmain.exe')
+        pid = self.logic.get_pid_form_process_name(Jiv_build_config.E_CLASSROOM_NAME)
         if pid is None:
-            print('studentmain not found')
+            print(f'{Jiv_build_config.E_CLASSROOM_NAME} not found')
             return
         self.logic.terminate_process(pid)
 
     def check_state(self):
-        return self.logic.get_process_state('studentmain.exe')
+        return self.logic.get_process_state(Jiv_build_config.E_CLASSROOM_NAME)
 
 
 class StartStudentmainAdapter:
@@ -325,10 +306,10 @@ class SuspendStudentmainAdapter:
         self.logic = logic
 
     def start(self):
-        pid = self.logic.get_pid_form_process_name('studentmain.exe')
+        pid = self.logic.get_pid_form_process_name(Jiv_build_config.E_CLASSROOM_NAME)
 
         if pid is None:
-            print('studentmain not found')
+            print(f'{Jiv_build_config.E_CLASSROOM_NAME} not found')
             return
 
         suspend_state = self.logic.is_suspended(pid)
