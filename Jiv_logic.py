@@ -393,7 +393,8 @@ class JIVLogic:
             print('Permission Error in resuming')
             return False
 
-    def get_current_version(self):
+    def get_current_version(self) -> str:
+        """get current version in config"""
         return self.config.VERSION
 
     def get_latest_version(self):
@@ -404,10 +405,10 @@ class JIVLogic:
             if tag:
                 return tag.lstrip("v")
             else:
-                return "0.0"
+                return None
 
         else:
-            raise Exception("Unable to obtain the latest version information")
+            raise RuntimeError("Unable to obtain the latest version information")
 
         # WILL BE DELETE IN NEXT VERSION
         # tags_resp = requests.get(tags_url)
@@ -418,11 +419,28 @@ class JIVLogic:
         # raise Exception("No release or tag")
 
     def check_update(self):
-        """Is latest version"""
-        current = version.parse(self.get_current_version())
-        latest = version.parse(self.get_latest_version())
+        """
+        whether the latest version
 
-        return latest > current
+        :return: Latest version string if update is available, else None.
+        """
+        current_version = self.get_current_version()
+        latest_version = None
+        try:
+            latest_version = self.get_latest_version()
+        except RuntimeError as err:
+            print(err)
+
+        if not latest_version:
+            return None
+
+        current = version.parse(current_version)
+        latest = version.parse(latest_version)
+
+        if latest > current:
+            return latest_version
+        else:
+            return None
 
     def top_taskmgr(self):
         taskmgr_name_chs = {
