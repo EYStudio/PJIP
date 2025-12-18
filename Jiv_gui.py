@@ -48,7 +48,7 @@ class MainWidget(QWidget):
         self.sidebar = self.sidebar_layout = None
         self.tabs = self.button_group = None
         self.pages = None
-        self.toolkit_page = self.about_page = None
+        self.toolkit_page = self.about_page = self.settings_page = self.update_page = None
 
         self.init_ui()
 
@@ -67,6 +67,7 @@ class MainWidget(QWidget):
         self.tabs = [
             "Tools",
             "Settings",
+            "Updates",
             "Info"
         ]
 
@@ -131,10 +132,12 @@ class MainWidget(QWidget):
         self.pages = QStackedWidget()
         self.toolkit_page = ToolkitPage()
         self.pages.addWidget(self.toolkit_page)
-        self.settings_page = UpdatingPage()
+        self.settings_page = PageUpdating()
         self.pages.addWidget(self.settings_page)
-        self.about_page = UpdatingPage()
+        self.about_page = PageUpdating()
         self.pages.addWidget(self.about_page)
+        self.update_page = PageUpdating()
+        self.pages.addWidget(self.update_page)
 
         self.button_group.idClicked.connect(self.pages.setCurrentIndex)
 
@@ -278,7 +281,7 @@ class ToolkitPage(QWidget):
         self.run_taskmgr_btn.setEnabled(True)
 
 
-class UpdatingPage(QWidget):
+class PageUpdating(QWidget):
     def __init__(self):
         super().__init__()
         self.updating_label = None
@@ -292,13 +295,14 @@ class UpdatingPage(QWidget):
 
         self.updating_label = QLabel()
         self.updating_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.updating_label.setText('Updating')
+        self.updating_label.setText('Page Updating')
         self.updating_label.setStyleSheet("""
                                         background-color: #efefef; 
                                         border-radius: 10px;
                                         font-size: 24px;
                                         border: 3px solid #cccccc;
-                                        color: green;   
+                                        color: green; 
+                                        font-weight: bold; 
                                         """)
 
         main_layout.addWidget(self.updating_label)
