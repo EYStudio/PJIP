@@ -318,3 +318,12 @@ class SuspendStudentmainAdapter:
 
     def resume(self, pid):
         self.logic.resume_process(pid)
+
+
+class CleanIFEODebuggersAdapter:
+    def __init__(self, logic):
+        super().__init__()
+        self.logic = logic
+
+    def start(self):
+        self.logic.clean_ifeo_debuggers()
