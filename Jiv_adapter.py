@@ -20,7 +20,7 @@ class AdapterManager(QObject):
         self.lifelong_objects = {}
 
         self.terminate_adapter = self.start_adapter = self.suspend_studentmain_adapter = self.run_taskmgr_adapter = None
-        self.update_adapter = None
+        self.update_adapter = self.clean_ifeo_debuggers_adapter = None
 
         self.init_workers()
         self.start_all()

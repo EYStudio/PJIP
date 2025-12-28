@@ -43,7 +43,6 @@ class JIVLogic:
                 print("Run without admin")
         else:
             print('Run as admin')
-        # self.check_update()
 
         self.system_info = self.get_system_info()
         key_path = r"SOFTWARE\TopDomain\e-Learning Class Standard\1.00"
