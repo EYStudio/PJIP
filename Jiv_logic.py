@@ -239,32 +239,6 @@ class JIVLogic:
         else:
             return False
 
-    # WILL BE DELETED IN NEXT VERSION
-    # @staticmethod
-    # def get_pid_form_process_name(process_name):
-    #     """
-    #     Get the PID of a process by name.
-    #
-    #     Iterates through running processes and compares names.
-    #     :return: PID if found, otherwise None
-    #     """
-    #     pid_list = []
-    #
-    #     if not process_name.lower().endswith(".exe"):
-    #         process_name += ".exe"
-    #     process_iter = psutil.process_iter()
-    #     for proc in process_iter:
-    #         try:
-    #             if proc.name().lower() == process_name.lower():
-    #                 pid_list.append(proc.pid)
-    #         except (psutil.NoSuchProcess, psutil.AccessDenied):
-    #             continue
-    #
-    #     if pid_list:
-    #         return tuple(pid_list)
-    #     else:
-    #         return None
-
     @staticmethod
     def get_pid_from_process_name(process_name):
         """
@@ -328,7 +302,7 @@ class JIVLogic:
         return tuple(pid_list) or None
 
     @staticmethod
-    def terminate_process(pid):
+    def terminate_process(pid, exit_code = 1):
         # noinspection PyUnresolvedReferences
         h_process = win32api.OpenProcess(win32con.PROCESS_TERMINATE, False, pid)
         if not h_process:
@@ -336,7 +310,7 @@ class JIVLogic:
             raise Exception(f"OpenProcess failed, error={win32api.GetLastError()}")
 
         # noinspection PyUnresolvedReferences
-        win32api.TerminateProcess(h_process, 1)  # return code 1
+        win32api.TerminateProcess(h_process, exit_code)
 
         # if not success:
         # noinspection PyUnresolvedReferences
@@ -385,38 +359,6 @@ class JIVLogic:
 
     def nt_terminate_process(self, pid):
         self.nt_terminate_process.terminate(pid)
-
-    # # load ntdll.dll
-    # ntdll = ctypes.WinDLL("ntdll")
-    #
-    # # Define NtTerminateProcess function Prototype
-    # NtTerminateProcess = ntdll.NtTerminateProcess
-    # NtTerminateProcess.argtypes = [wintypes.HANDLE, NTSTATUS]
-    # NtTerminateProcess.restype = NTSTATUS
-    #
-    # # load kernel32.dll to open process
-    # kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-    #
-    # OpenProcess = kernel32.OpenProcess
-    # OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
-    # OpenProcess.restype = wintypes.HANDLE
-    #
-    # CloseHandle = kernel32.CloseHandle
-    # CloseHandle.argtypes = [wintypes.HANDLE]
-    # CloseHandle.restype = wintypes.BOOL
-    #
-    # # Define constant
-    # PROCESS_TERMINATE = 0x0001
-    #
-    # pid = 1234
-    # hProcess = OpenProcess(PROCESS_TERMINATE, False, pid)
-    #
-    # if hProcess:
-    #     status = NtTerminateProcess(hProcess, 1)  # Exit code 1
-    #     print(f"NtTerminateProcess returns NTSTATUS: 0x{status:08X}")
-    #     CloseHandle(hProcess)
-    # else:
-    #     print("cannot open process")
 
     @staticmethod
     def is_suspended(pid):
@@ -639,7 +581,7 @@ class NativeTerminator:
         msg = ctypes.FormatError(err)
         return err, msg
 
-    def terminate(self, pid, exit_code=1):
+    def terminate(self, pid, exit_code = 1):
         h_process = self.OpenProcess(self.PROCESS_TERMINATE, False, pid)
         if not h_process:
             err, msg = self.win_error()
