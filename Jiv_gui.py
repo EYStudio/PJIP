@@ -393,8 +393,24 @@ class SettingsPage(QWidget):
         label_terminate_options.setText(f'Terminate options')
         label_terminate_options.setFixedHeight(35)
 
-        terminate_options_frame_layout.addWidget(label_terminate_options)
+        terminate_options_group = QButtonGroup()
+        terminate_options_group.setExclusive(True)
 
+        opt1 = QRadioButton("TerminateProcess")
+        opt1.toggled.connect(lambda checked: print("Btn 1 State:", checked))
+        opt1.setChecked(True)
+        opt2 = QRadioButton("NtTerminateProcess")
+        opt2.toggled.connect(lambda checked: print("Btn 2 State:", checked))
+        # opt3 = QRadioButton("Option C")
+
+        terminate_options_group.addButton(opt1)
+        terminate_options_group.addButton(opt2)
+        # group.addButton(opt3)
+
+        terminate_options_frame_layout.addWidget(label_terminate_options)
+        terminate_options_frame_layout.addWidget(opt1)
+        terminate_options_frame_layout.addWidget(opt2)
+        # terminate_options_frame_layout.addWidget(opt3)
 
         main_layout.addWidget(self.terminate_options)
 
