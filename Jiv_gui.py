@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QMainWindow, QWidget, QLabel, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, \
-    QSizePolicy, QStackedWidget, QLayout, QButtonGroup
+    QSizePolicy, QStackedWidget, QLayout, QButtonGroup, QRadioButton
 
 from Jiv_enmus import SuspendState, UpdateState
 
@@ -143,9 +143,9 @@ class MainWidget(QWidget):
 
         # Stack pages
         self.pages = QStackedWidget()
-        self.toolkit_page = ToolkitPage()
+        self.toolkit_page = ToolPage()
         self.pages.addWidget(self.toolkit_page)
-        self.settings_page = PageUpdating()
+        self.settings_page = SettingsPage()
         self.pages.addWidget(self.settings_page)
         self.update_page = UpdatePage()
         self.pages.addWidget(self.update_page)
@@ -203,7 +203,7 @@ class MainWidget(QWidget):
             """)
 
 
-class ToolkitPage(QWidget):
+class ToolPage(QWidget):
     ui_change = Signal(str, object)
 
     def __init__(self):
@@ -245,14 +245,14 @@ class ToolkitPage(QWidget):
         self.run_taskmgr_btn = QPushButton("Run Taskmgr")
         self.run_taskmgr_btn.clicked.connect(self.run_taskmgr)
 
-
         self.clean_ifeo_debuggers_btn = QPushButton("Clean IFEO")
         self.clean_ifeo_debuggers_btn.clicked.connect(self.clean_ifeo_debuggers)
 
         # test_button = QPushButton("Test")
         # test_button.clicked.connect(lambda: print('Test button triggered'))
 
-        for i, btn in enumerate([self.kill_run_btn, self.suspend_resume_btn, self.run_taskmgr_btn, self.clean_ifeo_debuggers_btn]):
+        for i, btn in enumerate(
+                [self.kill_run_btn, self.suspend_resume_btn, self.run_taskmgr_btn, self.clean_ifeo_debuggers_btn]):
             btn.setMinimumHeight(50)
             button_layout.addWidget(btn, i // 2, i % 2)
             btn.setStyleSheet("""
@@ -345,6 +345,83 @@ class ToolkitPage(QWidget):
         self.adapter.clean_ifeo_debuggers()
 
 
+class SettingsPage(QWidget):
+    ui_change = Signal(str, object)
+
+    def __init__(self):
+        super().__init__()
+        self.terminate_options = None
+        self.adapter = None
+        self.init_ui()
+
+    def init_ui(self):
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(3, 3, 3, 3)
+        main_layout.setSpacing(5)
+
+        self.terminate_options = QWidget()
+        self.terminate_options.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.terminate_options.setObjectName("terminate_options_frame")
+
+        self.terminate_options.setStyleSheet("""
+                    #terminate_options_frame {
+                        background-color: #eeeeee; 
+                        border-radius: 10px;
+                        font-size: 24px;
+                        border: 2px solid #bbbbbb;
+                        color: #455A64;   
+                    }
+                    
+                    QRadioButton {
+                        font-size: 16px;
+                    }
+                    QRadioButton::indicator {
+                        width: 24px;
+                        height: 24px;
+                    }
+                """)
+
+        terminate_options_frame_layout = QVBoxLayout(self.terminate_options)
+        terminate_options_frame_layout.setContentsMargins(15, 5, 5, 5)
+        terminate_options_frame_layout.setSpacing(3)
+
+        label_terminate_options = QLabel()
+        label_terminate_options.setStyleSheet("""
+                                            background-color: #eeeeee; 
+                                            border-radius: 10px;
+                                            font-size: 20px;
+                                            color: #455A64;   
+                                            """)
+        label_terminate_options.setText(f'Terminate options')
+        label_terminate_options.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+
+        terminate_options_group = QButtonGroup()
+        terminate_options_group.setExclusive(True)
+
+        opt1 = QRadioButton("TerminateProcess")
+        opt1.toggled.connect(lambda checked: print("Btn 1 State:", checked))
+        opt1.setChecked(True)
+        opt1.setDisabled(True)
+        opt2 = QRadioButton("NtTerminateProcess")
+        opt2.toggled.connect(lambda checked: print("Btn 2 State:", checked))
+        opt2.setDisabled(True)
+        # opt3 = QRadioButton("Option C")
+
+        terminate_options_group.addButton(opt1)
+        terminate_options_group.addButton(opt2)
+        # group.addButton(opt3)
+
+        terminate_options_frame_layout.addWidget(label_terminate_options)
+        terminate_options_frame_layout.addWidget(opt1)
+        terminate_options_frame_layout.addWidget(opt2)
+        # terminate_options_frame_layout.addWidget(opt3)
+
+        main_layout.addWidget(self.terminate_options)
+        main_layout.addStretch(1)
+
+        self.setLayout(main_layout)
+
+
 class UpdatePage(QWidget):
     ui_change = Signal(str, object)
 
@@ -374,7 +451,7 @@ class UpdatePage(QWidget):
                                     background-color: #eeeeee; 
                                     border-radius: 10px;
                                     font-size: 24px;
-                                    border: 3px solid #cccccc;
+                                    border: 2px solid #cccccc;
                                     color: #455A64;   
                                     """)
         self.current_version_label.setText(f'Current version: N / a')
@@ -388,7 +465,7 @@ class UpdatePage(QWidget):
                                     background-color: #eeeeee; 
                                     border-radius: 10px;
                                     font-size: 24px;
-                                    border: 3px solid #cccccc;
+                                    border: 2px solid #cccccc;
                                     color: #455A64;   
                                     """)
         self.update_state_label.setText(f'Getting updates')
