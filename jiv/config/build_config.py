@@ -1,19 +1,23 @@
 PROJECT_NAME = 'Jiyu Immunodeficiency Virus'
 
+# TODO: JIP?
+
 MAJOR_VER = 0
 MINOR_VER = 3
 PATCH_VER = 0
 
-PRE_STAGE = "a"     # alpha / beta / rc
-PRE_NUM = 2         # a2 / b1 / rc3
+PRE_STAGE = "a"  # alpha / beta / rc
+PRE_NUM = 2  # a2 / b1 / rc3
 
 # PEP 440 version
 if PRE_STAGE:
     VERSION = f"{MAJOR_VER}.{MINOR_VER}{PRE_STAGE}{PRE_NUM}"
 else:
     VERSION = f"{MAJOR_VER}.{MINOR_VER}"
+    # VERSION = f"{MAJOR_VER}.{MINOR_VER}.{PATCH_VER}"
 
 # Windows numeric version
+# a=0, b=1, rc=2, final=3
 STAGE_MAP = {"a": 0, "b": 1, "rc": 2, None: 3}
 WIN_FILEVER = (
     MAJOR_VER,
