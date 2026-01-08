@@ -460,7 +460,6 @@ class SettingsPage(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.terminate_options = None
         self.adapter = None
         self.init_ui()
 
@@ -469,11 +468,11 @@ class SettingsPage(QWidget):
         main_layout.setContentsMargins(3, 3, 3, 3)
         main_layout.setSpacing(5)
 
-        self.terminate_options = QWidget()
-        self.terminate_options.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.terminate_options.setObjectName("terminate_options_frame")
+        terminate_options = QWidget()
+        terminate_options.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        terminate_options.setObjectName("terminate_options_frame")
 
-        self.terminate_options.setStyleSheet("""
+        terminate_options.setStyleSheet("""
                     #terminate_options_frame {
                         background-color: #eeeeee; 
                         border-radius: 10px;
@@ -491,7 +490,7 @@ class SettingsPage(QWidget):
                     }
                 """)
 
-        terminate_options_frame_layout = QVBoxLayout(self.terminate_options)
+        terminate_options_frame_layout = QVBoxLayout(terminate_options)
         terminate_options_frame_layout.setContentsMargins(12, 5, 10, 5)
         terminate_options_frame_layout.setSpacing(3)
 
@@ -526,7 +525,7 @@ class SettingsPage(QWidget):
         terminate_options_frame_layout.addWidget(opt2)
         # terminate_options_frame_layout.addWidget(opt3)
 
-        main_layout.addWidget(self.terminate_options)
+        main_layout.addWidget(terminate_options)
         main_layout.addStretch(1)
 
         self.setLayout(main_layout)
