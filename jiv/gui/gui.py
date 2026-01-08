@@ -361,11 +361,11 @@ class FunctionsPage(QWidget):
         main_layout.setContentsMargins(3, 3, 3, 3)
         main_layout.setSpacing(5)
 
-        self.custom_terminate_frame = QWidget()
-        self.custom_terminate_frame.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.custom_terminate_frame.setObjectName("custom_terminate_frame")
+        custom_terminate_frame = QWidget()
+        custom_terminate_frame.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        custom_terminate_frame.setObjectName("custom_terminate_frame")
 
-        self.custom_terminate_frame.setStyleSheet("""
+        custom_terminate_frame.setStyleSheet("""
             #custom_terminate_frame {
                 background-color: #eeeeee; 
                 border-radius: 10px;
@@ -382,19 +382,19 @@ class FunctionsPage(QWidget):
             }
         """)
 
-        custom_terminate_layout = QVBoxLayout(self.custom_terminate_frame)
+        custom_terminate_layout = QVBoxLayout(custom_terminate_frame)
         custom_terminate_layout.setContentsMargins(12, 5, 10, 5)
         custom_terminate_layout.setSpacing(3)
 
-        self.custom_terminate_title_label = QLabel("Terminate Process")
-        self.custom_terminate_title_label.setStyleSheet("""
+        custom_terminate_title_label = QLabel("Terminate Process")
+        custom_terminate_title_label.setStyleSheet("""
             background-color: #eeeeee; 
             border-radius: 10px;
             font-size: 20px;
             color: #455A64;   
         """)
 
-        self.terminate_box_layout = QHBoxLayout()
+        custom_terminate_box_layout = QHBoxLayout()
 
         self.custom_process_input = QLineEdit()
         self.custom_process_input.setPlaceholderText("Enter PID or process name")
@@ -402,8 +402,8 @@ class FunctionsPage(QWidget):
         self.custom_process_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.custom_process_input.setStyleSheet("""
             QLineEdit {
-                font-size: 16px;
-                padding: 8px;
+                font: 16px;
+                padding: 2px;
                 border: 2px solid #F8C8DC;
                 border-radius: 8px;
                 background-color: #FFF0F5;
@@ -420,7 +420,8 @@ class FunctionsPage(QWidget):
         self.custom_terminate_btn.setFixedHeight(42)
         self.custom_terminate_btn.setStyleSheet("""
             QPushButton {
-                font: 16px;
+                font-size: 16px;
+                padding: 4px;
                 border: 2px solid #cccccc; 
                 border-radius: 8px;        
                 background-color: #eeeeee; 
@@ -436,13 +437,13 @@ class FunctionsPage(QWidget):
         self.custom_terminate_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         self.custom_terminate_btn.clicked.connect(self.custom_terminate)
 
-        self.terminate_box_layout.addWidget(self.custom_process_input)
-        self.terminate_box_layout.addWidget(self.custom_terminate_btn)
+        custom_terminate_box_layout.addWidget(self.custom_process_input)
+        custom_terminate_box_layout.addWidget(self.custom_terminate_btn)
 
-        custom_terminate_layout.addWidget(self.custom_terminate_title_label)
-        custom_terminate_layout.addLayout(self.terminate_box_layout)
+        custom_terminate_layout.addWidget(custom_terminate_title_label)
+        custom_terminate_layout.addLayout(custom_terminate_box_layout)
 
-        main_layout.addWidget(self.custom_terminate_frame)
+        main_layout.addWidget(custom_terminate_frame)
         main_layout.addStretch(1)
 
         self.setLayout(main_layout)
