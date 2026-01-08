@@ -354,6 +354,44 @@ class FunctionsPage(QWidget):
     def __init__(self):
         super().__init__()
         self.adapter = None
+        self.init_ui()
+
+    def init_ui(self):
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(3, 3, 3, 3)
+        main_layout.setSpacing(5)
+
+        self.terminate_frame = QWidget()
+        self.terminate_frame.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.terminate_frame.setObjectName("terminate_frame")
+
+        self.terminate_frame.setStyleSheet("""
+            #terminate_frame {
+                background-color: #eeeeee; 
+                border-radius: 10px;
+                font-size: 24px;
+                border: 2px solid #bbbbbb;
+                color: #455A64;   
+            }
+            QRadioButton {
+                font-size: 16px;
+            }
+            QRadioButton::indicator {
+                width: 24px;
+                height: 24px;
+            }
+        """)
+
+        terminate_layout = QVBoxLayout(self.terminate_frame)
+        terminate_layout.setContentsMargins(15, 5, 5, 5)
+        terminate_layout.setSpacing(3)
+        main_layout.addWidget(self.terminate_frame)
+        main_layout.addStretch(1)
+
+        self.setLayout(main_layout)
+
+
+
 class SettingsPage(QWidget):
     ui_change = Signal(str, object)
 
