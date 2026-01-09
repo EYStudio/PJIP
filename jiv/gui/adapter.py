@@ -274,6 +274,52 @@ class UpdateAdapter(QObject, BaseAdapterInterface):
         return self.running
 
 
+class TerminateCustomProcessAdapter(QObject):
+    trigger_run = Signal()
+    change = Signal()
+    request_top = Signal()
+
+    def __init__(self, logic):
+        super().__init__()
+        self.running = None
+        self.logic = logic
+
+    def start(self):
+        self.running = False
+        self.trigger_run.connect(self.run_task)
+
+    def stop(self):
+        self.running = False
+
+    def run_task(self, process_info: str):
+        if self.is_running():
+            print('another getting update is running, exit')
+            return
+        self.running = True
+        if process_info.isdigit():
+            process_pid = int(process_info)
+            if self.pid_exists(process_pid):
+                self.terminate_pid(process_pid)
+            else:
+                self.terminate_process(process_info)
+
+        else:
+            self.terminate_process(process_info)
+        self.stop()
+
+    def pid_exists(self, pid: int):
+        pass
+
+    def terminate_pid(self, pid):
+        pass
+
+    def terminate_process(self, process_name):
+        ...
+
+    def is_running(self):
+        return self.running
+
+
 class TerminateProcessAdapter:
     def __init__(self, logic):
         super().__init__()
