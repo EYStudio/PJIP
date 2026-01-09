@@ -1,1 +1,1 @@
-from .status import JIVGeneralStatus, SuspendState, UpdateState
+from .status import JIVGeneralStatus, SuspendState, UpdateState, PidStatus
