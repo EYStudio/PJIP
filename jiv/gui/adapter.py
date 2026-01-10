@@ -1,7 +1,7 @@
 # adapter.py
 # from threading import Thread
 
-from PySide6.QtCore import QObject, Signal, QTimer, QThread
+from PySide6.QtCore import QObject, Signal, QTimer, QThread, QRunnable, QThreadPool
 
 from jiv.config import build_config
 from jiv.core.enums import SuspendState
@@ -296,6 +296,22 @@ class TerminatePIDTask(QRunnable):
             return
         for pid in self.pids:
             self.logic.terminate_process(pid)
+
+
+class TerminatePIDAdapter(QObject):
+    change = Signal(str)
+
+    def __init__(self, logic, /, pool=None):
+        super().__init__()
+        self.logic = logic
+        self.pool = pool or QThreadPool.globalInstance()
+
+    def run_async(self, pids):
+        task = TerminatePIDTask(self.logic, pids)
+        self.pool.start(task)
+
+    def run_sync(self, pids):
+        TerminatePIDTask(self.logic, pids).run()
 class TerminateCustomProcessAdapter(QObject):
     change = Signal()
     trigger_run = Signal()
