@@ -692,7 +692,7 @@ class AboutPage(QWidget, RequireNameMixin):
         self.init_ui()
 
     def set_page_name(self):
-        self.page_name = 'Info'
+        self.page_name = 'About'
 
     def init_ui(self):
         main_layout = QVBoxLayout()
