@@ -182,6 +182,10 @@ class JIVLogic:
         pass
         # self.set_window_display_affinity(hwnd)
 
+    @staticmethod
+    def get_current_pid():
+        return os.getpid()
+
     def set_window_display_affinity(self, hwnd):
         if self.system_info["major"] >= 10 and self.system_info["build"] >= 19041:
             ctypes.windll.user32.SetWindowDisplayAffinity(int(hwnd), 0x11)
