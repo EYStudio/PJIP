@@ -136,6 +136,7 @@ class AdapterManager(QObject):
         return self.logic.get_current_version()
 
     def terminate_custom_process(self, process_info):
+        # todo: do not terminate self
         self.terminate_custom_process_adapter.trigger_run.emit(process_info)
 
 

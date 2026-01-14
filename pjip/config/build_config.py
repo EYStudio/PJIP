@@ -1,12 +1,11 @@
 PROJECT_NAME = 'Jiyu Immunodeficiency Program'
 PROJECT_NAME_ABBREVIATION = "PJIP"
-
 MAJOR_VER = 0
 MINOR_VER = 4
 PATCH_VER = 0
 
 PRE_STAGE = "a"  # alpha / beta / rc
-PRE_NUM = 1  # a2 / b1 / rc3
+PRE_NUM = 2  # a2 / b1 / rc3
 
 # PEP 440 version
 if PRE_STAGE:

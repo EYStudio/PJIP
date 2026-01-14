@@ -234,7 +234,6 @@ class ToolPage(QWidget):
 
     def set_page_name(self):
         self.page_name = 'Tools'
-        print(self.page_name)
 
     def init_ui(self):
         main_layout = QVBoxLayout()
