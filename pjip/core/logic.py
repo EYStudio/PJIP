@@ -20,7 +20,8 @@ import win32gui_struct
 import win32process
 from packaging import version
 
-from jiv.core.enums import UpdateState
+from pjip.core.enums import UpdateState
+from pjip.core.enums import PidStatus
 
 
 class JIVLogic:
@@ -303,6 +304,30 @@ class JIVLogic:
         return tuple(pid_list) or None
 
     @staticmethod
+    def pid_exists(pid: int) -> PidStatus:
+        try:
+            if psutil.pid_exists(pid):
+                return PidStatus.EXISTS
+            else:
+                return PidStatus.NOT_EXISTS
+        except OverflowError:
+            return PidStatus.ERROR
+
+
+    @staticmethod
+    def pid_exists_advanced(pid: int) -> PidStatus:
+        try:
+            p = psutil.Process(pid)
+            p.status()
+            return PidStatus.EXISTS
+        except psutil.NoSuchProcess:
+            return PidStatus.NOT_EXISTS
+        except psutil.AccessDenied:
+            return PidStatus.ACCESS_DENIED
+        except OverflowError:
+            return PidStatus.ERROR
+
+    @staticmethod
     def terminate_process(pid, exit_code = 1):
         # noinspection PyUnresolvedReferences
         h_process = win32api.OpenProcess(win32con.PROCESS_TERMINATE, False, pid)
@@ -411,7 +436,8 @@ class JIVLogic:
         return self.config.VERSION
 
     def get_latest_version(self):
-        response = requests.get(self.config.UPDATE_URL)
+        response = requests.get(self.config.UPDATE_URL, timeout=(3, 5)) # connect timeout, read timeout
+
         if response.status_code == 200:
             data = response.json()
             tag = data.get("tag_name")  # Avoiding KeyError
@@ -433,7 +459,7 @@ class JIVLogic:
         try:
             latest_version = self.get_latest_version()
         except RuntimeError as err:
-            print(err)
+            print(f'Runtime error: {err}')
             return UpdateState.ERROR, str(err)
         except requests.exceptions.SSLError:
             print('requests.exceptions.SSLError')

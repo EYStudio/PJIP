@@ -2,10 +2,10 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
-from jiv.core import logic, service
-from jiv.gui import adapter
-from jiv.gui import gui
-from jiv.config import build_config
+from pjip.core import logic, service
+from pjip.gui import adapter
+from pjip.gui import gui
+from pjip.config import build_config
 
 
 class JIVMain:
@@ -30,7 +30,7 @@ class JIVMain:
         sys.exit(self.app.exec())
 
     def handle_close_event(self):
-        self.adapters.stop_all()
+        self.adapters.quit_all()
         self.services.stop_all()
 
 

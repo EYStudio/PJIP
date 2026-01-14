@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class JIVGeneralStatus(Enum):
@@ -19,3 +19,15 @@ class UpdateState(Enum):
     IS_LATEST = 2
     NOT_FOUND = 3
     ERROR = 4
+
+
+class PidStatus(Enum):
+    EXISTS = auto()
+    NOT_EXISTS = auto()
+    ACCESS_DENIED = auto()
+    ERROR = auto()
+
+    # Reserved extension status
+    ZOMBIE = auto()
+    STOPPED = auto()
+    UNKNOWN = auto()

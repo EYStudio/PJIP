@@ -1,8 +1,8 @@
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QMainWindow, QWidget, QLabel, QPushButton, QGridLayout, QVBoxLayout, QHBoxLayout, \
-    QSizePolicy, QStackedWidget, QLayout, QButtonGroup, QRadioButton
+    QSizePolicy, QStackedWidget, QLayout, QButtonGroup, QRadioButton, QLineEdit
 
-from jiv.core.enums import SuspendState, UpdateState
+from pjip.core.enums import SuspendState, UpdateState
 
 
 class MainWindow(QMainWindow):
@@ -27,6 +27,8 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(366, 488)
         self.resize(366, 488)
 
+        # self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+
         self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)
 
     def adapter_signal_connect(self, adapter):
@@ -49,8 +51,8 @@ class MainWidget(QWidget):
         self.sidebar = self.sidebar_layout = None
         self.sidebar_tabs = self.sidebar_button_group = None
 
-        self.pages = None
-        self.toolkit_page = self.about_page = self.settings_page = self.update_page = None
+        self.pages = self.stack_pages = None
+        self.tool_page = self.functions_page = self.about_page = self.settings_page = self.update_page = None
 
         self.init_ui()
 
@@ -65,11 +67,19 @@ class MainWidget(QWidget):
         self.sidebar_layout.setContentsMargins(self.SPACING, self.SPACING, self.SPACING, self.SPACING)
         # self.sidebar_layout.setSpacing(self.SPACING)
 
-        self.sidebar_tabs = [
-            "Tools",
-            "Settings",
-            "Updates",
-            "Info"
+        # Init stack_pages
+        self.tool_page = ToolPage()
+        self.functions_page = FunctionsPage()
+        self.settings_page = SettingsPage()
+        self.update_page = UpdatePage()
+        self.about_page = AboutPage()
+
+        self.pages = [
+            self.tool_page,
+            self.functions_page,
+            self.settings_page,
+            self.update_page,
+            self.about_page,
         ]
 
         self.sidebar_button_group = QButtonGroup(self)
@@ -102,13 +112,14 @@ class MainWidget(QWidget):
         sidebar_container.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sidebar_container_layout.setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
 
-        for index, name in enumerate(self.sidebar_tabs):
-            btn = QPushButton(name)
+        for index, widget in enumerate(self.pages):
+            page_name = widget.page_name
+            btn = QPushButton(page_name)
             btn.setFixedSize(self.TASKBAR_BTN_WIDTH, self.TASKBAR_BTN_HEIGHT)
             btn.setCheckable(True)
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
             btn.setStyleSheet(base_btn_style)
-            btn.setToolTip(name)
+            btn.setToolTip(page_name)
             self.sidebar_button_group.addButton(btn, index)
             sidebar_container_layout.addWidget(btn)
 
@@ -141,20 +152,13 @@ class MainWidget(QWidget):
         live_frame_layout.setContentsMargins(5, 5, 5, 5)
         live_frame_layout.setSpacing(5)
 
-        # Stack pages
-        self.pages = QStackedWidget()
-        self.toolkit_page = ToolPage()
-        self.pages.addWidget(self.toolkit_page)
-        self.settings_page = SettingsPage()
-        self.pages.addWidget(self.settings_page)
-        self.update_page = UpdatePage()
-        self.pages.addWidget(self.update_page)
-        self.about_page = PageUpdating()
-        self.pages.addWidget(self.about_page)
+        # Stack stack_pages
+        self.stack_pages = QStackedWidget()
+        for page in self.pages:
+            self.stack_pages.addWidget(page)
+        self.sidebar_button_group.idClicked.connect(self.stack_pages.setCurrentIndex)
 
-        self.sidebar_button_group.idClicked.connect(self.pages.setCurrentIndex)
-
-        live_frame_layout.addWidget(self.pages)
+        live_frame_layout.addWidget(self.stack_pages)
 
         main_layout.addWidget(self.sidebar)
         main_layout.addWidget(self.live_frame, 1)
@@ -165,17 +169,18 @@ class MainWidget(QWidget):
         self.adapter = adapter
         self.adapter.ui_change.connect(self.signal_handler)
 
-        self.toolkit_page.set_adapter(self.adapter)
+        self.tool_page.set_adapter(self.adapter)
+        self.functions_page.set_adapter(self.adapter)
         self.update_page.set_adapter(self.adapter)
 
     def signal_handler(self, name, value):
         print(f'Signal in main widget: {name}, {value}')
         match name:
             case 'MonitorAdapter':
-                self.toolkit_page.ui_change.emit(name, value)
+                self.tool_page.ui_change.emit(name, value)
                 self.live_frame_change(value)
             case 'SuspendMonitorAdapter':
-                self.toolkit_page.ui_change.emit(name, value)
+                self.tool_page.ui_change.emit(name, value)
             case 'UpdateAdapter':
                 self.update_page.ui_change.emit(name, value)
 
@@ -202,19 +207,33 @@ class MainWidget(QWidget):
                 }
             """)
 
+class RequireNameMixin:
+    required_methods = ["set_page_name"]
+
+    def __init_subclass__(cls):
+        super().__init_subclass__()
+        for method in cls.required_methods:
+            if not hasattr(cls, method):
+                raise TypeError(f"{cls.__name__} must implement {method}()")
+
 
 class ToolPage(QWidget):
     ui_change = Signal(str, object)
 
     def __init__(self):
         super().__init__()
+        self.page_name = None
         self.studentmain_state = None
         self.kill_run_btn = self.suspend_resume_btn = self.run_taskmgr_btn = self.clean_ifeo_debuggers_btn = None
         self.label_studentmain_state = None
         self.adapter = None
+        self.set_page_name()
         self.init_ui()
 
         self.signal_connect()
+
+    def set_page_name(self):
+        self.page_name = 'Tools'
 
     def init_ui(self):
         main_layout = QVBoxLayout()
@@ -345,25 +364,146 @@ class ToolPage(QWidget):
         self.adapter.clean_ifeo_debuggers()
 
 
-class SettingsPage(QWidget):
+class FunctionsPage(QWidget, RequireNameMixin):
     ui_change = Signal(str, object)
 
     def __init__(self):
         super().__init__()
-        self.terminate_options = None
+        self.page_name = None
         self.adapter = None
+        self.set_page_name()
         self.init_ui()
+        
+    def set_page_name(self):
+        self.page_name = 'Function'
 
     def init_ui(self):
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(3, 3, 3, 3)
         main_layout.setSpacing(5)
 
-        self.terminate_options = QWidget()
-        self.terminate_options.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.terminate_options.setObjectName("terminate_options_frame")
+        custom_terminate_frame = QWidget()
+        custom_terminate_frame.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        custom_terminate_frame.setObjectName("custom_terminate_frame")
 
-        self.terminate_options.setStyleSheet("""
+        custom_terminate_frame.setStyleSheet("""
+            #custom_terminate_frame {
+                background-color: #eeeeee; 
+                border-radius: 10px;
+                font-size: 24px;
+                border: 2px solid #bbbbbb;
+                color: #455A64;   
+            }
+            QRadioButton {
+                font-size: 16px;
+            }
+            QRadioButton::indicator {
+                width: 24px;
+                height: 24px;
+            }
+        """)
+
+        custom_terminate_layout = QVBoxLayout(custom_terminate_frame)
+        custom_terminate_layout.setContentsMargins(12, 5, 10, 5)
+        custom_terminate_layout.setSpacing(3)
+
+        custom_terminate_title_label = QLabel("Terminate Process")
+        custom_terminate_title_label.setStyleSheet("""
+            background-color: #eeeeee; 
+            border-radius: 10px;
+            font-size: 20px;
+            color: #455A64;   
+        """)
+
+        custom_terminate_box_layout = QHBoxLayout()
+
+        self.custom_process_input = QLineEdit()
+        self.custom_process_input.setPlaceholderText("Enter PID or process name")
+        self.custom_process_input.setFixedHeight(42)
+        self.custom_process_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.custom_process_input.setStyleSheet("""
+            QLineEdit {
+                font: 16px;
+                padding: 2px;
+                border: 2px solid #F8C8DC;
+                border-radius: 8px;
+                background-color: #FFF0F5;
+                color: #C94F7C;
+            }
+            QLineEdit:focus {
+                border: 2px solid #C94F7C;
+                background-color: #FDF6FA;
+            }
+        """)
+
+        # self.custom_terminate_btn = QPushButton(" Kill ")
+        self.custom_terminate_btn = QPushButton("Kill Process")
+        self.custom_terminate_btn.setFixedHeight(42)
+        self.custom_terminate_btn.setStyleSheet("""
+            QPushButton {
+                font-size: 16px;
+                padding: 4px;
+                border: 2px solid #cccccc; 
+                border-radius: 8px;        
+                background-color: #eeeeee; 
+                color: #333;               
+            }
+            QPushButton:hover {
+                background-color: #dedede; 
+            }
+            QPushButton:pressed {
+                background-color: #cdcdcd; 
+            }
+        """)
+        self.custom_terminate_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        self.custom_terminate_btn.clicked.connect(self.custom_terminate)
+
+        custom_terminate_box_layout.addWidget(self.custom_process_input)
+        custom_terminate_box_layout.addWidget(self.custom_terminate_btn)
+
+        custom_terminate_layout.addWidget(custom_terminate_title_label)
+        custom_terminate_layout.addLayout(custom_terminate_box_layout)
+
+        main_layout.addWidget(custom_terminate_frame)
+        main_layout.addStretch(1)
+
+        self.setLayout(main_layout)
+
+    def set_adapter(self, adapter):
+        self.adapter = adapter
+
+
+    def custom_terminate(self):
+        process_info = self.custom_process_input.text().strip()
+        if process_info:
+            self.adapter.terminate_custom_process(process_info)
+            self.custom_process_input.setText('')
+
+
+
+class SettingsPage(QWidget, RequireNameMixin):
+    ui_change = Signal(str, object)
+
+    def __init__(self):
+        super().__init__()
+        self.page_name = None
+        self.adapter = None
+        self.set_page_name()
+        self.init_ui()
+        
+    def set_page_name(self):
+        self.page_name = 'Settings'
+
+    def init_ui(self):
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(3, 3, 3, 3)
+        main_layout.setSpacing(5)
+
+        terminate_options = QWidget()
+        terminate_options.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        terminate_options.setObjectName("terminate_options_frame")
+
+        terminate_options.setStyleSheet("""
                     #terminate_options_frame {
                         background-color: #eeeeee; 
                         border-radius: 10px;
@@ -381,8 +521,8 @@ class SettingsPage(QWidget):
                     }
                 """)
 
-        terminate_options_frame_layout = QVBoxLayout(self.terminate_options)
-        terminate_options_frame_layout.setContentsMargins(15, 5, 5, 5)
+        terminate_options_frame_layout = QVBoxLayout(terminate_options)
+        terminate_options_frame_layout.setContentsMargins(12, 5, 10, 5)
         terminate_options_frame_layout.setSpacing(3)
 
         label_terminate_options = QLabel()
@@ -416,17 +556,18 @@ class SettingsPage(QWidget):
         terminate_options_frame_layout.addWidget(opt2)
         # terminate_options_frame_layout.addWidget(opt3)
 
-        main_layout.addWidget(self.terminate_options)
+        main_layout.addWidget(terminate_options)
         main_layout.addStretch(1)
 
         self.setLayout(main_layout)
 
 
-class UpdatePage(QWidget):
+class UpdatePage(QWidget, RequireNameMixin):
     ui_change = Signal(str, object)
 
     def __init__(self):
         super().__init__()
+        self.page_name = None
         self.studentmain_state = None
         self.update_state_label = None
         self.current_version_label = None
@@ -434,9 +575,13 @@ class UpdatePage(QWidget):
         self.adapter = None
         self.current_version = None
 
+        self.set_page_name()
         self.init_ui()
 
         self.signal_connect()
+        
+    def set_page_name(self):
+        self.page_name = 'Updates'
 
     def init_ui(self):
         main_layout = QVBoxLayout()
@@ -535,6 +680,31 @@ class UpdatePage(QWidget):
             self.update_state_label.setText('An error has occurred while checking for updates.')
         else:
             self.update_state_label.setText("Unexpected state. Please contact the developers.")
+
+
+class AboutPage(QWidget, RequireNameMixin):
+    ui_change = Signal(str, object)
+
+    def __init__(self):
+        super().__init__()
+        self.page_name = None
+
+        self.set_page_name()
+        self.init_ui()
+
+    def set_page_name(self):
+        self.page_name = 'About'
+
+    def init_ui(self):
+        main_layout = QVBoxLayout()
+        # main_layout.setContentsMargins(3, 3, 3, 3)
+        # main_layout.setSpacing(5)
+
+        page_updating = PageUpdating()
+
+        main_layout.addWidget(page_updating)
+
+        self.setLayout(main_layout)
 
 
 class PageUpdating(QWidget):
