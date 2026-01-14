@@ -186,6 +186,14 @@ class JIVLogic:
     def get_current_pid():
         return os.getpid()
 
+    @staticmethod
+    def get_argv():
+        return sys.argv
+
+    @staticmethod
+    def get_current_process_name():
+        return psutil.Process(os.getpid()).name()
+
     def set_window_display_affinity(self, hwnd):
         if self.system_info["major"] >= 10 and self.system_info["build"] >= 19041:
             ctypes.windll.user32.SetWindowDisplayAffinity(int(hwnd), 0x11)
