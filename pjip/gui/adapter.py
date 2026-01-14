@@ -137,8 +137,7 @@ class AdapterManager(QObject):
         return self.logic.get_current_version()
 
     def terminate_custom_process(self, process_info):
-        # todo: do not terminate self
-        self.terminate_custom_process_adapter.trigger_run.emit(process_info, self.runtime_status.pid)
+        self.terminate_custom_process_adapter.trigger_run.emit(process_info)
 
 
 class BaseAdapterInterface:
@@ -299,7 +298,7 @@ class UpdateAdapter(QObject, BaseAdapterInterface):
 
 class TerminateCustomProcessAdapter(QObject):
     change = Signal(object)
-    trigger_run = Signal(str, int)
+    trigger_run = Signal(str)
 
     MAX_PID = 2_147_483_647
 
@@ -314,11 +313,11 @@ class TerminateCustomProcessAdapter(QObject):
     def start(self):
         self.trigger_run.connect(self.run_task)
 
-    def run_task(self, process_info: str, current_pid):
+    def run_task(self, process_info: str):
         if self.is_valid_pid(process_info):
             process_pid = int(process_info)
             if self.pid_exists(process_pid):
-                self.terminate_pid(process_pid, current_pid)
+                self.terminate_pid(process_pid)
             else:
                 process_name = self.handle_process_name(process_info)
                 self.terminate_process(process_name)
@@ -339,12 +338,8 @@ class TerminateCustomProcessAdapter(QObject):
     def pid_exists(self, pid: int):
         return self.logic.pid_exists(pid) == PidStatus.EXISTS
 
-    def terminate_pid(self, pid, current_pid: int):
-        if not pid == current_pid:
-            self.terminate_pid_adapter.run_async((pid, ))
-        else:
-            self.change.emit('Cannot terminate the current process')
-            print('Cannot terminate the current process')
+    def terminate_pid(self, pid):
+        self.terminate_pid_adapter.run_async((pid,))
 
     def terminate_process(self, process_name: str):
         self.terminate_process_adapter.run_async(process_name)
