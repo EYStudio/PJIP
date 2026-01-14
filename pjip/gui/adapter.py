@@ -10,11 +10,12 @@ from pjip.core.enums import SuspendState, PidStatus
 class AdapterManager(QObject):
     ui_change = Signal(str, object)
 
-    def __init__(self, logic, gui):
+    def __init__(self, logic, gui, runtime_status):
         super().__init__()
         self.on_demand_objects = {}
         self.logic = logic
         self.gui = gui
+        self.runtime_status = runtime_status
 
         self.lifelong_adapters = []
         self.lifelong_objects = {}
