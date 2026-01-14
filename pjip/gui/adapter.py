@@ -41,7 +41,7 @@ class AdapterManager(QObject):
         self.update_adapter = UpdateAdapter(self.logic)
         self.lifelong_adapters.append(self.update_adapter)
 
-        self.terminate_pid_adapter = TerminatePIDAdapter(self.logic, self.terminate_threadpool)
+        self.terminate_pid_adapter = TerminatePIDAdapter(self.logic, self.runtime_status.pid, self.terminate_threadpool)
         # self.lifelong_adapters.append(self.terminate_pid_adapter)
 
         self.terminate_process_adapter = TerminateProcessAdapter(self.logic, self.terminate_pid_adapter)
@@ -52,7 +52,8 @@ class AdapterManager(QObject):
         self.suspend_studentmain_adapter = SuspendStudentmainAdapter(self.logic)
         self.start_adapter = StartStudentmainAdapter(self.logic)
         self.clean_ifeo_debuggers_adapter = CleanIFEODebuggersAdapter(self.logic)
-        self.terminate_custom_process_adapter = TerminateCustomProcessAdapter(self.logic, self.terminate_pid_adapter, self.terminate_process_adapter)
+        self.terminate_custom_process_adapter = TerminateCustomProcessAdapter(self.logic, self.terminate_pid_adapter,
+                                                                              self.terminate_process_adapter)
 
         self.init_run_taskmgr_adapter()
 
@@ -371,17 +372,30 @@ class TerminatePIDTask(QRunnable):
 class TerminatePIDAdapter(QObject):
     change = Signal(str)
 
-    def __init__(self, logic, /, pool=None):
+    def __init__(self, logic, current_pid, /, pool=None):
         super().__init__()
         self.logic = logic
+        self.current_pid = current_pid
         self.pool = pool or QThreadPool.globalInstance()
 
     def run_async(self, pids):
-        task = TerminatePIDTask(self.logic, pids)
-        self.pool.start(task)
+        other_pids = self.split_current_pid(pids)
+        if other_pids:
+            task = TerminatePIDTask(self.logic, other_pids)
+            self.pool.start(task)
 
     def run_sync(self, pids):
-        TerminatePIDTask(self.logic, pids).run()
+        other_pids = self.split_current_pid(pids)
+        if other_pids:
+            TerminatePIDTask(self.logic, other_pids).run()
+
+    def split_current_pid(self, pids):
+        """Check if pids contains current_pid and return the rest."""
+        if self.current_pid in pids:
+            self.change.emit('Cannot terminate the current process(form pid)')
+            print('Cannot terminate the current process(form pid)')
+        other_pids = [pid for pid in pids if pid != self.current_pid]
+        return other_pids
 
 
 class TerminateProcessAdapter(QObject):
