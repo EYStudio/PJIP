@@ -1,7 +1,7 @@
 from enum import Enum, auto
 
 
-class JIVGeneralStatus(Enum):
+class PJIPGeneralStatus(Enum):
     SUCCESS = 0
     FAILED = 1
     ERROR = 2
