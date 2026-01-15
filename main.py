@@ -21,6 +21,8 @@ class JIVMain:
 
         self.gui.show()
 
+        self.runtime_status.ui_launched(self.gui)
+
         # self.logic.after_ui_launched(self.gui.winId())
 
         self.services = service.ServiceManager(self.logic, self.gui)

@@ -4,6 +4,8 @@ class RuntimeStatus:
         self.pid = None
         self.current_process_name = None
         self.argv = None
+        self.gui = None
+        self.window_handle = None
 
         self.get_current_pid()
         self.get_current_process_name()
@@ -20,3 +22,10 @@ class RuntimeStatus:
     def get_argv(self):
         self.argv = self.logic.get_argv()
         print(self.argv)
+
+    def ui_launched(self, gui):
+        self.gui = gui
+        self.get_hwnd()
+
+    def get_hwnd(self):
+        self.window_handle = self.gui.winId()
