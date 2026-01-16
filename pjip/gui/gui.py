@@ -79,7 +79,7 @@ class MainWidget(QWidget):
             self.functions_page,
             self.settings_page,
             self.update_page,
-            self.about_page,
+            # self.about_page,
         ]
 
         self.sidebar_button_group = QButtonGroup(self)
