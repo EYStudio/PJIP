@@ -13,7 +13,7 @@ class RuntimeStatus:
 
     def get_current_pid(self):
         self.pid = self.logic.get_current_pid()
-        print(self.pid)
+        print(f'PID: {self.pid}')
 
     def get_current_process_name(self):
         self.current_process_name = self.logic.get_current_process_name()
