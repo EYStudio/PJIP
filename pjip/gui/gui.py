@@ -371,6 +371,9 @@ class FunctionsPage(QWidget, RequireNameMixin):
         super().__init__()
         self.page_name = None
         self.adapter = None
+        self.custom_terminate_btn = None
+        self.custom_process_input = None
+
         self.set_page_name()
         self.init_ui()
         
