@@ -154,6 +154,37 @@ class JIVLogic:
                     })
         return hotfixes
 
+    # def read_registry_value(self, key_path, value_name):
+    #     result = self.read_registry(key_path, value_name)
+    #     if result is None:
+    #         return None
+    #     return result[0]
+
+    @staticmethod
+    def read_registry(key_path, value_name):
+        """
+        Read a registry value from HKEY_LOCAL_MACHINE.
+
+        Tries both 32-bit and 64-bit views.
+        :return: value if found, otherwise None
+        """
+        access_flags = [
+            winreg.KEY_READ | winreg.KEY_WOW64_32KEY,
+            winreg.KEY_READ | winreg.KEY_WOW64_64KEY,
+        ]
+
+        for flags in access_flags:
+            try:
+                with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, key_path, 0, flags) as key:
+                    value, reg_type = winreg.QueryValueEx(key, value_name)
+                    return value, reg_type
+            except FileNotFoundError:
+                continue
+            except OSError:
+                continue
+
+        return None
+
     @staticmethod
     def read_registry_value(key_path, value_name):
         """
