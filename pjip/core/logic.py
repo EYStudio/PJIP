@@ -627,6 +627,24 @@ class PJIPLogic:
 
         return success_flag
 
+    @staticmethod
+    def decrypt_knock_value(data: bytes):
+        buf = bytearray(data)
+        n = len(buf)
+
+        k0 = 0x50 ^ 0x45  # 0x15
+        k1 = 0x43 ^ 0x4C  # 0x0F
+        k2 = 0x4C ^ 0x43  # 0x0F
+        k3 = 0x45 ^ 0x50  # 0x15
+
+        for i in range(0, n, 4):
+            if i + 0 < n: buf[i + 0] ^= k0
+            if i + 1 < n: buf[i + 1] ^= k1
+            if i + 2 < n: buf[i + 2] ^= k2
+            if i + 3 < n: buf[i + 3] ^= k3
+
+        return buf
+
 
 class NativeTerminator:
     PROCESS_TERMINATE = 0x0001
