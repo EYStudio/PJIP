@@ -467,7 +467,92 @@ class FunctionsPage(QWidget, RequireNameMixin):
         custom_terminate_layout.addWidget(custom_terminate_title_label)
         custom_terminate_layout.addLayout(custom_terminate_box_layout)
 
+        studentmain_pwd_frame = QWidget()
+        studentmain_pwd_frame.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        studentmain_pwd_frame.setObjectName("studentmain_pwd_frame")
+
+        studentmain_pwd_frame.setStyleSheet("""
+            #studentmain_pwd_frame {
+                background-color: #eeeeee; 
+                border-radius: 10px;
+                font-size: 24px;
+                border: 2px solid #bbbbbb;
+                color: #455A64;   
+            }
+            QRadioButton {
+                font-size: 16px;
+            }
+            QRadioButton::indicator {
+                width: 24px;
+                height: 24px;
+            }
+        """)
+
+        studentmain_pwd_layout = QVBoxLayout(studentmain_pwd_frame)
+        studentmain_pwd_layout.setContentsMargins(12, 5, 10, 5)
+        studentmain_pwd_layout.setSpacing(3)
+
+        studentmain_pwd_title_label = QLabel("Terminate Process")
+        studentmain_pwd_title_label.setStyleSheet("""
+            background-color: #eeeeee; 
+            border-radius: 10px;
+            font-size: 20px;
+            color: #455A64;   
+        """)
+
+        studentmain_pwd_box_layout = QHBoxLayout()
+
+        self.custom_process_input = QLineEdit()
+        self.custom_process_input.setPlaceholderText("Enter PID or process name")
+        self.custom_process_input.setFixedHeight(42)
+        self.custom_process_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.custom_process_input.setStyleSheet("""
+            QLineEdit {
+                font: 16px;
+                padding: 2px;
+                border: 2px solid #F8C8DC;
+                border-radius: 8px;
+                background-color: #FFF0F5;
+                color: #C94F7C;
+            }
+            QLineEdit:focus {
+                border: 2px solid #C94F7C;
+                background-color: #FDF6FA;
+            }
+        """)
+
+        # self.studentmain_pwd_btn = QPushButton(" Kill ")
+        self.studentmain_pwd_btn = QPushButton("Kill Process")
+        self.studentmain_pwd_btn.setFixedHeight(42)
+        self.studentmain_pwd_btn.setStyleSheet("""
+            QPushButton {
+                font-size: 16px;
+                padding: 4px;
+                border: 2px solid #cccccc; 
+                border-radius: 8px;        
+                background-color: #eeeeee; 
+                color: #333;               
+            }
+            QPushButton:hover {
+                background-color: #dedede; 
+            }
+            QPushButton:pressed {
+                background-color: #cdcdcd; 
+            }
+        """)
+        self.studentmain_pwd_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        self.studentmain_pwd_btn.clicked.connect(self.custom_terminate)
+
+        studentmain_pwd_box_layout.addWidget(self.custom_process_input)
+        studentmain_pwd_box_layout.addWidget(self.studentmain_pwd_btn)
+
+        studentmain_pwd_layout.addWidget(studentmain_pwd_title_label)
+        studentmain_pwd_layout.addLayout(studentmain_pwd_box_layout)
+
+
+        #
         main_layout.addWidget(custom_terminate_frame)
+        main_layout.addWidget(studentmain_pwd_frame)
         main_layout.addStretch(1)
 
         self.setLayout(main_layout)
