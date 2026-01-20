@@ -492,7 +492,7 @@ class FunctionsPage(QWidget, RequireNameMixin):
         studentmain_pwd_layout.setContentsMargins(12, 5, 10, 5)
         studentmain_pwd_layout.setSpacing(3)
 
-        studentmain_pwd_title_label = QLabel("Terminate Process")
+        studentmain_pwd_title_label = QLabel("Studentmain Password")
         studentmain_pwd_title_label.setStyleSheet("""
             background-color: #eeeeee; 
             border-radius: 10px;
@@ -522,7 +522,7 @@ class FunctionsPage(QWidget, RequireNameMixin):
         """)
 
         # self.studentmain_pwd_btn = QPushButton(" Kill ")
-        self.studentmain_pwd_btn = QPushButton("Kill Process")
+        self.studentmain_pwd_btn = QPushButton(" Copy ")
         self.studentmain_pwd_btn.setFixedHeight(42)
         self.studentmain_pwd_btn.setStyleSheet("""
             QPushButton {
