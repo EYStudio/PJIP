@@ -503,7 +503,7 @@ class FunctionsPage(QWidget, RequireNameMixin):
         studentmain_pwd_box_layout = QHBoxLayout()
 
         self.custom_process_input = QLineEdit()
-        self.custom_process_input.setPlaceholderText("Enter PID or process name")
+        self.custom_process_input.setPlaceholderText("Studentmain passwd not found")
         self.custom_process_input.setFixedHeight(42)
         self.custom_process_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.custom_process_input.setStyleSheet("""
