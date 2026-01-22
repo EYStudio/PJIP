@@ -253,9 +253,9 @@ class GetStudentmainPasswordAdapter(QObject, BaseAdapterInterface):
 
     def get_studentmain_password(self):
         """
-        :return: Studentmain suspend state
+        :return: Studentmain password
         """
-        return None
+        return self.logic.decode_studentmain_password()
 
 
 
