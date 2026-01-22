@@ -35,6 +35,7 @@ class AdapterManager(QObject):
     def init_workers(self):
         self.lifelong_adapters.append(MonitorAdapter(self.logic))
         self.lifelong_adapters.append(SuspendMonitorAdapter(self.logic))
+        self.lifelong_adapters.append(GetStudentmainPasswordAdapter(self.logic))
         # self.lifelong_adapters.append(DatabaseAdapter(logic, 2000))
         # self.lifelong_adapters.append(NetworkAdapter(logic, 5000))
 
