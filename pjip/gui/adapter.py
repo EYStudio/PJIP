@@ -227,6 +227,38 @@ class SuspendMonitorAdapter(QObject, BaseAdapterInterface):
             return SuspendState.RUNNING
 
 
+class GetStudentmainPasswordAdapter(QObject, BaseAdapterInterface):
+    change = Signal(SuspendState)
+
+    def __init__(self, logic):
+        super().__init__()
+        self.logic = logic
+        self.timer = QTimer(self)
+        self.timer.setInterval(30000)
+        self.timer.timeout.connect(self.run_task)
+        self.last_result = None
+
+    def start(self):
+        self.timer.start()
+        # QTimer.singleShot(0, self.check_state)
+
+    def stop(self):
+        self.timer.stop()
+
+    def run_task(self):
+        state = self.get_studentmain_password()
+        if state is not self.last_result:
+            self.last_result = state
+            self.change.emit(state)
+
+    def get_studentmain_password(self):
+        """
+        :return: Studentmain suspend state
+        """
+        return None
+
+
+
 class RunTaskmgrAdapter(QObject):
     trigger_run = Signal()
     change = Signal()
