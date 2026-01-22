@@ -474,12 +474,3 @@ class CleanIFEODebuggersAdapter:
 
     def start(self):
         self.logic.clean_ifeo_debuggers()
-
-
-class GetStudentmainPasswordAdapter:
-    def __init__(self, logic):
-        super().__init__()
-        self.logic = logic
-
-    def start(self):
-        self.logic.decode_studentmain_password()
