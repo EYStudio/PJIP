@@ -183,6 +183,8 @@ class MainWidget(QWidget):
                 self.tool_page.ui_change.emit(name, value)
             case 'UpdateAdapter':
                 self.update_page.ui_change.emit(name, value)
+            case 'GetStudentmainPasswordAdapter':
+                self.functions_page.ui_change.emit(name, value)
 
     def live_frame_change(self, studentmain_running_state):
         if studentmain_running_state:
@@ -375,6 +377,7 @@ class FunctionsPage(QWidget, RequireNameMixin):
         self.custom_process_input = None
 
         self.set_page_name()
+        self.signal_connect()
         self.init_ui()
         
     def set_page_name(self):
@@ -549,17 +552,23 @@ class FunctionsPage(QWidget, RequireNameMixin):
         studentmain_pwd_layout.addWidget(studentmain_pwd_title_label)
         studentmain_pwd_layout.addLayout(studentmain_pwd_box_layout)
 
-
-        #
         main_layout.addWidget(custom_terminate_frame)
         main_layout.addWidget(studentmain_pwd_frame)
         main_layout.addStretch(1)
 
         self.setLayout(main_layout)
 
+    def signal_connect(self):
+        self.ui_change.connect(self.signal_handler)
+
+    def signal_handler(self, name, value):
+        # print(f'Signal in toolkit page: {name}, {value}')
+        match name:
+            case 'GetStudentmainPasswordAdapter':
+                pass
+
     def set_adapter(self, adapter):
         self.adapter = adapter
-
 
     def custom_terminate(self):
         process_info = self.custom_process_input.text().strip()
