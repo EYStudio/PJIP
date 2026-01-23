@@ -565,7 +565,7 @@ class FunctionsPage(QWidget, RequireNameMixin):
         # print(f'Signal in toolkit page: {name}, {value}')
         match name:
             case 'GetStudentmainPasswordAdapter':
-                pass
+                self.studentmain_pwd_label.setText(value)
 
     def set_adapter(self, adapter):
         self.adapter = adapter
