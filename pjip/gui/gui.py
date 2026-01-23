@@ -505,11 +505,11 @@ class FunctionsPage(QWidget, RequireNameMixin):
 
         studentmain_pwd_box_layout = QHBoxLayout()
 
-        self.custom_process_input = QLineEdit()
-        self.custom_process_input.setPlaceholderText("Studentmain passwd not found")
-        self.custom_process_input.setFixedHeight(42)
-        self.custom_process_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.custom_process_input.setStyleSheet("""
+        self.studentmain_pwd_label = QLineEdit()
+        self.studentmain_pwd_label.setPlaceholderText("Studentmain passwd not found")
+        self.studentmain_pwd_label.setFixedHeight(42)
+        self.studentmain_pwd_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.studentmain_pwd_label.setStyleSheet("""
             QLineEdit {
                 font: 16px;
                 padding: 2px;
@@ -546,7 +546,7 @@ class FunctionsPage(QWidget, RequireNameMixin):
         self.studentmain_pwd_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         self.studentmain_pwd_btn.clicked.connect(lambda : print('studentmain_pwd_btn clicked'))
 
-        studentmain_pwd_box_layout.addWidget(self.custom_process_input)
+        studentmain_pwd_box_layout.addWidget(self.studentmain_pwd_label)
         studentmain_pwd_box_layout.addWidget(self.studentmain_pwd_btn)
 
         studentmain_pwd_layout.addWidget(studentmain_pwd_title_label)
