@@ -524,6 +524,8 @@ class FunctionsPage(QWidget, RequireNameMixin):
             }
         """)
 
+        self.studentmain_pwd_label.setReadOnly(True)
+
         # self.studentmain_pwd_btn = QPushButton(" Kill ")
         self.studentmain_pwd_btn = QPushButton(" Copy ")
         self.studentmain_pwd_btn.setFixedHeight(42)
