@@ -6,6 +6,7 @@ class RuntimeStatus:
         self.argv = None
         self.gui = None
         self.window_handle = None
+        self.studentmain_password = None
 
         self.get_current_pid()
         self.get_current_process_name()
@@ -35,3 +36,6 @@ class RuntimeStatus:
 
     def get_hwnd(self):
         self.window_handle = self.gui.winId()
+
+    def update_studentmain_password(self, pwd):
+        self.studentmain_password = pwd
