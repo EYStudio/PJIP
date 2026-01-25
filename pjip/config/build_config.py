@@ -1,10 +1,10 @@
-PROJECT_NAME = 'Jiyu Immunodeficiency Program'
+PROJECT_NAME = 'Jiyu Immunodeficiency Project'
 PROJECT_NAME_ABBREVIATION = "PJIP"
 MAJOR_VER = 0
-MINOR_VER = 4
+MINOR_VER = 5
 PATCH_VER = 0
 
-PRE_STAGE = "b"  # alpha / beta / rc
+PRE_STAGE = "a"  # alpha / beta / rc
 PRE_NUM = 1  # a2 / b1 / rc3
 
 # PEP 440 version
