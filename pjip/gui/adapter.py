@@ -55,6 +55,7 @@ class AdapterManager(QObject):
         self.suspend_studentmain_adapter = SuspendStudentmainAdapter(self.logic)
         self.start_adapter = StartStudentmainAdapter(self.logic)
         self.clean_ifeo_debuggers_adapter = CleanIFEODebuggersAdapter(self.logic)
+        self.copy_to_clipboard_adapter = CopyToClipboardAdapter()
         self.terminate_custom_process_adapter = TerminateCustomProcessAdapter(self.logic, self.terminate_pid_adapter,
                                                                               self.terminate_process_adapter)
 
@@ -146,8 +147,8 @@ class AdapterManager(QObject):
     def terminate_custom_process(self, process_info):
         self.terminate_custom_process_adapter.trigger_run.emit(process_info)
 
-    def get_studentmain_password(self):
-        pass
+    def copy_to_clipboard(self, content):
+        self.copy_to_clipboard_adapter.copy_to_clipboard(content)
 
 
 class BaseAdapterInterface:
