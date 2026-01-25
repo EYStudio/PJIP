@@ -546,7 +546,7 @@ class FunctionsPage(QWidget, RequireNameMixin):
             }
         """)
         self.studentmain_pwd_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        self.studentmain_pwd_btn.clicked.connect(lambda : print('studentmain_pwd_btn clicked'))
+        self.studentmain_pwd_btn.clicked.connect(self.copy_studentmain_password_to_clipboard)
 
         studentmain_pwd_box_layout.addWidget(self.studentmain_pwd_label)
         studentmain_pwd_box_layout.addWidget(self.studentmain_pwd_btn)
@@ -578,6 +578,9 @@ class FunctionsPage(QWidget, RequireNameMixin):
             self.adapter.terminate_custom_process(process_info)
             self.custom_process_input.setText('')
 
+    def copy_studentmain_password_to_clipboard(self):
+        self.adapter.copy_studentmain_password_to_clipboard()
+        self.studentmain_pwd_btn.setText('Copied')
 
 
 class SettingsPage(QWidget, RequireNameMixin):
