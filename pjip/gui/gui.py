@@ -578,6 +578,12 @@ class FunctionsPage(QWidget, RequireNameMixin):
             self.adapter.terminate_custom_process(process_info)
             self.custom_process_input.setText('')
 
+    def display_password(self, pwd):
+        if pwd is None:
+            self.studentmain_pwd_label.setText('Password not found')
+        else:
+            self.studentmain_pwd_label.setText(pwd)
+
     def copy_studentmain_password_to_clipboard(self):
         self.adapter.copy_studentmain_password_to_clipboard()
         self.studentmain_pwd_btn.setText('Copied')
