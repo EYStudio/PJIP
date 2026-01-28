@@ -8,6 +8,7 @@ from pjip.config import build_config
 from pjip.core.enums import PidStatus
 
 from .polling import MonitorAdapter, SuspendMonitorAdapter, GetStudentmainPasswordAdapter, UpdateAdapter
+from .polling_manager import PollingManager
 
 
 class AdapterManager(QObject):
@@ -19,6 +20,8 @@ class AdapterManager(QObject):
         self.logic = logic
         self.gui = gui
         self.runtime_status = runtime_status
+
+        self.polling = PollingManager()
 
         self.lifelong_adapters = []
         self.lifelong_objects = {}
