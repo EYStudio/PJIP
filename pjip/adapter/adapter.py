@@ -39,14 +39,14 @@ class AdapterManager(QObject):
         self.terminate_threadpool.setMaxThreadCount(2)
 
     def init_workers(self):
-        self.lifelong_adapters.append(MonitorAdapter(self.logic))
-        self.lifelong_adapters.append(SuspendMonitorAdapter(self.logic))
-        self.lifelong_adapters.append(GetStudentmainPasswordAdapter(self.logic, self.runtime_status))
+        self.polling.add(MonitorAdapter(self.logic))
+        self.polling.add(SuspendMonitorAdapter(self.logic))
+        self.polling.add(GetStudentmainPasswordAdapter(self.logic, self.runtime_status))
         # self.lifelong_adapters.append(DatabaseAdapter(logic, 2000))
         # self.lifelong_adapters.append(NetworkAdapter(logic, 5000))
 
         self.update_adapter = UpdateAdapter(self.logic)
-        self.lifelong_adapters.append(self.update_adapter)
+        self.polling.add(self.update_adapter)
 
         self.terminate_pid_adapter = TerminatePIDAdapter(self.logic, self.runtime_status.pid, self.terminate_threadpool)
 
