@@ -239,7 +239,7 @@ class TerminateCustomProcessAdapter(QObject):
         return self.logic.pid_exists(pid) == PidStatus.EXISTS
 
     def terminate_pid(self, pid):
-        self.terminate_pid_adapter.run_async((pid,))
+        self.terminate_pid_adapter.run_async(pid)
 
     def terminate_process(self, process_name: str):
         self.terminate_process_adapter.run_async(process_name)
@@ -279,6 +279,20 @@ class TerminatePIDAdapter(QObject):
         self.logic = logic
         self.current_pid = current_pid
         self.pool = pool or QThreadPool.globalInstance()
+
+    # def run_async(self, pids):
+    #     other_pids = self.split_current_pid(pids)
+    #     if not other_pids:
+    #         return
+    #
+    #     task = FutureRunnable(
+    #         self.logic.terminate_process,
+    #         other_pids,
+    #         callback=lambda _: self.change.emit("done"),
+    #         error_callback=lambda e: self.change.emit(str(e))
+    #     )
+    #
+    #     self.dispatcher.submit(task, priority=10)
 
     def run_async(self, pids):
         valid_pids = self.format_pids(pids)

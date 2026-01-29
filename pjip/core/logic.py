@@ -486,7 +486,7 @@ class PJIPLogic:
         return self.config.VERSION
 
     def get_latest_version(self):
-        response = requests.get(self.config.UPDATE_URL, timeout=(3, 5)) # connect timeout, read timeout
+        response = requests.get(self.config.UPDATE_URL, timeout=(2, 4)) # connect timeout, read timeout
 
         if response.status_code == 200:
             data = response.json()
