@@ -24,8 +24,9 @@ class AdapterManager(QObject):
 
         self.polling = PollingManager()
 
-        self.lifelong_adapters = []
-        self.lifelong_objects = {}
+        # WILL BE DELETED IN NEXT VERSION
+        # self.lifelong_adapters = []
+        # self.lifelong_objects = {}
 
         self.terminate_pid_adapter = self.terminate_process_adapter = self.start_adapter = None
         self.suspend_studentmain_adapter = self.run_taskmgr_adapter = self.update_adapter = None
@@ -95,12 +96,13 @@ class AdapterManager(QObject):
     def stop_all(self):
         """Stop all adapters and safely exit the thread"""
         self.polling.stop()
-        for adapter, thread in self.lifelong_objects.items():
-            adapter.deleteLater()
-            adapter.stop()
-            thread.quit()
-            thread.wait()
-            thread.deleteLater()
+        # WILL BE DELETED IN NEXT VERSION
+        # for adapter, thread in self.lifelong_objects.items():
+        #     adapter.deleteLater()
+        #     adapter.stop()
+        #     thread.quit()
+        #     thread.wait()
+        #     thread.deleteLater()
 
     def ui_launched(self):
         pass
