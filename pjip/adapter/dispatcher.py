@@ -12,12 +12,22 @@ class TaskDispatcher(QObject):
         self.pool = QThreadPool()
         self.pool.setMaxThreadCount(max_threads)
 
+        self.daemon_pool = QThreadPool()
+        self.daemon_pool.setMaxThreadCount(max_threads)
+
     def submit(self, runnable, priority=0):
         """
         runnable: QRunnable
         priority: int (higher = more important)
         """
         self.pool.start(runnable, priority)
+
+    def submit_daemon(self, runnable, priority=0):
+        """
+        runnable: QRunnable
+        priority: int (higher = more important)
+        """
+        self.daemon_pool.start(runnable, priority)
 
     def wait(self):
         self.pool.waitForDone()
