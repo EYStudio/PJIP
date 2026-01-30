@@ -92,6 +92,12 @@ class AdapterManager(QObject):
     def stop_all(self):
         """Stop all adapters and safely exit the thread"""
         self.polling.stop()
+        for adapter, thread in self.lifelong_objects.items():
+            adapter.deleteLater()
+            adapter.stop()
+            thread.quit()
+            thread.wait()
+            thread.deleteLater()
 
     def ui_launched(self):
         pass
