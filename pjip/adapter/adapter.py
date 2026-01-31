@@ -2,7 +2,7 @@
 # from threading import Thread
 from typing import Iterable
 
-from PySide6.QtCore import QObject, Signal, QTimer, QThread, QRunnable, QThreadPool
+from PySide6.QtCore import QObject, Signal, QThreadPool
 from PySide6.QtGui import QGuiApplication
 
 from pjip.config import build_config
@@ -11,7 +11,7 @@ from pjip.core.enums import PidStatus
 from .polling import MonitorAdapter, SuspendMonitorAdapter, GetStudentmainPasswordAdapter, UpdateAdapter, \
     RunTaskmgrAdapter
 from .polling_manager import PollingManager
-from ..runner import TerminatePIDTask
+from .runner import TerminatePIDTask
 
 
 class AdapterManager(QObject):
