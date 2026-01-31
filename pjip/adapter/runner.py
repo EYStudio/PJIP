@@ -27,8 +27,8 @@ class AdvanceRunnable(QRunnable):
 
         self.callback = None
         self.error_callback = None
-        self.middle_callback = None
-        self.external_callback = None
+        # self.middle_callback = None
+        # self.external_callback = None
         self.finished_callback = None
 
     def run(self):
@@ -71,9 +71,13 @@ class TerminatePIDTask(QRunnable):
                 print(err)
 
 
-class TerminatePIDTaskTest(QRunnable):
+class TerminatePIDTaskTest(AdvanceRunnable):
+
     def __init__(self, logic, pids):
-        super().__init__()
+        super().__init__(fn=self.run)
+        self.logic = logic
+        self.middle_callback = None
+        self.external_callback = None
         self.logic = logic
         self.pids = pids
 
