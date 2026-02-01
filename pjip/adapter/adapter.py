@@ -233,6 +233,7 @@ class TerminatePIDAdapter(QObject):
         self.current_pid = current_pid
         self.pool = pool or QThreadPool.globalInstance()
 
+    # Bugs here: self.logic.terminate_process cannot accept tuple, on int
     # def run_async(self, pids):
     #     other_pids = self.split_current_pid(pids)
     #     if not other_pids:

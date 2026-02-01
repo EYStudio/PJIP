@@ -18,8 +18,11 @@ class TaskDispatcher(QObject):
 
     def submit(self, runnable, priority=0, daemon=False):
         """
-        runnable: QRunnable
-        priority: int (higher = more important)
+        submit a qrunner task
+        :param runnable:  QRunnable
+        :param priority:  int (higher = more important)
+        :param daemon: Whether run in daemon pool
+        :return:
         """
         if daemon:
             self.daemon_pool.start(runnable, priority)
