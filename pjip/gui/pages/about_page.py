@@ -1,8 +1,8 @@
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QWidget, QVBoxLayout
 
-from pjip.gui.main_widget import PageUpdating
-from pjip.gui.pages.page_format import RequireNameMixin
+from .page_updating import PageUpdating
+from .page_format import RequireNameMixin
 
 
 class AboutPage(QWidget, RequireNameMixin):
