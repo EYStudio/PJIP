@@ -1,0 +1,1 @@
+from .svg import SVG_COLORED_LOGO_TMP as SVG_COLORED_LOGO
