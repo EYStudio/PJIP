@@ -1,5 +1,10 @@
 PROJECT_NAME = 'Jiyu Immunodeficiency Project'
 PROJECT_NAME_ABBREVIATION = "PJIP"
+
+STUDIO_NAME = 'EyStudio'
+STUDIO_MOTTO = 'Exception Ignite Evolution'
+DEVELOPERS = 'EyStudio developers'
+
 MAJOR_VER = 0
 MINOR_VER = 5
 PATCH_VER = 0
