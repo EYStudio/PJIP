@@ -2,9 +2,11 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QHBoxLayout
 
+from ..resources import SVG_COLORED_LOGO
 from ..utils.q_pixmap_utils import make_round_pixmap
 from ..utils.svg_utils import svg_to_pixmap
-from ..resources import SVG_COLORED_LOGO
+from ...config.build_config import STUDIO_NAME, STUDIO_MOTTO
+
 
 class AboutPage(QWidget):
     ui_change = Signal(str, object)
@@ -49,10 +51,10 @@ class AboutPage(QWidget):
         studio_info_layout = QVBoxLayout(studio_info_widget)
 
         self.studio_name = QLabel()
-        self.studio_name.setText('Eystudio')
+        self.studio_name.setText(STUDIO_NAME)
         self.studio_name.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.studio_name.setStyleSheet("""
-            font-size: 36px;
+            font-size: 40px;
             color: #555555;   
         """)
         self.studio_name.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
@@ -60,7 +62,18 @@ class AboutPage(QWidget):
         studio_info_font = QFont("Segoe UI")
         self.studio_name.setFont(studio_info_font)
 
+        studio_motto_label = QLabel(STUDIO_MOTTO)
+        studio_motto_label.setStyleSheet("""
+            font-size: 18px;
+            color: #555555;   
+            padding-right: 10px;
+        """)
+        studio_motto_font = QFont("Segoe UI")
+        studio_motto_font.setItalic(True)
+        studio_motto_label.setFont(studio_motto_font)
+
         studio_info_layout.addWidget(self.studio_name, alignment=Qt.AlignmentFlag.AlignHCenter)
+        studio_info_layout.addWidget(studio_motto_label, alignment=Qt.AlignmentFlag.AlignRight)
         studio_info_widget.setStyleSheet("""
             #studio_info_widget{
                 border-radius: 10px;
@@ -70,9 +83,7 @@ class AboutPage(QWidget):
             }
         """)
 
-        # slogan = None ; motto?
-
-        main_layout.addWidget(wrapper, alignment=Qt.AlignmentFlag.AlignHCenter)
+        main_layout.addWidget(wrapper)
         main_layout.addWidget(studio_info_widget)
 
         self.setLayout(main_layout)
