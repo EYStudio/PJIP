@@ -1,5 +1,5 @@
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QFont
+from PySide6.QtCore import Qt, Signal, QUrl
+from PySide6.QtGui import QFont, QDesktopServices
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QHBoxLayout
 
 from ..resources import SVG_COLORED_LOGO
@@ -28,7 +28,7 @@ class AboutPage(QWidget):
         wrapper_layout = QHBoxLayout(wrapper)
         wrapper.setObjectName('wrapper')
 
-        self.studio_icon = QLabel()
+        self.studio_icon = ClickableLabel()
 
         img_pixmap = svg_to_pixmap(SVG_COLORED_LOGO)
         rounded = make_round_pixmap(img_pixmap, 256)
@@ -87,3 +87,8 @@ class AboutPage(QWidget):
         main_layout.addWidget(studio_info_widget)
 
         self.setLayout(main_layout)
+
+class ClickableLabel(QLabel):
+    def mousePressEvent(self, event):
+        QDesktopServices.openUrl(QUrl("https://github.com/Eystudio"))
+
