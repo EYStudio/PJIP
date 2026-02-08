@@ -68,7 +68,7 @@ class UpdatePage(QWidget):
                             border: 2px solid #cccccc; 
                             border-radius: 8px;        
                             background-color: #eeeeee; 
-                            color: #333;               
+                            color: #455A64;               
                         }
                         QPushButton:hover {
                             background-color: #dedede; 

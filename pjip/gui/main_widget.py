@@ -46,9 +46,9 @@ class MainWidget(QWidget):
         self.pages = [
             self.tool_page,
             self.functions_page,
-            self.settings_page,
+            # self.settings_page,
             self.update_page,
-            # self.about_page,
+            self.about_page,
         ]
 
         self.sidebar_button_group = QButtonGroup(self)
@@ -60,6 +60,7 @@ class MainWidget(QWidget):
                 border-radius: {self.TASKBAR_BTN_HEIGHT // 4}px; 
                 padding: 0px;
                 font-weight: bold; 
+                color: #444444;
             }}
             QPushButton:hover {{
                 background-color: #dcdcdc;
