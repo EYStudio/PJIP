@@ -33,13 +33,6 @@ class FunctionPage(QWidget):
                 border: 2px solid #bbbbbb;
                 color: #455A64;   
             }
-            QRadioButton {
-                font-size: 16px;
-            }
-            QRadioButton::indicator {
-                width: 24px;
-                height: 24px;
-            }
         """)
 
         custom_terminate_layout = QVBoxLayout(custom_terminate_frame)
