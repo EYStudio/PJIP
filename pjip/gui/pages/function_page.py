@@ -30,13 +30,13 @@ class FunctionPage(QWidget):
                 background-color: #eeeeee; 
                 border-radius: 10px;
                 font-size: 24px;
-                border: 2px solid #bbbbbb;
+                /* border: 2px solid #bbbbbb; */
                 color: #455A64;   
             }
         """)
 
         custom_terminate_layout = QVBoxLayout(custom_terminate_frame)
-        custom_terminate_layout.setContentsMargins(12, 5, 10, 5)
+        custom_terminate_layout.setContentsMargins(10, 5, 10, 5)
         custom_terminate_layout.setSpacing(3)
 
         custom_terminate_title_label = QLabel("Terminate Process")
@@ -105,13 +105,13 @@ class FunctionPage(QWidget):
                 background-color: #eeeeee; 
                 border-radius: 10px;
                 font-size: 24px;
-                border: 2px solid #bbbbbb;
+                /* border: 2px solid #bbbbbb; */
                 color: #455A64;   
             }
         """)
 
         studentmain_pwd_layout = QVBoxLayout(studentmain_pwd_frame)
-        studentmain_pwd_layout.setContentsMargins(12, 5, 10, 5)
+        studentmain_pwd_layout.setContentsMargins(10, 5, 10, 5)
         studentmain_pwd_layout.setSpacing(3)
 
         studentmain_pwd_title_label = QLabel("Studentmain Password")
