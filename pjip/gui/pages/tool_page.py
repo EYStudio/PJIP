@@ -63,7 +63,7 @@ class ToolPage(QWidget):
                             border: 2px solid #cccccc; 
                             border-radius: 8px;        
                             background-color: #eeeeee; 
-                            color: #333;               
+                            color: #444444;               
                         }
                         QPushButton:hover {
                             background-color: #dedede; 
