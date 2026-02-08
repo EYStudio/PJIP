@@ -63,7 +63,7 @@ class FunctionPage(QWidget):
                 color: #666666;
             }
             QLineEdit:focus {
-                border: 2px solid #888888;
+                border: 2px solid #A0A0A0;
                 background-color: #FDF6FA;
             }
         """)
@@ -132,13 +132,13 @@ class FunctionPage(QWidget):
             QLineEdit {
                 font: 16px;
                 padding: 2px;
-                border: 2px solid #F8C8DC;
+                border: 2px solid #bbbbbb;
                 border-radius: 8px;
-                background-color: #FFF0F5;
-                color: #C94F7C;
+                background-color: #F0F0F0;
+                color: #666666;
             }
             QLineEdit:focus {
-                border: 2px solid #C94F7C;
+                border: 2px solid #A0A0A0;
                 background-color: #FDF6FA;
             }
         """)
