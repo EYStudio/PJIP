@@ -81,10 +81,12 @@ class FunctionPage(QWidget):
                 color: #455A64;               
             }
             QPushButton:hover {
-                background-color: #dedede; 
+                background-color: #E0E0E0; 
+                border: 2px solid #bbbbbb; 
             }
             QPushButton:pressed {
-                background-color: #cdcdcd; 
+                background-color: #D2D2D2; 
+                border: 2px solid #A0A0A0;
             }
         """)
         self.custom_terminate_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
@@ -158,10 +160,12 @@ class FunctionPage(QWidget):
                 color: #455A64;               
             }
             QPushButton:hover {
-                background-color: #dedede; 
+                background-color: #E0E0E0; 
+                border: 2px solid #bbbbbb; 
             }
             QPushButton:pressed {
-                background-color: #cdcdcd; 
+                background-color: #D2D2D2; 
+                border: 2px solid #A0A0A0;
             }
         """)
         self.studentmain_pwd_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
