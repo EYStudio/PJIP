@@ -71,12 +71,12 @@ class UpdatePage(QWidget):
                     color: #455A64;               
                 }
                 QPushButton:hover {
-                    background-color: #E0E0E0; 
-                    border: 2px solid #bbbbbb; 
+                    background-color: #E2E2E2; 
+                    border: 2px solid #C4C4C4; 
                 }
                 QPushButton:pressed {
-                    background-color: #D2D2D2; 
-                    border: 2px solid #A0A0A0;
+                    background-color: #D9D9D9; 
+                    border: 2px solid #B7B7B7;
                 }
             """)
 
