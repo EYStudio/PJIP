@@ -58,20 +58,22 @@ class ToolPage(QWidget):
             btn.setMinimumHeight(50)
             button_layout.addWidget(btn, i // 2, i % 2)
             btn.setStyleSheet("""
-                        QPushButton {
-                            font: 20px;
-                            border: 2px solid #cccccc; 
-                            border-radius: 8px;        
-                            background-color: #eeeeee; 
-                            color: #444444;               
-                        }
-                        QPushButton:hover {
-                            background-color: #dedede; 
-                        }
-                        QPushButton:pressed {
-                            background-color: #cdcdcd; 
-                        }
-                    """)
+                QPushButton {
+                    font: 20px;
+                    border: 2px solid #cccccc; 
+                    border-radius: 8px;        
+                    background-color: #eeeeee; 
+                    color: #444444;               
+                }
+                QPushButton:hover {
+                    background-color: #E0E0E0; 
+                    border: 2px solid #bbbbbb; 
+                }
+                QPushButton:pressed {
+                    background-color: #D2D2D2; 
+                    border: 2px solid #A0A0A0;
+                }
+            """)
             # cec2ff - b3b3f1 - dcb6d5 - cf8ba9 - b15e6c
 
         main_layout.addWidget(self.label_studentmain_state)
