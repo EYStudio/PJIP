@@ -15,3 +15,6 @@ def serialize_config(obj):
 
     if isinstance(obj, Enum):
         return obj.value
+
+    if is_dataclass(obj):
+        return serialize_config(asdict(obj))
