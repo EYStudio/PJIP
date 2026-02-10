@@ -1,0 +1,8 @@
+from dataclasses import is_dataclass, asdict
+from enum import Enum
+import datetime
+
+ALLOWED_SCALAR_TYPES = (
+    str, int, float, bool, type(None),
+    datetime.datetime, datetime.date, datetime.time
+)
