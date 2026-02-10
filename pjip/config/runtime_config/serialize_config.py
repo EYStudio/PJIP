@@ -18,3 +18,6 @@ def serialize_config(obj):
 
     if is_dataclass(obj):
         return serialize_config(asdict(obj))
+
+    if isinstance(obj, dict):
+        return {k: serialize_config(v) for k, v in obj.items()}
