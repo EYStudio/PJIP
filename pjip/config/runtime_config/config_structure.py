@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -27,4 +27,5 @@ class Debug:
 
 @dataclass
 class ConfigRoot:
-    pass
+    app: App = field(default_factory=App)
+
