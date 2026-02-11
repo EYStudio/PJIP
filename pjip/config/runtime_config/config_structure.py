@@ -18,5 +18,9 @@ class UI:
     pass
 
 @dataclass
+class Features:
+    pass
+
+@dataclass
 class ConfigRoot:
     pass
