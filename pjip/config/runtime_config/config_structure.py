@@ -10,5 +10,9 @@ class Logging:
     pass
 
 @dataclass
+class Process:
+    pass
+
+@dataclass
 class ConfigRoot:
     pass
