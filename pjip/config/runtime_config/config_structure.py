@@ -14,5 +14,9 @@ class Process:
     pass
 
 @dataclass
+class UI:
+    pass
+
+@dataclass
 class ConfigRoot:
     pass
