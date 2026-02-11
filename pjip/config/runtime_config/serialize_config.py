@@ -21,3 +21,17 @@ def serialize_config(obj):
 
     if isinstance(obj, dict):
         return {k: serialize_config(v) for k, v in obj.items()}
+
+    if isinstance(obj, list):
+        return [serialize_config(i) for i in obj]
+
+    if isinstance(obj, tuple):
+        return [serialize_config(i) for i in obj]
+
+    if isinstance(obj, ALLOWED_SCALAR_TYPES):
+        return obj
+
+    try:
+        return str(obj)
+    except Exception:
+        raise TypeError(f"Unsupported type for TOML serialization: {type(obj)}")
