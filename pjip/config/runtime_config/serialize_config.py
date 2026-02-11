@@ -35,3 +35,9 @@ def serialize_config(obj):
         return str(obj)
     except Exception:
         raise TypeError(f"Unsupported type for TOML serialization: {type(obj)}")
+
+def serialize_config_to_dict(obj):
+    result = serialize_config(obj)
+    if not isinstance(result, dict):
+        raise ValueError("Top-level config must be a dict")
+    return result
