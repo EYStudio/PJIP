@@ -22,5 +22,9 @@ class Features:
     pass
 
 @dataclass
+class Debug:
+    pass
+
+@dataclass
 class ConfigRoot:
     pass
