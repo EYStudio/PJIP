@@ -1,9 +1,15 @@
 from dataclasses import dataclass, field
 
+@dataclass
+class Update:
+    auto_get_update: bool = True
+    auto_download_update: bool = False
+    # extended_update_urls: list[str] = field(default_factory=lambda: ["a"])
+    extended_update_urls: list = field(default_factory=list)
 
 @dataclass
 class App:
-    pass
+    update: Update = field(default_factory=Update)
 
 @dataclass
 class Logging:
