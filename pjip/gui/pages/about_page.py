@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy, QHBoxLa
 from ..resources import SVG_COLORED_LOGO
 from ..utils.q_pixmap_utils import make_round_pixmap
 from ..utils.svg_utils import svg_to_pixmap
-from ...config.build_config import STUDIO_NAME, STUDIO_MOTTO
+from ...config.build_info import STUDIO_NAME, STUDIO_MOTTO
 
 
 class AboutPage(QWidget):

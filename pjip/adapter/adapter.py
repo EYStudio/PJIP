@@ -4,7 +4,6 @@ from typing import Iterable
 
 from PySide6.QtCore import QObject, Signal, QThreadPool
 
-from pjip.config import build_config
 from pjip.core.enums import PidStatus
 from .action import SuspendStudentmainAdapter, StartStudentmainAdapter, CleanIFEODebuggersAdapter, \
     CopyToClipboardAdapter
@@ -14,6 +13,7 @@ from .polling import MonitorAdapter, SuspendMonitorAdapter, GetStudentmainPasswo
     RunTaskmgrAdapter
 from .polling_manager import PollingManager
 from .runner import TerminatePIDTask
+from ..app.constants import E_CLASSROOM_PROGRAM_NAME
 
 
 class AdapterManager(QObject):
@@ -121,7 +121,7 @@ class AdapterManager(QObject):
         self.wait_for_pools()
 
     def terminate_studentmain(self):
-        self.terminate_process_adapter.run_async(build_config.E_CLASSROOM_PROGRAM_NAME)
+        self.terminate_process_adapter.run_async(E_CLASSROOM_PROGRAM_NAME)
 
     def start_studentmain(self):
         self.start_adapter.start()

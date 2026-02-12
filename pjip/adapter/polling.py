@@ -1,6 +1,6 @@
 from PySide6.QtCore import QObject, Signal, QTimer
 
-from pjip.config import build_config
+from pjip.app import constants
 from pjip.core.enums import SuspendState
 
 
@@ -40,7 +40,7 @@ class MonitorAdapter(QObject, BaseAdapterInterface):
             self.change.emit(state)
 
     def check_state(self):
-        return self.logic.get_process_state(build_config.E_CLASSROOM_PROGRAM_NAME)
+        return self.logic.get_process_state(constants.E_CLASSROOM_PROGRAM_NAME)
 
 
 class SuspendMonitorAdapter(QObject, BaseAdapterInterface):
@@ -71,7 +71,7 @@ class SuspendMonitorAdapter(QObject, BaseAdapterInterface):
         """
         :return: Studentmain suspend state
         """
-        pids = self.logic.get_pid_from_process_name(build_config.E_CLASSROOM_PROGRAM_NAME)
+        pids = self.logic.get_pid_from_process_name(constants.E_CLASSROOM_PROGRAM_NAME)
         if pids is None:
             return SuspendState.NOT_FOUND
         # Same logic as the earlier method, may cause bug

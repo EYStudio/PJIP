@@ -1,7 +1,6 @@
 from PySide6.QtGui import QGuiApplication
 
-from pjip.config import build_config
-
+from pjip.app.constants import E_CLASSROOM_PROGRAM_NAME
 
 class StartStudentmainAdapter:
     def __init__(self, logic):
@@ -18,10 +17,10 @@ class SuspendStudentmainAdapter:
         self.logic = logic
 
     def start(self):
-        pids = self.logic.get_pid_from_process_name(build_config.E_CLASSROOM_PROGRAM_NAME)
+        pids = self.logic.get_pid_from_process_name(E_CLASSROOM_PROGRAM_NAME)
 
         if pids is None:
-            print(f'{build_config.E_CLASSROOM_PROGRAM_NAME} not found')
+            print(f'{E_CLASSROOM_PROGRAM_NAME} not found')
 
         for pid in pids:
             suspend_state = self.logic.is_suspended(pid)
