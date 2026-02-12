@@ -2,22 +2,27 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
-from pjip.core import logic, service
-from pjip.config.runtime_status import RuntimeStatus
+from pjip.config.runtime_config import RuntimeConfigManager
+from pjip.app.logic import logic
+from pjip.app.services import service
+from pjip.runtime import RuntimeStatus
 from pjip.adapter import AdapterManager
 from pjip.gui import MainWindow
-from pjip.config import build_config
+from pjip.config import build_info
 
 
 class PJIPMain:
     def __init__(self):
-        self.app = QApplication(sys.argv)
-
-        self.logic = logic.PJIPLogic(build_config)
+        self.config = RuntimeConfigManager()
+        self.logic = logic.PJIPLogic(build_info)
         self.runtime_status = RuntimeStatus(self.logic)
+
+        self.app = QApplication(sys.argv)
         self.gui = MainWindow()
         self.adapters = AdapterManager(self.logic, self.gui, self.runtime_status)
         self.gui.adapter_signal_connect(self.adapters)
+
+        self.gui.close_event.connect(self.handle_close_event)
 
         self.gui.show()
 
@@ -26,8 +31,6 @@ class PJIPMain:
         # self.logic.after_ui_launched(self.gui.winId())
 
         self.services = service.ServiceManager(self.logic, self.runtime_status)
-
-        self.gui.close_event.connect(self.handle_close_event)
 
         # self.app.aboutToQuit.connect(self.handle_close_event)
 
