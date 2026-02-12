@@ -5,12 +5,12 @@ STUDIO_NAME = 'EyStudio'
 STUDIO_MOTTO = 'Exception Ignite Evolution'
 DEVELOPERS = 'EyStudio developers'
 
-MAJOR_VER = 0
-MINOR_VER = 5
+MAJOR_VER = 1
+MINOR_VER = 0
 PATCH_VER = 0
 
 PRE_STAGE = "a"  # alpha / beta / rc
-PRE_NUM = 3  # a2 / b1 / rc3
+PRE_NUM = 1  # a2 / b1 / rc3
 
 # PEP 440 version
 if PRE_STAGE:
@@ -32,14 +32,9 @@ WIN_FILEVER = (
 FULL_VERSION = f"{PROJECT_NAME} v{VERSION}"
 
 # UPDATE_URL = "https://api.github.com/repos/Errorsia/PJIV-pre/releases/latest"
-UPDATE_URL = "https://api.github.com/repos/Errorsia/PJIP/releases/latest"
+# UPDATE_URL = "https://api.github.com/repos/Errorsia/PJIP/releases/latest"
+UPDATE_URL = "https://api.github.com/repos/Eystudio/PJIP/releases/latest"
 UPDATE_URLS = tuple(UPDATE_URL)
-
-E_CLASSROOM_NAME = 'studentmain'
-E_CLASSROOM_PROGRAM_NAME = E_CLASSROOM_NAME + '.exe'
-
-STUDENTMAIN_NAME = 'studentmain'
-IS_E_CLASSROOM_STUDENTMAIN = STUDENTMAIN_NAME.lower() == E_CLASSROOM_NAME.lower()
 
 # CODE_NAME = ''
 NICKNAME = PROJECT_NAME_ABBREVIATION
