@@ -1,3 +1,8 @@
+import os
+
+from pjip.app.constants import IS_E_CLASSROOM_STUDENTMAIN
+
+
 class RuntimeStatus:
     def __init__(self, logic):
         self.logic = logic
@@ -26,9 +31,15 @@ class RuntimeStatus:
         print(self.argv)
 
     def get_studentmain_info(self):
-        self.studentmain_directory = self.logic.studentmain_directory
-        self.studentmain_path = self.logic.studentmain_path
-        print(self.studentmain_path)
+        if IS_E_CLASSROOM_STUDENTMAIN:
+            key_path = r"SOFTWARE\TopDomain\e-Learning Class Standard\1.00"
+            value_name = "TargetDirectory"
+            self.studentmain_directory = self.logic.read_registry_value(key_path, value_name)
+            self.studentmain_path = os.path.join(self.studentmain_directory, "studentmain.exe")
+            print(self.studentmain_path)
+        else:
+            print('CLASSROOM IS NOT STUDENTMAIN')
+
 
     def ui_launched(self, gui):
         self.gui = gui
