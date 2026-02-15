@@ -1,5 +1,8 @@
 from dataclasses import dataclass, field
 
+from .config_enums import KillMethod
+
+
 @dataclass
 class Update:
     auto_get_update: bool = True
@@ -17,7 +20,7 @@ class Logging:
 
 @dataclass
 class Process:
-    pass
+    kill_method: KillMethod = KillMethod.DEFAULT
 
 @dataclass
 class UI:
