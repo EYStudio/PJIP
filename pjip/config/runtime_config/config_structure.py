@@ -12,11 +12,12 @@ class Update:
 
 @dataclass
 class App:
+    # first_use: bool = False
     update: Update = field(default_factory=Update)
 
 @dataclass
 class Logging:
-    pass
+    enable_log_output: bool = True
 
 @dataclass
 class Process:
@@ -32,7 +33,8 @@ class Features:
 
 @dataclass
 class Debug:
-    pass
+    debug: bool = False
+    advanced_module: bool = False
 
 @dataclass
 class ConfigRoot:
