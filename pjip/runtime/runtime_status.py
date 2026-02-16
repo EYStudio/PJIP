@@ -30,6 +30,9 @@ class RuntimeStatus:
         self.argv = self.logic.get_argv()
         print(self.argv)
 
+    def get_system_info(self):
+        self.system_info = self.logic.get_system_info()
+
     def get_studentmain_info(self):
         if IS_E_CLASSROOM_STUDENTMAIN:
             key_path = r"SOFTWARE\TopDomain\e-Learning Class Standard\1.00"
