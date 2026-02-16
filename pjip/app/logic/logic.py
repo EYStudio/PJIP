@@ -218,16 +218,29 @@ class PJIPLogic:
                               0, 0, 0, 0,
                               win32con.SWP_NOMOVE | win32con.SWP_NOSIZE)
 
+    # @staticmethod
+    # def start_file(file_path):
+    #     if os.path.exists(file_path):
+    #         try:
+    #             os.startfile(file_path)
+    #             return True
+    #         except PermissionError as err:
+    #             print(f"permission error: {err}")
+    #         except Exception as err:
+    #             print(f"error: {err}")
+    #     return False
+
     @staticmethod
-    def start_start_file(self, file_path):
-        if os.path.exists(file_path):
-            try:
-                os.startfile(file_path)
-                return True
-            except PermissionError as err:
-                print(f"permission error: {err}")
-            except Exception as err:
-                print(f"error: {err}")
+    def start_file(file_path):
+        try:
+            os.startfile(file_path)
+            return True
+        except PermissionError as err:
+            print(f"permission error: {err}")
+        except FileNotFoundError as err:
+            print(f"error file not found: {err}")
+        except Exception as err:
+            print(f"error: {err}")
         return False
 
     @staticmethod
@@ -538,10 +551,6 @@ class PJIPLogic:
         if hwnd == 0:
             raise RuntimeError("Window not found")
         return hwnd
-
-    @staticmethod
-    def start_file(file_name):
-        os.startfile(file_name)
 
     @staticmethod
     def clean_ifeo_debuggers():
