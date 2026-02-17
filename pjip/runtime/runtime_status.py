@@ -16,6 +16,7 @@ class RuntimeStatus:
         self.get_current_pid()
         self.get_current_process_name()
         self.get_argv()
+        self.get_system_info()
         self.get_studentmain_info()
 
     def get_current_pid(self):
