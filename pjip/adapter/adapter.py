@@ -5,10 +5,10 @@ from typing import Iterable
 from PySide6.QtCore import QObject, Signal, QThreadPool
 
 from pjip.core.enums import PidStatus
+
 from .action import SuspendStudentmainAdapter, StartStudentmainAdapter, CleanIFEODebuggersAdapter, \
     CopyToClipboardAdapter
 from .dispatcher import TaskDispatcher
-
 from .polling import MonitorAdapter, SuspendMonitorAdapter, GetStudentmainPasswordAdapter, UpdateAdapter, \
     RunTaskmgrAdapter
 from .polling_manager import PollingManager
@@ -64,7 +64,7 @@ class AdapterManager(QObject):
         self.run_taskmgr_adapter = RunTaskmgrAdapter(self.logic)
 
         self.suspend_studentmain_adapter = SuspendStudentmainAdapter(self.logic)
-        self.start_adapter = StartStudentmainAdapter(self.logic)
+        self.start_adapter = StartStudentmainAdapter(self.logic, self.runtime_status)
         self.clean_ifeo_debuggers_adapter = CleanIFEODebuggersAdapter(self.logic)
         self.copy_to_clipboard_adapter = CopyToClipboardAdapter()
         self.terminate_custom_process_adapter = TerminateCustomProcessAdapter(self.logic, self.terminate_pid_adapter,
@@ -291,10 +291,10 @@ class TerminateProcessAdapter(QObject):
         self.current_process_name = current_process_name
 
     def run_async(self, process_name):
-        if process_name == self.current_process_name:
-            self.change.emit('Cannot terminate the current process')
-            print('Cannot terminate the current process')
-            return
+        # if process_name == self.current_process_name:
+        #     self.change.emit('Cannot terminate the current process')
+        #     print('Cannot terminate the current process')
+        #     return
 
         pids = self.logic.get_pid_from_process_name(process_name)
         if pids:
@@ -303,9 +303,9 @@ class TerminateProcessAdapter(QObject):
             print(f'Invalid pids: {pids}')
 
     def run_sync(self, process_name):
-        if process_name == self.current_process_name:
-            self.change.emit('Cannot terminate the current process')
-            return
+        # if process_name == self.current_process_name:
+        #     self.change.emit('Cannot terminate the current process')
+        #     return
 
         pids = self.logic.get_pid_from_process_name(process_name)
         self.pid_adapter.run_sync(pids)
