@@ -3,12 +3,13 @@ from PySide6.QtGui import QGuiApplication
 from pjip.app.constants import E_CLASSROOM_PROGRAM_NAME
 
 class StartStudentmainAdapter:
-    def __init__(self, logic):
+    def __init__(self, logic, runtime_status):
         super().__init__()
         self.logic = logic
+        self.studentmain_path = runtime_status.studentmain_path
 
     def start(self):
-        return self.logic.start_studentmain()
+        return self.logic.start_file(self.studentmain_path)
 
 
 class SuspendStudentmainAdapter:
