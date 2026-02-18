@@ -48,14 +48,7 @@ class PJIPBootStrap:
         return result > 32
 
     @staticmethod
-    def get_hotfixes_winapi():
-        """
-        Retrieve installed Windows hotfixes using the Update API.
-
-        Searches update history, extracts KB identifiers, install dates, and result codes.
-        :return: list of dictionaries with hotfix details
-        """
-        update_session = win32com.client.Dispatch("Microsoft.Update.Session")
-        update_searcher = update_session.CreateUpdateSearcher()
-        history_count = update_searcher.GetTotalHistoryCount()
-        history = update_searcher.QueryHistory(0, history_count)
+    def not_studentmain_warning():
+        if not IS_E_CLASSROOM_STUDENTMAIN:
+            print('CURRENT E CLASSROOM IS NOT STUDENTMAIN')
+            print('MAY CAUSE UNEXPECTED EXCEPTIONS')
