@@ -3,9 +3,8 @@ import os
 import re
 import sys
 import time
-import platform
-import win32com.client
-import subprocess
+
+from pjip.app.constants import IS_E_CLASSROOM_STUDENTMAIN
 
 
 class PJIPBootStrap:
@@ -48,38 +47,6 @@ class PJIPBootStrap:
         )
         return result > 32
 
-    def get_system_info(self):
-        """
-        Collect system information in a dictionary.
-
-        system: OS name (Windows)
-        release: OS release
-        version: OS build version
-        major: major version number
-        minor: minor version number
-        build: build number
-        platform: platform ID
-        service_pack: installed service pack
-        architecture: system architecture (64bit, 32bit)
-        hotfixes: list of installed hotfixes
-        :return: dictionary with system details
-        """
-
-        win_ver = sys.getwindowsversion()
-        system_info = {
-            "system": platform.system(),  # Windows
-            "release": platform.release(),  # Major (e.g. 10, 11)
-            "version": platform.version(),  # build version
-            "major": win_ver.major,  # major version
-            "minor": win_ver.minor,  # minor version
-            "build": win_ver.build,  # build version
-            "platform": win_ver.platform,  # platform ID
-            "service_pack": win_ver.service_pack,
-            "architecture": platform.architecture(),  # (64bit, 32bit)
-            "hotfixes": self.get_hotfixes_winapi()
-        }
-        return system_info
-
     @staticmethod
     def get_hotfixes_winapi():
         """
@@ -92,30 +59,3 @@ class PJIPBootStrap:
         update_searcher = update_session.CreateUpdateSearcher()
         history_count = update_searcher.GetTotalHistoryCount()
         history = update_searcher.QueryHistory(0, history_count)
-
-        hotfixes = []
-        for entry in history:
-            match = re.search(r"(KB\d+)", entry.Title)
-            if match:
-                hotfixes.append({
-                    "kb": match.group(1),
-                    "date": entry.Date,
-                    "result": entry.ResultCode
-                })
-        return hotfixes
-
-    @staticmethod
-    def get_hotfixes_powershell():
-        cmd = 'powershell "Get-HotFix | Select-Object -Property HotFixID, InstalledOn"'
-        output = subprocess.check_output(cmd, shell=True).decode(errors="ignore")
-        hotfixes = []
-        for line in output.splitlines():
-            line = line.strip()
-            if line.startswith("kb"):
-                parts = line.split(None, 1)
-                if len(parts) == 2:
-                    hotfixes.append({
-                        "KB": parts[0],
-                        "InstalledOn": parts[1]
-                    })
-        return hotfixes
