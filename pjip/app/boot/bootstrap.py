@@ -1,6 +1,5 @@
 import ctypes
 import os
-import re
 import sys
 import time
 
@@ -19,8 +18,7 @@ class PJIPBootStrap:
                 print("Run without admin")
         else:
             print('Run as admin')
-
-        self.system_info = self.get_system_info()
+        self.not_studentmain_warning()
 
     @staticmethod
     def check_operate_system():
