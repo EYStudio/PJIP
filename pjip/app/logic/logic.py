@@ -28,20 +28,11 @@ from pjip.core.enums import UpdateState
 
 class PJIPLogic:
     def __init__(self, config):
+        self.runtime_status = None
         self.authority_admin = None
-        self.system_info = None
-        self.studentmain_directory = None
-        self.studentmain_path = None
         self.config = config
 
-        self.system_info = self.get_system_info()
-
         self.nt_terminate_process = NativeTerminator()
-
-        key_path = r"SOFTWARE\TopDomain\e-Learning Class Standard\1.00"
-        value_name = "TargetDirectory"
-        self.studentmain_directory = self.read_registry_value(key_path, value_name)
-        self.studentmain_path = os.path.join(self.studentmain_directory, "studentmain.exe")
 
     def get_system_info(self):
         """
@@ -187,8 +178,11 @@ class PJIPLogic:
     def get_current_process_name():
         return psutil.Process(os.getpid()).name()
 
+    def set_runtime_status(self, status):
+        self.runtime_status = status
+
     def set_window_display_affinity(self, hwnd):
-        if self.system_info["major"] >= 10 and self.system_info["build"] >= 19041:
+        if self.runtime_status.system_info["major"] >= 10 and self.runtime_status.system_info["build"] >= 19041:
             ctypes.windll.user32.SetWindowDisplayAffinity(int(hwnd), 0x11)
         else:
             ctypes.windll.user32.SetWindowDisplayAffinity(int(hwnd), 0)
@@ -527,7 +521,7 @@ class PJIPLogic:
         if hwnd is None:
             raise ValueError('taskmgr not start')
 
-        if self.system_info.get("major") == 10:
+        if self.runtime_status.system_info.get("major") == 10:
             try:
                 hm = win32gui.GetMenu(hwnd)
                 mii, _ = win32gui_struct.EmptyMENUITEMINFO()
@@ -782,6 +776,7 @@ class NativeTerminator:
             print(f"NTSTATUS = 0x{status:08X}")
 
         return True
+
 
 # self.floatwin.setText(
 #     f"窗口标题：{GetWindowText(hwnd)}\n窗口类名：{GetClassName(hwnd)}\n窗口位置：{str(GetWindowRect(hwnd))}\n窗口句柄：{int(hwnd)}\n窗口进程：{procname}")
