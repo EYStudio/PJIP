@@ -17,24 +17,34 @@ def serialize_config(obj, path="root"):
         return obj.value
 
     if is_dataclass(obj):
-        return serialize_config(asdict(obj))
+        return serialize_config(asdict(obj), path)
 
     if isinstance(obj, dict):
-        return {k: serialize_config(v) for k, v in obj.items()}
+        result = {}
+        for k, v in obj.items():
+            child_path = f"{path}.{k}"
+            result[k] = serialize_config(v, child_path)
+        return result
 
     if isinstance(obj, list):
-        return [serialize_config(i) for i in obj]
+        result = []
+        for i, v in enumerate(obj):
+            child_path = f"{path}[{i}]"
+            result.append(serialize_config(v, child_path))
+        return result
 
     if isinstance(obj, tuple):
-        return [serialize_config(i) for i in obj]
+        result = []
+        for i, v in enumerate(obj):
+            child_path = f"{path}[{i}]"
+            result.append(serialize_config(v, child_path))
+        return result
 
     if isinstance(obj, ALLOWED_SCALAR_TYPES):
         return obj
 
-    try:
-        return str(obj)
-    except Exception:
-        raise TypeError(f"Unsupported type for TOML serialization: {type(obj)}")
+    raise TypeError(f"Unsupported type at {path}: {type(obj)}")
+
 
 def serialize_config_to_dict(obj):
     result = serialize_config(obj)
