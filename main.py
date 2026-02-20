@@ -3,8 +3,7 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 from pjip.config.runtime_config import RuntimeConfigManager
-from pjip.app.logic import logic
-from pjip.app.services import service
+from pjip.app import PJIPBootStrap
 from pjip.app import PJIPLogic
 from pjip.app import ServiceManager
 from pjip.runtime import RuntimeStatus
@@ -15,6 +14,10 @@ from pjip.config import build_info
 
 class PJIPMain:
     def __init__(self):
+        self.boot_strap = PJIPBootStrap()
+
+        # todo: QtApp and splash window should launch here
+
         self.config = RuntimeConfigManager()
         self.logic = PJIPLogic(build_info)
         self.runtime_status = RuntimeStatus(self.logic)
@@ -24,7 +27,6 @@ class PJIPMain:
         self.gui = MainWindow()
         self.adapters = AdapterManager(self.logic, self.gui, self.runtime_status)
         self.gui.adapter_signal_connect(self.adapters)
-
         self.gui.close_event.connect(self.handle_close_event)
 
         self.gui.show()
