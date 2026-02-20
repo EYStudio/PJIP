@@ -10,7 +10,7 @@ ALLOWED_SCALAR_TYPES = (
 ALLOWED_CONTAINER_TYPES = (dict, list)
 
 
-def serialize_config(obj):
+def serialize_config(obj, path="root"):
     """convert dataclass / Enum / dict / list / tuple into tomllib acceptable types"""
 
     if isinstance(obj, Enum):
