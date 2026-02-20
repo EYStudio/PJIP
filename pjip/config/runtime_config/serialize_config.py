@@ -47,7 +47,7 @@ def serialize_config(obj, path="root"):
 
 
 def serialize_config_to_dict(obj):
-    result = serialize_config(obj)
+    result = serialize_config(obj, path="root")
     if not isinstance(result, dict):
         raise ValueError("Top-level config must be a dict")
     return result
