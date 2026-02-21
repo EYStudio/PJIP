@@ -21,3 +21,8 @@ def deserialize_dataclass(cls, data: dict):
                 else:
                     raise ValueError(f"{cls.__name__}.{name} invalid enum value: {raw_value}")
             continue
+
+        # handle dataclass
+        if is_dataclass(type_):
+            kwargs[name] = deserialize_dataclass(type_, raw_value)
+            continue
