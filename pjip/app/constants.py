@@ -6,9 +6,12 @@ def get_base_dir():
     if getattr(sys, 'frozen', False):
         # Running in PyInstaller bundle
         return os.path.dirname(sys.executable)
-    else:
-        # Running in normal Python environment
-        return os.path.dirname(os.path.abspath(__file__))
+
+    # Running in normal Python environment
+    if sys.argv and sys.argv[0]:
+        return os.path.dirname(os.path.abspath(sys.argv[0]))
+
+    return os.path.dirname(os.path.abspath(__file__))
 
 
 E_CLASSROOM_NAME = 'studentmain'
