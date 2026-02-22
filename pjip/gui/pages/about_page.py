@@ -97,6 +97,7 @@ class ClickableWidget(QWidget):
     def __init__(self, url: str, /):
         super().__init__()
         self.url = url
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
 
     def mousePressEvent(self, event):
         QDesktopServices.openUrl(QUrl(self.url))
