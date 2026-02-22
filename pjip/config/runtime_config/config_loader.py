@@ -28,6 +28,14 @@ class ConfigIO:
         except Exception as e:
             print(f"Failed to read config: {e}")
             return None
+
+    def to_toml(self, config_dict):
+        toml_content = tomli_w.dumps(config_dict)
+        toml_comments = self.serialize_comments()
+        toml_str = toml_comments + toml_content
+
+        return toml_str
+
     def serialize_comments(self):
         def serialize_line(comment_line):
             if comment_line.startswith('# '):
