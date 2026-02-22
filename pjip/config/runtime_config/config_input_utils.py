@@ -1,3 +1,7 @@
+from dataclasses import is_dataclass, fields
+from enum import Enum
+
+
 def deserialize_dataclass(cls, data: dict):
     kwargs = {}
 
@@ -26,3 +30,14 @@ def deserialize_dataclass(cls, data: dict):
         if is_dataclass(type_):
             kwargs[name] = deserialize_dataclass(type_, raw_value)
             continue
+
+        # handle list
+        if type_ is list and isinstance(raw_value, list):
+            kwargs[name] = raw_value
+            continue
+
+        # handle basic types
+        kwargs[name] = raw_value
+
+    return cls(**kwargs)
+
