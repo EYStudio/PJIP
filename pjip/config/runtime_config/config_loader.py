@@ -1,7 +1,9 @@
 import os
 import tomllib
+import tomli_w
 
 from .config_input_utils import deserialize_dataclass
+from .config_output_utils import serialize_config_to_dict
 
 
 class ConfigIO:
@@ -28,6 +30,16 @@ class ConfigIO:
         except Exception as e:
             print(f"Failed to read config: {e}")
             return None
+
+    def write(self, config_object):
+        config_dict = serialize_config_to_dict(config_object)
+        # print('===CONFIG DICT===')
+        print(config_dict)
+
+        toml_str = self.to_toml(config_dict)
+
+        with open(self.config_path, "w", encoding="utf-8") as f:
+            f.write(toml_str)
 
     def to_toml(self, config_dict):
         toml_content = tomli_w.dumps(config_dict)
