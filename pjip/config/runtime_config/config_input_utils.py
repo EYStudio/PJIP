@@ -3,6 +3,9 @@ from enum import Enum
 
 
 def deserialize_dataclass(cls, data: dict):
+    """
+    convert dict to dataclass instance，automatically handle Enum, dataclass, and default value
+    """
     kwargs = {}
 
     for f in fields(cls):
@@ -17,14 +20,37 @@ def deserialize_dataclass(cls, data: dict):
 
         # handle Enum
         if isinstance(type_, type) and issubclass(type_, Enum):
+            # noinspection PyBroadException
             try:
                 kwargs[name] = type_(raw_value)
             except Exception:
+                # Mainly ValueError
                 if hasattr(type_, "DEFAULT"):
                     kwargs[name] = type_.DEFAULT
                 else:
                     raise ValueError(f"{cls.__name__}.{name} invalid enum value: {raw_value}")
             continue
+
+        # if isinstance(type_, type) and issubclass(type_, Enum):
+        #     try:
+        #         # Case insensitive
+        #         if isinstance(raw_value, str):
+        #             raw_value_lower = raw_value.lower()
+        #             for member in type_:
+        #                 if member.value.lower() == raw_value_lower:
+        #                     kwargs[name] = member
+        #                     break
+        #             else:
+        #                 raise ValueError
+        #         else:
+        #             kwargs[name] = type_(raw_value)
+        #
+        #     except Exception:
+        #         if hasattr(type_, "DEFAULT"):
+        #             kwargs[name] = type_.DEFAULT
+        #         else:
+        #             raise ValueError(f"{cls.__name__}.{name} invalid enum value: {raw_value}")
+        #     continue
 
         # handle dataclass
         if is_dataclass(type_):
