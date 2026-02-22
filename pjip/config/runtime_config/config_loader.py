@@ -5,9 +5,11 @@ from .config_input_utils import deserialize_dataclass
 
 
 class ConfigIO:
+    warning = """Warning: Do not modify this file unless you fully understand the configuration settings."""
     def __init__(self, config_path, config_class):
         self.config_path = config_path
         self.config_class = config_class
+        self.comments = [self.warning]
 
     def load(self):
         if not os.path.exists(self.config_path):
@@ -35,8 +37,9 @@ class ConfigIO:
         toml_comments = ''
         if self.comments:
             for comment in self.comments:
-                # lines = comment.splitlines()
-                toml_comments += serialize_line(comment)
+                lines = comment.splitlines()
+                for line in lines:
+                    toml_comments += serialize_line(line)
 
 
             toml_comments += '\n'
