@@ -239,11 +239,12 @@ class TerminateCustomProcessAdapter(QObject):
 class TerminatePIDAdapter(QObject):
     change = Signal(str)
 
-    def __init__(self, logic, current_pid, dispatcher):
+    def __init__(self, logic, current_pid, dispatcher, config_object: ConfigRoot):
         super().__init__()
         self.logic = logic
         self.current_pid = current_pid
         self.dispatcher = dispatcher
+        self.config_object = config_object
 
     # Bugs here: self.logic.terminate_process cannot accept tuple, on int
     # def run_async(self, pids):
@@ -263,16 +264,19 @@ class TerminatePIDAdapter(QObject):
     def run_async(self, pids):
         valid_pids = self.format_pids(pids)
         other_pids = self.split_current_pid(valid_pids)
+        kill_method = self.config_object.process.kill_method
         if other_pids:
-            task = TerminatePIDTask(self.logic, other_pids)
+            task = TerminatePIDTask(self.logic, other_pids, kill_method)
             self.dispatcher.submit(task)
 
 
     def run_sync(self, pids):
         valid_pids = self.format_pids(pids)
         other_pids = self.split_current_pid(valid_pids)
+        kill_method = self.config_object.process.kill_method
         if other_pids:
-            TerminatePIDTask(self.logic, other_pids).run()
+            task = TerminatePIDTask(self.logic, other_pids, kill_method)
+            task.run()
 
     @staticmethod
     def format_pids(pids: int | Iterable[int]):
