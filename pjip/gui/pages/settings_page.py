@@ -92,3 +92,15 @@ class CostumeRadioButton(QRadioButton):
     def run_task(self):
         print(f"Btn {self.text} selected")
 
+
+class ValueRadioButton(QRadioButton):
+    selected = Signal(object)
+
+    def __init__(self, text, value):
+        super().__init__(text)
+        self.value = value
+        self.toggled.connect(self.on_toggled)
+
+    def on_toggled(self, checked):
+        if checked:
+            self.selected.emit(self.value)
