@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from .config_enums import KillMethod
+from ...core.enums import KillMethod
 
 
 @dataclass
@@ -17,7 +17,7 @@ class App:
 
 @dataclass
 class Logging:
-    enable_log_output: bool = True
+    enable_log_output:  bool = True
 
 @dataclass
 class Process:
@@ -34,7 +34,7 @@ class Features:
 @dataclass
 class Debug:
     debug: bool = False
-    advanced_module: bool = False
+    # advanced_module: bool = False
 
 @dataclass
 class ConfigRoot:
