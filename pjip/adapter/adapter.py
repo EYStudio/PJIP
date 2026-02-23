@@ -7,24 +7,28 @@ from PySide6.QtCore import QObject, Signal, QThreadPool
 from pjip.core.enums import PidStatus
 
 from .action import SuspendStudentmainAdapter, StartStudentmainAdapter, CleanIFEODebuggersAdapter, \
-    CopyToClipboardAdapter
+    CopyToClipboardAdapter, EditKillMethodAdapter
 from .dispatcher import TaskDispatcher
 from .polling import MonitorAdapter, SuspendMonitorAdapter, GetStudentmainPasswordAdapter, UpdateAdapter, \
     RunTaskmgrAdapter
 from .polling_manager import PollingManager
 from .runner import TerminatePIDTask
 from ..app.constants import E_CLASSROOM_PROGRAM_NAME
+from ..config import RuntimeConfigManager
+from ..config.runtime_config.config_structure import ConfigRoot
 
 
 class AdapterManager(QObject):
     ui_change = Signal(str, object)
 
-    def __init__(self, logic, gui, runtime_status):
+    def __init__(self, logic, gui, runtime_status, config_manager: RuntimeConfigManager):
         super().__init__()
         self.on_demand_objects = {}
         self.logic = logic
         self.gui = gui
         self.runtime_status = runtime_status
+        self.config_manager = config_manager
+        self.config_object = self.config_manager.get_config_object()
 
         self.polling = PollingManager()
         self.dispatcher = TaskDispatcher()
@@ -56,7 +60,7 @@ class AdapterManager(QObject):
         self.update_adapter = UpdateAdapter(self.logic)
         self.polling.add(self.update_adapter)
 
-        self.terminate_pid_adapter = TerminatePIDAdapter(self.logic, self.runtime_status.pid, self.dispatcher)
+        self.terminate_pid_adapter = TerminatePIDAdapter(self.logic, self.runtime_status.pid, self.dispatcher, self.config_object)
 
         self.terminate_process_adapter = TerminateProcessAdapter(self.logic, self.runtime_status.current_process_name,
                                                                  self.terminate_pid_adapter)
@@ -69,6 +73,8 @@ class AdapterManager(QObject):
         self.copy_to_clipboard_adapter = CopyToClipboardAdapter()
         self.terminate_custom_process_adapter = TerminateCustomProcessAdapter(self.logic, self.terminate_pid_adapter,
                                                                               self.terminate_process_adapter)
+
+        self.edit_kill_method_adapter = EditKillMethodAdapter(self.config_object)
 
         self.init_run_taskmgr_adapter()
 
@@ -166,6 +172,9 @@ class AdapterManager(QObject):
 
     def copy_to_clipboard(self, content):
         self.copy_to_clipboard_adapter.copy_to_clipboard(content)
+
+    def set_kill_method(self, kill_method):
+        self.edit_kill_method_adapter.edit_kill_method(kill_method)
 
 
 class TerminateCustomProcessAdapter(QObject):
