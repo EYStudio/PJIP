@@ -9,14 +9,14 @@ from .utils.svg_utils import svg_to_icon
 class MainWindow(QMainWindow):
     close_event = Signal()
 
-    def __init__(self):
+    def __init__(self, config_object):
         super().__init__()
         self.initialization_window()
 
         # self.adapter = None
 
         # Set central widget
-        self.main_widget = MainWidget()
+        self.main_widget = MainWidget(config_object)
         self.setCentralWidget(self.main_widget)
 
     def closeEvent(self, event):

@@ -6,8 +6,9 @@ from .pages import ToolPage, FunctionPage, SettingsPage, UpdatePage, AboutPage
 
 
 class MainWidget(QWidget):
-    def __init__(self):
+    def __init__(self, config_object):
         super().__init__()
+        self.config_object = config_object
         self.adapter = None
         self.live_frame = None
 
@@ -39,14 +40,14 @@ class MainWidget(QWidget):
         # Init stack_pages
         self.tool_page = ToolPage()
         self.functions_page = FunctionPage()
-        self.settings_page = SettingsPage()
+        self.settings_page = SettingsPage(self.config_object)
         self.update_page = UpdatePage()
         self.about_page = AboutPage()
 
         self.pages = [
             self.tool_page,
             self.functions_page,
-            # self.settings_page,
+            self.settings_page,
             self.update_page,
             self.about_page,
         ]
@@ -141,6 +142,7 @@ class MainWidget(QWidget):
 
         self.tool_page.set_adapter(self.adapter)
         self.functions_page.set_adapter(self.adapter)
+        self.settings_page.set_adapter(self.adapter)
         self.update_page.set_adapter(self.adapter)
 
     def signal_handler(self, name, value):

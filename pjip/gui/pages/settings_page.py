@@ -5,9 +5,10 @@ from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy, QButton
 class SettingsPage(QWidget):
     ui_change = Signal(str, object)
 
-    def __init__(self):
+    def __init__(self, config_object):
         super().__init__()
         self.page_name = 'Settings'
+        self.config_object = config_object
         self.adapter = None
 
         self.init_ui()

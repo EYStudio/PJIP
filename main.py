@@ -24,8 +24,8 @@ class PJIPMain:
         self.logic.set_runtime_status(self.runtime_status)
 
         self.app = QApplication(sys.argv)
-        self.gui = MainWindow()
-        self.adapters = AdapterManager(self.logic, self.gui, self.runtime_status)
+        self.gui = MainWindow(self.config.get_config_object())
+        self.adapters = AdapterManager(self.logic, self.gui, self.runtime_status, self.config)
         self.gui.adapter_signal_connect(self.adapters)
         self.gui.close_event.connect(self.handle_close_event)
 
@@ -42,6 +42,7 @@ class PJIPMain:
         sys.exit(self.app.exec())
 
     def handle_close_event(self):
+        self.config.write()
         self.adapters.quit_all()
         self.services.stop_all()
 
