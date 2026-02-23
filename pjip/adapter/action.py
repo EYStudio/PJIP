@@ -1,6 +1,9 @@
 from PySide6.QtGui import QGuiApplication
 
 from pjip.app.constants import E_CLASSROOM_PROGRAM_NAME
+from pjip.config.runtime_config.config_structure import ConfigRoot
+from pjip.core.enums import KillMethod
+
 
 class StartStudentmainAdapter:
     def __init__(self, logic, runtime_status):
@@ -52,3 +55,16 @@ class CopyToClipboardAdapter:
 
     def copy_to_clipboard(self, content: str):
         self.clipboard.setText(content)
+
+# class ConfigEditorAdapter:
+class EditKillMethodAdapter:
+    def __init__(self, config_object: ConfigRoot):
+        self.config_object: ConfigRoot = config_object
+
+    def edit_kill_method(self, kill_method):
+        try:
+            self.config_object.process.kill_method = kill_method
+        except ValueError:
+            self.config_object.process.kill_method = KillMethod.DEFAULT
+        finally:
+            print(self.config_object.process.kill_method)
