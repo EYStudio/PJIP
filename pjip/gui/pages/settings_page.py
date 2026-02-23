@@ -78,3 +78,17 @@ class SettingsPage(QWidget):
         main_layout.addStretch(1)
 
         self.setLayout(main_layout)
+
+class CostumeRadioButton(QRadioButton):
+    def __init__(self, text):
+        super().__init__(text)
+        self.text = text
+        self.toggled.connect(self.checked)
+
+    def checked(self, checked):
+        if checked:
+            self.run_task()
+
+    def run_task(self):
+        print(f"Btn {self.text} selected")
+
