@@ -1,21 +1,25 @@
+from .config_loader import ConfigIO
 from .config_structure import ConfigRoot
-from .serialize_config import serialize_config_to_dict
+from ...app.constants import CONFIG_PATH
 
-# Todo: RuntimeConfigManager init
+
 class RuntimeConfigManager:
     def __init__(self):
-        self.config_root = ConfigRoot()
-        self.serialize_config = serialize_config_to_dict
+        # self.config_root = ConfigRoot()
+        self.config_root = ConfigRoot
+        self.config_dict: dict = {}
 
-        self.config_output = self.serialize_config(self.config_root)
-        print(self.config_root)
-        print(self.config_output)
+        self.config_io = ConfigIO(CONFIG_PATH, self.config_root)
 
-    def initialize_config(self):
-        pass
+        self.config_object = self.config_io.load()
 
-    def read_config(self):
-        pass
+        # self.config_io.write(self.config_object)
 
-    def anti_serialize_config(self):
-        pass
+    def get_config_instance(self) -> ConfigIO:
+        return self.config_io
+
+    def get_config_object(self) -> ConfigRoot:
+        return self.config_object
+
+    def write(self):
+        self.config_io.write(self.config_object)
