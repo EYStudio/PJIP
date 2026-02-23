@@ -1,6 +1,8 @@
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy, QButtonGroup, QRadioButton
 
+from pjip.core.enums import KillMethod
+
 
 class SettingsPage(QWidget):
     ui_change = Signal(str, object)
@@ -57,28 +59,60 @@ class SettingsPage(QWidget):
         terminate_options_group = QButtonGroup()
         terminate_options_group.setExclusive(True)
 
-        opt1 = QRadioButton("TerminateProcess")
-        opt1.toggled.connect(lambda checked: print("Btn 1 State:", checked))
-        opt1.setChecked(True)
-        opt1.setDisabled(True)
-        opt2 = QRadioButton("NtTerminateProcess")
-        opt2.toggled.connect(lambda checked: print("Btn 2 State:", checked))
-        opt2.setDisabled(True)
-        # opt3 = QRadioButton("Option C")
+        # opt_terminate_process = QRadioButton("TerminateProcess")
+        # opt_terminate_process.toggled.connect(lambda checked: print("Btn 1 State:", checked))
+        # opt_terminate_process.setDisabled(True)
+        opt_terminate_process = ValueRadioButton("TerminateProcess", KillMethod.TERMINATE_PROCESS)
+        opt_nt_terminate_process = ValueRadioButton("NtTerminateProcess", KillMethod.NT_TERMINATE_PROCESS)
 
-        terminate_options_group.addButton(opt1)
-        terminate_options_group.addButton(opt2)
-        # group.addButton(opt3)
+        match self.config_object.process.kill_method:
+            case KillMethod.TERMINATE_PROCESS:
+                opt_terminate_process.setChecked(True)
+            case KillMethod.NT_TERMINATE_PROCESS:
+                opt_nt_terminate_process.setChecked(True)
+            case _:
+                opt_terminate_process.setChecked(True)
+
+        opt_terminate_process.selected.connect(self.set_kill_method)
+        opt_nt_terminate_process.selected.connect(self.set_kill_method)
+
+        terminate_options_group.addButton(opt_terminate_process)
+        terminate_options_group.addButton(opt_nt_terminate_process)
 
         terminate_options_frame_layout.addWidget(label_terminate_options)
-        terminate_options_frame_layout.addWidget(opt1)
-        terminate_options_frame_layout.addWidget(opt2)
-        # terminate_options_frame_layout.addWidget(opt3)
+        terminate_options_frame_layout.addWidget(opt_terminate_process)
+        terminate_options_frame_layout.addWidget(opt_nt_terminate_process)
 
         main_layout.addWidget(terminate_options)
         main_layout.addStretch(1)
 
         self.setLayout(main_layout)
+
+        # terminate_options_group = QButtonGroup()
+        # terminate_options_group.setExclusive(True)
+        #
+        # method_to_id = {}
+        # id_to_button = {}
+        #
+        # for i, method in enumerate(KillMethod):
+        #     btn = ValueRadioButton(method.name, method)
+        #     btn.selected.connect(self.set_kill_method)
+        #
+        #     terminate_options_group.addButton(btn, i)
+        #     method_to_id[method] = i
+        #     id_to_button[i] = btn
+        #
+        #     terminate_options_frame_layout.addWidget(btn)
+        #
+        # btn = terminate_options_group.button(method_to_id.get(self.config_object.process.kill_method))
+        # (btn or id_to_button[0]).setChecked(True)
+
+    def set_adapter(self, adapter):
+        self.adapter = adapter
+
+    def set_kill_method(self, kill_method):
+        self.adapter.set_kill_method(kill_method)
+
 
 class CostumeRadioButton(QRadioButton):
     def __init__(self, text):
