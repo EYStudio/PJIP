@@ -32,7 +32,7 @@ class PJIPLogic:
         self.authority_admin = None
         self.config = config
 
-        self.nt_terminate_process = NativeTerminator()
+        self.native_terminator = NativeTerminator()
 
     def get_system_info(self):
         """
@@ -341,6 +341,7 @@ class PJIPLogic:
 
     @staticmethod
     def terminate_process(pid: int, exit_code=1):
+        print('TERMINATE PROCESS')
         h_process = None
         try:
             # noinspection PyUnresolvedReferences
@@ -403,8 +404,9 @@ class PJIPLogic:
     #     print("Failed to open process")
 
     def nt_terminate_process(self, pid: int):
+        print('NT TERMINATE PROCESS')
         try:
-            self.nt_terminate_process.terminate(pid)
+            self.native_terminator.terminate(pid)
         except RuntimeError as err:
             print(err)
             return False
