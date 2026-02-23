@@ -168,6 +168,7 @@ class AdapterManager(QObject):
         self.terminate_custom_process_adapter.trigger_run.emit(process_info)
 
     def copy_studentmain_password_to_clipboard(self):
+        # todo: auto update pwd
         self.copy_to_clipboard(self.runtime_status.studentmain_password)
 
     def copy_to_clipboard(self, content):
