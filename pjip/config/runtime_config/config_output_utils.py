@@ -1,6 +1,9 @@
+import datetime
 from dataclasses import is_dataclass, asdict
 from enum import Enum
-import datetime
+
+import pywintypes
+import win32file
 
 ALLOWED_SCALAR_TYPES = (
     str, int, float, bool, type(None),
@@ -51,3 +54,46 @@ def serialize_config_to_dict(obj):
     if not isinstance(result, dict):
         raise ValueError("Top-level config must be a dict")
     return result
+
+
+class HiddenFile:
+    def __init__(self, path, mode="w", encoding="utf-8"):
+        self.path = path
+        self.mode = mode
+        self.encoding = encoding
+        self.original_attrs = None
+        self.file = None
+
+    def __enter__(self):
+        try:
+            # Get attributes
+            self.original_attrs = win32file.GetFileAttributes(self.path)
+        except pywintypes.error:  # type: ignore
+            # File not found, GetFileAttributes fails
+            self.original_attrs = None
+
+        # If file exists, remove hidden / system attributes
+        if self.original_attrs is not None:
+            safe_attrs = self.original_attrs & ~(
+                    win32file.FILE_ATTRIBUTE_HIDDEN |
+                    win32file.FILE_ATTRIBUTE_SYSTEM
+            )
+            win32file.SetFileAttributes(self.path, safe_attrs)
+
+        # Open file
+        if "b" in self.mode:
+            self.file = open(self.path, self.mode)
+        else:
+            self.file = open(self.path, self.mode, encoding=self.encoding)
+
+        return self.file
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file:
+            self.file.close()
+
+        # Restore file attributes
+        if self.original_attrs is not None:
+            win32file.SetFileAttributes(self.path, self.original_attrs)
+
+        return False
