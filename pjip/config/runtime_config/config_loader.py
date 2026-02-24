@@ -38,8 +38,11 @@ class ConfigIO:
 
         toml_str = self.to_toml(config_dict)
 
-        with open(self.config_path, "w", encoding="utf-8") as f:
-            f.write(toml_str)
+        try:
+            with open(self.config_path, "w", encoding="utf-8") as f:
+                f.write(toml_str)
+        except PermissionError:
+            print('Permission Error occurred in writing config')
 
     def to_toml(self, config_dict):
         toml_content = tomli_w.dumps(config_dict)
