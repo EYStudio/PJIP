@@ -1,4 +1,5 @@
 import datetime
+import os.path
 from dataclasses import is_dataclass, asdict
 from enum import Enum
 
@@ -61,24 +62,20 @@ class HiddenFile:
         self.path = path
         self.mode = mode
         self.encoding = encoding
-        self.original_attrs = None
         self.file = None
 
     def __enter__(self):
-        try:
-            # Get attributes
-            self.original_attrs = win32file.GetFileAttributes(self.path)
-        except pywintypes.error:  # type: ignore
-            # File not found, GetFileAttributes fails
-            self.original_attrs = None
-
-        # If file exists, remove hidden / system attributes
-        if self.original_attrs is not None:
-            safe_attrs = self.original_attrs & ~(
-                    win32file.FILE_ATTRIBUTE_HIDDEN |
-                    win32file.FILE_ATTRIBUTE_SYSTEM
-            )
-            win32file.SetFileAttributes(self.path, safe_attrs)
+        if os.path.exists(self.path):
+            # If file exists, remove hidden / system attributes
+            try:
+                attrs = win32file.GetFileAttributes(self.path)
+                safe_attrs = attrs & ~(
+                        win32file.FILE_ATTRIBUTE_HIDDEN |
+                        win32file.FILE_ATTRIBUTE_SYSTEM
+                )
+                win32file.SetFileAttributes(self.path, safe_attrs)
+            except pywintypes.error:  # type: ignore
+                pass
 
         # Open file
         if "b" in self.mode:
@@ -93,7 +90,12 @@ class HiddenFile:
             self.file.close()
 
         # Restore file attributes
-        if self.original_attrs is not None:
-            win32file.SetFileAttributes(self.path, self.original_attrs)
+        try:
+            win32file.SetFileAttributes(
+                self.path,
+                win32file.FILE_ATTRIBUTE_HIDDEN | win32file.FILE_ATTRIBUTE_SYSTEM
+            )
+        except pywintypes.error:  # type: ignore
+            pass
 
         return False
