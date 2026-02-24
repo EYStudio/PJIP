@@ -3,7 +3,7 @@ import tomllib
 import tomli_w
 
 from .config_input_utils import deserialize_dataclass
-from .config_output_utils import serialize_config_to_dict
+from .config_output_utils import serialize_config_to_dict, HiddenFile
 
 
 class ConfigIO:
@@ -39,7 +39,7 @@ class ConfigIO:
         toml_str = self.to_toml(config_dict)
 
         try:
-            with open(self.config_path, "w", encoding="utf-8") as f:
+            with HiddenFile(self.config_path, "w", encoding="utf-8") as f:
                 f.write(toml_str)
         except PermissionError:
             print('Permission Error occurred in writing config')
