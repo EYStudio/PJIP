@@ -20,7 +20,7 @@ class PJIPMain:
 
         self.config = RuntimeConfigManager()
         self.logic = PJIPLogic(build_info)
-        self.runtime_status = RuntimeStatus(self.logic)
+        self.runtime_status = RuntimeStatus(self.logic, self.config.get_config_object())
         self.logic.set_runtime_status(self.runtime_status)
 
         self.app = QApplication(sys.argv)

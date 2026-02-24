@@ -1,11 +1,14 @@
 import os
 
 from pjip.app.constants import IS_E_CLASSROOM_STUDENTMAIN
+from pjip.config.runtime_config.config_structure import ConfigRoot
 
 
 class RuntimeStatus:
-    def __init__(self, logic):
+    def __init__(self, logic, config_object: ConfigRoot):
         self.logic = logic
+        self.config_object = config_object
+
         self.pid = None
         self.current_process_name = None
         self.argv = None
@@ -16,6 +19,7 @@ class RuntimeStatus:
         self.get_current_pid()
         self.get_current_process_name()
         self.get_argv()
+        self.get_debug_state()
         self.get_system_info()
         self.get_studentmain_info()
 
@@ -44,6 +48,9 @@ class RuntimeStatus:
         else:
             print('CLASSROOM IS NOT STUDENTMAIN')
 
+    def get_debug_state(self):
+        self.debug = os.getenv('PJIP_DEBUG') or self.config_object.debug.debug
+        print(f"DEBUG STATE: {self.debug}")
 
     def ui_launched(self, gui):
         self.gui = gui
