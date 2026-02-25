@@ -4,6 +4,7 @@
 from PySide6.QtCore import QObject, Signal, QThreadPool
 
 from pjip.core.enums import PidStatus
+
 from .action import SuspendStudentmainAdapter, StartStudentmainAdapter, CleanIFEODebuggersAdapter, \
     CopyToClipboardAdapter, EditKillMethodAdapter
 from .dispatcher import TaskDispatcher
