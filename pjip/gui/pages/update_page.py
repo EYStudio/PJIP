@@ -12,7 +12,7 @@ class UpdatePage(QWidget):
         self.page_name = 'Updates'
         self.studentmain_state = None
         self.update_state_label = None
-        self.version_display_label = None
+        self.current_version_display_label = None
         self.get_update_btn = None
         self.adapter = None
         self.current_version = None
@@ -27,7 +27,7 @@ class UpdatePage(QWidget):
         main_layout.setSpacing(5)
 
         version_display = QWidget()
-        version_display.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        version_display.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         version_display.setObjectName("version_display_frame")
 
         version_display.setStyleSheet("""
@@ -38,13 +38,6 @@ class UpdatePage(QWidget):
                         border: 2px solid #cccccc;
                         color: #455A64;   
                     }
-                    QRadioButton {
-                        font-size: 16px;
-                    }
-                    QRadioButton::indicator {
-                        width: 24px;
-                        height: 24px;
-                    }
                 """)
 
         version_display_frame_layout = QVBoxLayout(version_display)
@@ -52,31 +45,44 @@ class UpdatePage(QWidget):
         version_display_frame_layout.setSpacing(3)
 
 
-        self.version_display_label = QLabel()
-        # self.version_display_label.setWordWrap(True)
+        self.current_version_display_label = QLabel()
+        # self.current_version_display_label.setWordWrap(True)
 
-        self.version_display_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.version_display_label.setStyleSheet("""
+        # self.current_version_display_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.current_version_display_label.setStyleSheet("""
                                     background-color: #eeeeee; 
                                     border-radius: 10px;
-                                    font-size: 20px;
+                                    font-size: 18px;
                                     /* border: 2px solid #cccccc; */
                                     color: #455A64;   
                                     """)
-        self.version_display_label.setText(f'Current version: N / a')
-        self.version_display_label.setFixedHeight(50)
+        self.current_version_display_label.setText(f'Current version: N / a')
+        self.current_version_display_label.setFixedHeight(40)
 
-        version_display_frame_layout.addWidget(self.version_display_label)
+
+        self.latest_version_display_label = QLabel()
+        self.latest_version_display_label.setStyleSheet("""
+                                    background-color: #eeeeee; 
+                                    border-radius: 10px;
+                                    font-size: 18px;
+                                    /* border: 2px solid #cccccc; */
+                                    color: #455A64;   
+                                    """)
+        self.latest_version_display_label.setText(f'Latest version: N/a')
+        self.latest_version_display_label.setFixedHeight(40)
+
+        version_display_frame_layout.addWidget(self.current_version_display_label)
+        version_display_frame_layout.addWidget(self.latest_version_display_label)
 
         self.update_state_label = QLabel()
         self.update_state_label.setWordWrap(True)
 
-        self.update_state_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # self.update_state_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.update_state_label.setStyleSheet("""
                                     background-color: #eeeeee; 
                                     border-radius: 10px;
-                                    font-size: 24px;
-                                    border: 2px solid #cccccc;
+                                    font-size: 20px;
+                                    /* border: 2px solid #cccccc; */
                                     color: #455A64;   
                                     """)
         self.update_state_label.setText(f'Getting updates')
@@ -84,7 +90,7 @@ class UpdatePage(QWidget):
 
         button_layout = QGridLayout()
 
-        self.get_update_btn = QPushButton("Get updates")
+        self.get_update_btn = QPushButton("Get updates Manually")
         self.get_update_btn.clicked.connect(self.get_update)
 
         for i, btn in enumerate([self.get_update_btn]):
@@ -107,9 +113,9 @@ class UpdatePage(QWidget):
                     border: 2px solid #B7B7B7;
                 }
             """)
+        version_display_frame_layout.addWidget(self.update_state_label)
 
         main_layout.addWidget(version_display)
-        main_layout.addWidget(self.update_state_label)
 
         main_layout.addLayout(button_layout)
 
@@ -128,23 +134,36 @@ class UpdatePage(QWidget):
         self.adapter = adapter
 
         self.current_version = self.adapter.get_current_version()
-        self.version_display_label.setText(f'Current version: {self.current_version}')
+        self.current_version_display_label.setText(f'Current version: {self.current_version}')
 
     def get_update(self):
-        self.update_state_label.setText(f'Getting updates')
+        # deprecated
+        self.update_state_label.setText(f'Getting updates in process...')
 
         self.adapter.get_update()
 
     def update_update_label(self, state_package):
         state, content = state_package
 
-        if state == UpdateState.FIND_LATEST:
+        if state == UpdateState.UPDATE_AVAILABLE:
             self.update_state_label.setText(f'A new version is available: {content}')
+            self.latest_version_display_label.setText(f'Latest version: {content}')
         elif state == UpdateState.IS_LATEST:
             self.update_state_label.setText('You are already using the latest version')
+            self.latest_version_display_label.setText(f'Latest version: {self.current_version}')
+        elif state == UpdateState.LOCAL_NEWER:
+            self.update_state_label.setText(
+                'You are using a development version newer than the latest release.')
+            self.latest_version_display_label.setText(f'Latest version: {content}')
         elif state == UpdateState.NOT_FOUND:
             self.update_state_label.setText('No updates found')
         elif state == UpdateState.ERROR:
             self.update_state_label.setText('An error has occurred while checking for updates.')
+        elif state == UpdateState.IDLE:
+            self.update_state_label.setText('Update check has not started yet.')
+            self.latest_version_display_label.setText('Latest version: N/A')
+        elif state == UpdateState.CHECKING or state == UpdateState.NORMAL:
+            self.update_state_label.setText('Checking for updates, please wait...')
+            self.latest_version_display_label.setText('Latest version: querying...')
         else:
             self.update_state_label.setText("Unexpected state. Please contact the developers.")
