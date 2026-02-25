@@ -2,14 +2,19 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QGridLayout, QVBoxLayout, QSizePolicy
 
 from pjip.core.enums import UpdateState
+from ..costume_widgets import SwitchButton
+from ..costume_widgets.switch_button import SwitchWidget
+from ...config.runtime_config.config_structure import ConfigRoot
 
 
 class UpdatePage(QWidget):
     ui_change = Signal(str, object)
 
-    def __init__(self):
+    def __init__(self, config_object: ConfigRoot):
         super().__init__()
         self.page_name = 'Updates'
+        self.config_object = config_object
+
         self.studentmain_state = None
         self.update_state_label = None
         self.current_version_display_label = None
@@ -44,6 +49,12 @@ class UpdatePage(QWidget):
         version_display_frame_layout.setContentsMargins(12, 5, 10, 5)
         version_display_frame_layout.setSpacing(3)
 
+        switch_widget_auto_download_update = SwitchWidget('Auto download update')
+        switch_widget_auto_download_update.setFixedHeight(55)
+
+        switch_widget_auto_download_update.setChecked(self.config_object.app.update.auto_download_update)
+        switch_widget_auto_download_update.setChecked(True)
+
 
         self.current_version_display_label = QLabel()
         # self.current_version_display_label.setWordWrap(True)
@@ -55,6 +66,7 @@ class UpdatePage(QWidget):
                                     font-size: 18px;
                                     /* border: 2px solid #cccccc; */
                                     color: #455A64;   
+                                    margin-left: 5px;
                                     """)
         self.current_version_display_label.setText(f'Current version: N / a')
         self.current_version_display_label.setFixedHeight(40)
@@ -67,12 +79,10 @@ class UpdatePage(QWidget):
                                     font-size: 18px;
                                     /* border: 2px solid #cccccc; */
                                     color: #455A64;   
+                                    margin-left: 5px;
                                     """)
         self.latest_version_display_label.setText(f'Latest version: N/a')
         self.latest_version_display_label.setFixedHeight(40)
-
-        version_display_frame_layout.addWidget(self.current_version_display_label)
-        version_display_frame_layout.addWidget(self.latest_version_display_label)
 
         self.update_state_label = QLabel()
         self.update_state_label.setWordWrap(True)
@@ -81,12 +91,18 @@ class UpdatePage(QWidget):
         self.update_state_label.setStyleSheet("""
                                     background-color: #eeeeee; 
                                     border-radius: 10px;
-                                    font-size: 20px;
+                                    font-size: 18px;
                                     /* border: 2px solid #cccccc; */
                                     color: #455A64;   
+                                    margin-left: 5px;
                                     """)
         self.update_state_label.setText(f'Getting updates')
         # self.update_state_label.setFixedHeight(100)
+
+        version_display_frame_layout.addWidget(switch_widget_auto_download_update)
+        version_display_frame_layout.addWidget(self.current_version_display_label)
+        version_display_frame_layout.addWidget(self.latest_version_display_label)
+        version_display_frame_layout.addWidget(self.update_state_label)
 
         button_layout = QGridLayout()
 
@@ -113,7 +129,6 @@ class UpdatePage(QWidget):
                     border: 2px solid #B7B7B7;
                 }
             """)
-        version_display_frame_layout.addWidget(self.update_state_label)
 
         main_layout.addWidget(version_display)
 

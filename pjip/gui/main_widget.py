@@ -41,7 +41,7 @@ class MainWidget(QWidget):
         self.tool_page = ToolPage()
         self.functions_page = FunctionPage()
         self.settings_page = SettingsPage(self.config_object)
-        self.update_page = UpdatePage()
+        self.update_page = UpdatePage(self.config_object)
         self.about_page = AboutPage()
 
         self.pages = [
