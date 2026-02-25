@@ -25,22 +25,21 @@ class SettingsPage(QWidget):
         terminate_options.setObjectName("terminate_options_frame")
 
         terminate_options.setStyleSheet("""
-                    #terminate_options_frame {
-                        background-color: #eeeeee; 
-                        border-radius: 10px;
-                        font-size: 24px;
-                        border: 2px solid #bbbbbb;
-                        color: #455A64;   
-                    }
-
-                    QRadioButton {
-                        font-size: 16px;
-                    }
-                    QRadioButton::indicator {
-                        width: 24px;
-                        height: 24px;
-                    }
-                """)
+            #terminate_options_frame {
+                background-color: #eeeeee; 
+                border-radius: 10px;
+                font-size: 24px;
+                border: 2px solid #bbbbbb;
+                color: #455A64;   
+            }
+            QRadioButton {
+                font-size: 16px;
+            }
+            QRadioButton::indicator {
+                width: 24px;
+                height: 24px;
+            }
+        """)
 
         terminate_options_frame_layout = QVBoxLayout(terminate_options)
         terminate_options_frame_layout.setContentsMargins(12, 5, 10, 5)
@@ -75,6 +74,15 @@ class SettingsPage(QWidget):
 
         opt_terminate_process.selected.connect(self.set_kill_method)
         opt_nt_terminate_process.selected.connect(self.set_kill_method)
+
+        for opt in [opt_terminate_process, opt_nt_terminate_process]:
+            opt.setStyleSheet("""
+                font: 20px;
+                background-color: #eeeeee; 
+                color: #444444;
+            """
+            )
+
 
         terminate_options_group.addButton(opt_terminate_process)
         terminate_options_group.addButton(opt_nt_terminate_process)
