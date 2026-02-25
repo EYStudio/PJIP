@@ -1,7 +1,7 @@
 from PySide6.QtCore import QObject, Signal, QTimer
 
 from pjip.app import constants
-from pjip.core.enums import SuspendState
+from pjip.core.enums import SuspendState, UpdateState
 
 
 class BaseAdapterInterface:
@@ -139,6 +139,7 @@ class UpdateAdapter(QObject, BaseAdapterInterface):
             print('another getting update is running, exit')
             return
         self.running = True
+        self.change.emit((UpdateState.CHECKING, None))
         state, content = self.logic.check_update()
 
         self.change.emit((state, content))
