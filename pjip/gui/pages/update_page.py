@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QGridLayout, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QGridLayout, QVBoxLayout, QSizePolicy
 
 from pjip.core.enums import UpdateState
 
@@ -12,7 +12,7 @@ class UpdatePage(QWidget):
         self.page_name = 'Updates'
         self.studentmain_state = None
         self.update_state_label = None
-        self.current_version_label = None
+        self.version_display_label = None
         self.get_update_btn = None
         self.adapter = None
         self.current_version = None
@@ -26,19 +26,47 @@ class UpdatePage(QWidget):
         main_layout.setContentsMargins(3, 3, 3, 3)
         main_layout.setSpacing(5)
 
-        self.current_version_label = QLabel()
-        self.current_version_label.setWordWrap(True)
+        version_display = QWidget()
+        version_display.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        version_display.setObjectName("version_display_frame")
 
-        self.current_version_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.current_version_label.setStyleSheet("""
+        version_display.setStyleSheet("""
+                    #version_display_frame {
+                        background-color: #eeeeee; 
+                        border-radius: 10px;
+                        font-size: 24px;
+                        border: 2px solid #cccccc;
+                        color: #455A64;   
+                    }
+                    QRadioButton {
+                        font-size: 16px;
+                    }
+                    QRadioButton::indicator {
+                        width: 24px;
+                        height: 24px;
+                    }
+                """)
+
+        version_display_frame_layout = QVBoxLayout(version_display)
+        version_display_frame_layout.setContentsMargins(12, 5, 10, 5)
+        version_display_frame_layout.setSpacing(3)
+
+
+        self.version_display_label = QLabel()
+        # self.version_display_label.setWordWrap(True)
+
+        self.version_display_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.version_display_label.setStyleSheet("""
                                     background-color: #eeeeee; 
                                     border-radius: 10px;
-                                    font-size: 24px;
-                                    border: 2px solid #cccccc;
+                                    font-size: 20px;
+                                    /* border: 2px solid #cccccc; */
                                     color: #455A64;   
                                     """)
-        self.current_version_label.setText(f'Current version: N / a')
-        self.current_version_label.setFixedHeight(50)
+        self.version_display_label.setText(f'Current version: N / a')
+        self.version_display_label.setFixedHeight(50)
+
+        version_display_frame_layout.addWidget(self.version_display_label)
 
         self.update_state_label = QLabel()
         self.update_state_label.setWordWrap(True)
@@ -80,7 +108,7 @@ class UpdatePage(QWidget):
                 }
             """)
 
-        main_layout.addWidget(self.current_version_label)
+        main_layout.addWidget(version_display)
         main_layout.addWidget(self.update_state_label)
 
         main_layout.addLayout(button_layout)
@@ -100,7 +128,7 @@ class UpdatePage(QWidget):
         self.adapter = adapter
 
         self.current_version = self.adapter.get_current_version()
-        self.current_version_label.setText(f'Current version: {self.current_version}')
+        self.version_display_label.setText(f'Current version: {self.current_version}')
 
     def get_update(self):
         self.update_state_label.setText(f'Getting updates')
