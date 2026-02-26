@@ -68,3 +68,16 @@ class EditKillMethodAdapter:
             self.config_object.process.kill_method = KillMethod.DEFAULT
         finally:
             print(self.config_object.process.kill_method)
+
+# class ConfigEditorAdapter:
+class EditAutoUpdateAdapter:
+    def __init__(self, config_object: ConfigRoot):
+        self.config_object: ConfigRoot = config_object
+
+    def edit_kill_method(self, kill_method):
+        try:
+            self.config_object.process.kill_method = kill_method
+        except ValueError:
+            self.config_object.process.kill_method = KillMethod.DEFAULT
+        finally:
+            print(self.config_object.process.kill_method)
