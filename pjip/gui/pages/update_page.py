@@ -2,7 +2,6 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QGridLayout, QVBoxLayout, QSizePolicy
 
 from pjip.core.enums import UpdateState
-from ..costume_widgets import SwitchButton
 from ..costume_widgets.switch_button import SwitchWidget
 from ...config.runtime_config.config_structure import ConfigRoot
 

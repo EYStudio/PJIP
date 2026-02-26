@@ -11,11 +11,11 @@ class SwitchButton(QPushButton):
         self.setCheckable(True)
         self.setChecked(False)
 
-        self.setMinimumWidth(38)
+        self.setMinimumWidth(36)
 
         self.qss_checked = """
             QPushButton {
-                font: 18px;
+                font: 14px;
                 border: 2px solid #404040; 
                 border-radius: 8px;        
                 background-color: #cccccc; 
@@ -52,7 +52,7 @@ class SwitchButton(QPushButton):
 
         self.qss_not_checked = """
             QPushButton {
-                font: 18px;
+                font: 14px;
                 border: 2px solid #cccccc; 
                 border-radius: 8px;        
                 background-color: #eeeeee; 
