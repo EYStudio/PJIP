@@ -25,12 +25,12 @@ class MainWindow(QMainWindow):
 
     def initialization_window(self):
         self.setWindowTitle("PJIP")
-        self.setMinimumSize(366, 488)
-        self.resize(366, 488)
-
-        # self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+        self.setMinimumSize(720, 405)
+        self.resize(720, 405)
 
         self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)
+
+        # self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
 
         self.setWindowIcon(svg_to_icon(SVG_COLORED_LOGO))
 
