@@ -42,12 +42,12 @@ class SideBar(QWidget):
                """
 
         sidebar_container = QWidget()
-        sidebar_container.setStyleSheet('border: 1px solid black')
+        sidebar_container.setStyleSheet('border: 1px solid black; background-color: blue')
         sidebar_container_layout = QVBoxLayout(sidebar_container)
         sidebar_container_layout.setContentsMargins(0, 0, 0, 0)
         sidebar_container_layout.setSpacing(self.SPACING)
 
-        sidebar_container.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
+        sidebar_container.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sidebar_container_layout.setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
 
         for index, widget in enumerate(self.pages):
@@ -70,9 +70,15 @@ class SideBar(QWidget):
         # self.sidebar_layout.addStretch()
 
         # self.setFixedHeight(self.SIDEBAR_HEIGHT)
-        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         self.setObjectName("sidebar")
+
+        self.setStyleSheet("""
+            # sidebar {
+            background-color: green
+            }"""
+            )
 
     def get_button_group(self):
         return self.sidebar_button_group

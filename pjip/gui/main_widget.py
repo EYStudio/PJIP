@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QStackedWidget
 
 from .pages import ToolPage, FunctionPage, SettingsPage, UpdatePage, AboutPage
-from .costume_widgets.sidebar import SideBar
+from .costume_widgets import SideBar
 
 
 class MainWidget(QWidget):
