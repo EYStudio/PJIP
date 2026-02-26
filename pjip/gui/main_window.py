@@ -13,6 +13,8 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.initialization_window()
 
+        # self.setStyleSheet("background-color: orange")
+
         # self.adapter = None
 
         # Set central widget
