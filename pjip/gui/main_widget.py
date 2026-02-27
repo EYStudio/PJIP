@@ -24,6 +24,8 @@ class MainWidget(QWidget):
         main_layout.setContentsMargins(5, 4, 5, 5)
         main_layout.setSpacing(2)
 
+        self.setStyleSheet("""#QWidget{background-color: rgba(255,255,255, 0)}""")
+
         # Init stack_pages
         self.tool_page = ToolPage()
         self.functions_page = FunctionPage()
@@ -46,7 +48,7 @@ class MainWidget(QWidget):
 
         self.live_frame.setStyleSheet("""
             #live_frame {
-                background-color: #eeeeee; 
+                /* background-color: #eeeeee; */
                 border-radius: 10px;
                 font-size: 24px;
                 border: 4px solid #cccccc;
@@ -97,7 +99,7 @@ class MainWidget(QWidget):
         if studentmain_running_state:
             self.live_frame.setStyleSheet("""
                 #live_frame {
-                    background-color: #eeeeee; 
+                    /* background-color: #eeeeee; */
                     border-radius: 10px;
                     font-size: 24px;
                     /*border: 4px solid #E66926; */
@@ -108,7 +110,7 @@ class MainWidget(QWidget):
         else:
             self.live_frame.setStyleSheet("""
                 #live_frame {
-                    background-color: #eeeeee; 
+                    /* background-color: #eeeeee; */
                     border-radius: 10px;
                     font-size: 24px;
                     border: 4px solid #3DC766;

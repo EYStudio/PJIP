@@ -60,18 +60,18 @@ class ToolPage(QWidget):
             btn.setStyleSheet("""
                 QPushButton {
                     font: 20px;
-                    border: 2px solid #cccccc; 
+                    border: 1px solid rgba(255, 255, 255, 150); 
                     border-radius: 8px;        
-                    background-color: #eeeeee; 
+                    background-color: rgba(238, 238, 238, 100); 
                     color: #444444;               
                 }
                 QPushButton:hover {
-                    background-color: #E2E2E2; 
-                    border: 2px solid #C4C4C4; 
+                    background-color: rgba(226, 226, 226, 100); 
+                    border: 1px solid rgba(255, 255, 255, 200); 
                 }
                 QPushButton:pressed {
-                    background-color: #D9D9D9; 
-                    border: 2px solid #B7B7B7;
+                    background-color: rgba(217, 217, 217, 100); 
+                    border: 1px solid rgba(255, 255, 255, 240);
                 }
             """)
             # cec2ff - b3b3f1 - dcb6d5 - cf8ba9 - b15e6c
