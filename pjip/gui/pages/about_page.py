@@ -46,6 +46,14 @@ class AboutPage(QWidget):
             }
             """)
 
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
+        self.setObjectName('about_page')
+        self.setStyleSheet("""
+        #about_page{
+        background-color: rgba(250, 250, 250, 150);
+        border-radius: 5px;
+        }""")
+
         studio_info_widget = QWidget()
         studio_info_widget.setObjectName('studio_info_widget')
         studio_info_layout = QVBoxLayout(studio_info_widget)
@@ -98,6 +106,9 @@ class ClickableWidget(QWidget):
         super().__init__()
         self.url = url
         self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
+
+
 
     def mousePressEvent(self, event):
         QDesktopServices.openUrl(QUrl(self.url))
