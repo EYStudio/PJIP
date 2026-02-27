@@ -27,7 +27,8 @@ class FunctionPage(QWidget):
 
         custom_terminate_frame.setStyleSheet("""
             #custom_terminate_frame {
-                background-color: #eeeeee; 
+                background-color: rgba(255, 255, 255, 120); 
+                border: 1px solid rgba(255, 255, 255, 150); 
                 border-radius: 10px;
                 font-size: 24px;
                 /* border: 2px solid #bbbbbb; */
@@ -41,7 +42,6 @@ class FunctionPage(QWidget):
 
         custom_terminate_title_label = QLabel("Terminate Process")
         custom_terminate_title_label.setStyleSheet("""
-            background-color: #eeeeee; 
             border-radius: 10px;
             font-size: 20px;
             color: #455A64;   
@@ -57,14 +57,14 @@ class FunctionPage(QWidget):
             QLineEdit {
                 font: 16px;
                 padding: 2px;
-                border: 2px solid #CCCCCC;
+                border: 1px solid rgba(0, 0, 0, 50);
                 border-radius: 8px;
-                background-color: #F0F0F0;
+                background-color: rgba(240, 240, 240, 50);
                 color: #666666;
             }
             QLineEdit:focus {
-                border: 2px solid #BBBBBB;
-                background-color: #FDF6FA;
+                border: 1px solid rgba(0, 0, 0, 70);
+                background-color: rgba(255, 255, 255, 50);
             }
         """)
 
@@ -104,7 +104,8 @@ class FunctionPage(QWidget):
 
         studentmain_pwd_frame.setStyleSheet("""
             #studentmain_pwd_frame {
-                background-color: #eeeeee; 
+                background-color: rgba(255, 255, 255, 120); 
+                border: 1px solid rgba(255, 255, 255, 150); 
                 border-radius: 10px;
                 font-size: 24px;
                 /* border: 2px solid #bbbbbb; */
@@ -118,7 +119,6 @@ class FunctionPage(QWidget):
 
         studentmain_pwd_title_label = QLabel("Studentmain Password")
         studentmain_pwd_title_label.setStyleSheet("""
-            background-color: #eeeeee; 
             border-radius: 10px;
             font-size: 20px;
             color: #455A64;   
@@ -134,20 +134,19 @@ class FunctionPage(QWidget):
             QLineEdit {
                 font: 16px;
                 padding: 2px;
-                border: 2px solid #CCCCCC;
+                border: 1px solid rgba(0, 0, 0, 50);
                 border-radius: 8px;
-                background-color: #F0F0F0;
+                background-color: rgba(240, 240, 240, 50);
                 color: #666666;
             }
             QLineEdit:focus {
-                border: 2px solid #BBBBBB;
-                background-color: #FDF6FA;
+                border: 1px solid rgba(0, 0, 0, 70);
+                background-color: rgba(255, 255, 255, 50);
             }
         """)
 
         self.studentmain_pwd_label.setReadOnly(True)
 
-        # self.studentmain_pwd_btn = QPushButton(" Kill ")
         self.studentmain_pwd_btn = QPushButton(" Copy ")
         self.studentmain_pwd_btn.setFixedHeight(42)
         self.studentmain_pwd_btn.setStyleSheet("""

@@ -31,10 +31,10 @@ class UpdatePage(QWidget):
 
         self.current_version_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.current_version_label.setStyleSheet("""
-                                    background-color: #eeeeee; 
+                                    background-color: rgba(238, 238, 238, 120); 
                                     border-radius: 10px;
                                     font-size: 24px;
-                                    border: 2px solid #cccccc;
+                                    border: 1px solid rgba(255, 255, 255, 150);
                                     color: #455A64;   
                                     """)
         self.current_version_label.setText(f'Current version: N / a')
@@ -45,10 +45,10 @@ class UpdatePage(QWidget):
 
         self.update_state_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.update_state_label.setStyleSheet("""
-                                    background-color: #eeeeee; 
+                                    background-color: rgba(238, 238, 238, 120); 
                                     border-radius: 10px;
                                     font-size: 24px;
-                                    border: 2px solid #cccccc;
+                                    border: 1px solid rgba(255, 255, 255, 150);
                                     color: #455A64;   
                                     """)
         self.update_state_label.setText(f'Getting updates')
@@ -65,18 +65,18 @@ class UpdatePage(QWidget):
             btn.setStyleSheet("""
                 QPushButton {
                     font: 20px;
-                    border: 2px solid #cccccc; 
+                    border: 1px solid rgba(255, 255, 255, 150); 
                     border-radius: 8px;        
-                    background-color: #eeeeee; 
+                    background-color: rgba(238, 238, 238, 100); 
                     color: #455A64;               
                 }
                 QPushButton:hover {
-                    background-color: #E2E2E2; 
-                    border: 2px solid #C4C4C4; 
+                    background-color: rgba(226, 226, 226, 100); 
+                    border: 1px solid rgba(255, 255, 255, 200); 
                 }
                 QPushButton:pressed {
-                    background-color: #D9D9D9; 
-                    border: 2px solid #B7B7B7;
+                    background-color: rgba(217, 217, 217, 100); 
+                    border: 1px solid rgba(255, 255, 255, 240);
                 }
             """)
 
