@@ -14,11 +14,17 @@ class SuspendState(Enum):
 
 
 class UpdateState(Enum):
-    NORMAL = 0
-    FIND_LATEST = 1
-    IS_LATEST = 2
-    NOT_FOUND = 3
-    ERROR = 4
+    IDLE = auto()
+    CHECKING = auto()
+    UPDATE_AVAILABLE = auto()
+    UP_TO_DATE = auto()
+    LOCAL_NEWER = auto()
+    NOT_FOUND = auto()
+    ERROR = auto()
+
+    NORMAL = CHECKING
+    FIND_LATEST = UPDATE_AVAILABLE
+    IS_LATEST = UP_TO_DATE
 
 
 class PidStatus(Enum):

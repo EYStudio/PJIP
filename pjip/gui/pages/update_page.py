@@ -110,9 +110,9 @@ class UpdatePage(QWidget):
     def update_update_label(self, state_package):
         state, content = state_package
 
-        if state == UpdateState.FIND_LATEST:
+        if state == UpdateState.UPDATE_AVAILABLE:
             self.update_state_label.setText(f'A new version is available: {content}')
-        elif state == UpdateState.IS_LATEST:
+        elif state == UpdateState.UP_TO_DATE:
             self.update_state_label.setText('You are already using the latest version')
         elif state == UpdateState.NOT_FOUND:
             self.update_state_label.setText('No updates found')

@@ -497,10 +497,12 @@ class PJIPLogic:
 
         print(f'latest version: {latest_version}')
 
-        if latest > current:
-            return UpdateState.FIND_LATEST, latest_version
-        else:
-            return UpdateState.IS_LATEST, current_version
+        if latest == current:
+            return UpdateState.UP_TO_DATE, current_version
+        elif latest > current:
+            return UpdateState.UPDATE_AVAILABLE, latest_version
+        else: # latest < current
+            return UpdateState.LOCAL_NEWER, latest_version
 
     def top_taskmgr(self):
         taskmgr_name_chs = {
