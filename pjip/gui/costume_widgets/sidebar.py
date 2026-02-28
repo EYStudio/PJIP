@@ -18,7 +18,7 @@ class SideBar(QWidget):
 
         # Sidebar
         self.sidebar_layout = QVBoxLayout(self)
-        self.sidebar_layout.setContentsMargins(self.SPACING, self.SPACING, self.SPACING, self.SPACING)
+        self.sidebar_layout.setContentsMargins(0,0,0,0)
 
         self.sidebar_button_group = QButtonGroup()
         self.sidebar_button_group.setExclusive(True)
@@ -78,8 +78,7 @@ class SideBar(QWidget):
         # Issue in placing sidebar buttons in center
         # self.sidebar_layout.addStretch()
 
-        print(self.TASKBAR_BTN_WIDTH + self.SPACING * 2)
-        self.setFixedWidth(self.TASKBAR_BTN_WIDTH + self.SPACING * 2)
+        self.setFixedWidth(self.TASKBAR_BTN_WIDTH)
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
 
         # self.setStyleSheet("""

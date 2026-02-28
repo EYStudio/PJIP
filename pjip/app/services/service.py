@@ -112,6 +112,6 @@ class HideService(BaseServiceInterface):
 
     def run_task(self):
         while not self.stop_flag.is_set():
-            self.logic.set_window_display_affinity(self.hwnd)
+            # self.logic.set_window_display_affinity(self.hwnd)
             if self.stop_flag.wait(self.interval):
                 break

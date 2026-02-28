@@ -1,3 +1,4 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QStackedWidget
 
 from .pages import ToolPage, FunctionPage, SettingsPage, UpdatePage, AboutPage
@@ -21,10 +22,13 @@ class MainWidget(QWidget):
 
     def init_ui(self):
         main_layout = QHBoxLayout()
-        main_layout.setContentsMargins(5, 4, 5, 5)
-        main_layout.setSpacing(2)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(1)
+
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
 
         self.setStyleSheet("""#QWidget{background-color: rgba(255,255,255, 0)}""")
+        # self.setStyleSheet("""background-color: rgba(0,0,0, 200)""")
 
         # Init stack_pages
         self.tool_page = ToolPage()
