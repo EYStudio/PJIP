@@ -27,7 +27,7 @@ class ToolPage(QWidget):
 
         self.label_studentmain_state.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label_studentmain_state.setStyleSheet("""
-                                    background-color: #eeeeee; 
+                                    background-color: rgba(240, 240, 240, 100); 
                                     border-radius: 10px;
                                     font-size: 24px;
                                     border: 3px solid #cccccc;
@@ -102,7 +102,7 @@ class ToolPage(QWidget):
 
         if state:
             self.label_studentmain_state.setStyleSheet("""
-                                        background-color: #FFE5E0; 
+                                        background-color: rgba(255, 229, 224, 200); 
                                         border-radius: 10px;
                                         font-size: 24px;
                                         border: 3px solid #cccccc;
@@ -111,7 +111,7 @@ class ToolPage(QWidget):
             self.kill_run_btn.setText("Kill studentmain")
         else:
             self.label_studentmain_state.setStyleSheet("""
-                                        background-color: #D3FDE3; 
+                                        background-color: rgba(211, 253, 227, 200); 
                                         border-radius: 10px;
                                         font-size: 24px;
                                         border: 3px solid #cccccc;
