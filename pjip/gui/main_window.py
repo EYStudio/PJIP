@@ -1,22 +1,20 @@
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QMainWindow
 
-from .costume_widgets.blured_background import WallpaperBlurMixin
+from .costume_widgets.blured_background import WallpaperBlurBackground
 from .main_widget import MainWidget
 from .resources import SVG_COLORED_LOGO
 from .utils.svg_utils import svg_to_icon
 
 
-class MainWindow(WallpaperBlurMixin, QMainWindow):
+class MainWindow(QMainWindow):
     close_event = Signal()
 
     def __init__(self, config_object):
         super().__init__()
         self.initialization_window()
 
-        self.init_wallpaper_background()
-
-        # self.setStyleSheet("background-color: orange")
+        self.background = WallpaperBlurBackground(self, True)
 
         # self.adapter = None
 
@@ -42,3 +40,11 @@ class MainWindow(WallpaperBlurMixin, QMainWindow):
     def adapter_signal_connect(self, adapter):
         # self.adapter = adapter
         self.main_widget.adapter_signal_connect(adapter)
+
+    def paintEvent(self, event, /):
+        self.background.paint_event()
+        super().paintEvent(event)
+
+    def resizeEvent(self, event, /):
+        self.background.update_background()
+        super().resizeEvent(event)
