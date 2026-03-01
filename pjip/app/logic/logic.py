@@ -66,29 +66,33 @@ class PJIPLogic:
         }
         return system_info
 
-    @staticmethod
-    def get_hotfixes_winapi():
+    def get_hotfixes_winapi(self):
         """
         Retrieve installed Windows hotfixes using the Update API.
 
         Searches update history, extracts KB identifiers, install dates, and result codes.
         :return: list of dictionaries with hotfix details
         """
-        update_session = win32com.client.Dispatch("Microsoft.Update.Session")
-        update_searcher = update_session.CreateUpdateSearcher()
-        history_count = update_searcher.GetTotalHistoryCount()
-        history = update_searcher.QueryHistory(0, history_count)
+        try:
+            update_session = win32com.client.Dispatch("Microsoft.Update.Session")
+            update_searcher = update_session.CreateUpdateSearcher()
+            history_count = update_searcher.GetTotalHistoryCount()
+            history = update_searcher.QueryHistory(0, history_count)
 
-        hotfixes = []
-        for entry in history:
-            match = re.search(r"(KB\d+)", entry.Title)
-            if match:
-                hotfixes.append({
-                    "kb": match.group(1),
-                    "date": entry.Date,
-                    "result": entry.ResultCode
-                })
-        return hotfixes
+            hotfixes = []
+            for entry in history:
+                match = re.search(r"(KB\d+)", entry.Title)
+                if match:
+                    hotfixes.append({
+                        "kb": match.group(1),
+                        "date": entry.Date,
+                        "result": entry.ResultCode
+                    })
+            return hotfixes
+        # except pywintypes.com_error: # type: ignore
+        #     pass
+        except:
+            return self.get_hotfixes_powershell()
 
     @staticmethod
     def get_hotfixes_powershell():
