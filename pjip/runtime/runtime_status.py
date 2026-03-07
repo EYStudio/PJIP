@@ -15,6 +15,8 @@ class RuntimeStatus:
         self.gui = None
         self.window_handle = None
         self.studentmain_password = None
+        self.studentmain_directory = None
+        self.studentmain_path = None
 
         self.get_current_pid()
         self.get_current_process_name()
@@ -43,8 +45,11 @@ class RuntimeStatus:
             key_path = r"SOFTWARE\TopDomain\e-Learning Class Standard\1.00"
             value_name = "TargetDirectory"
             self.studentmain_directory = self.logic.read_registry_value(key_path, value_name)
-            self.studentmain_path = os.path.join(self.studentmain_directory, "studentmain.exe")
-            print(self.studentmain_path)
+            if self.studentmain_directory:
+                self.studentmain_path = os.path.join(self.studentmain_directory, "studentmain.exe")
+                print(self.studentmain_path)
+            else:
+                self.studentmain_exists = False
         else:
             print('CLASSROOM IS NOT STUDENTMAIN')
 
