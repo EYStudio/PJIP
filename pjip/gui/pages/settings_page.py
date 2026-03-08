@@ -26,10 +26,10 @@ class SettingsPage(QWidget):
 
         terminate_options.setStyleSheet("""
             #terminate_options_frame {
-                background-color: #eeeeee; 
+                background-color: rgba(238, 238, 238, 100); 
                 border-radius: 10px;
                 font-size: 24px;
-                border: 2px solid #bbbbbb;
+                border: 1px solid rgba(255, 255, 255, 150);
                 color: #455A64;   
             }
             QRadioButton {
@@ -47,7 +47,6 @@ class SettingsPage(QWidget):
 
         label_terminate_options = QLabel()
         label_terminate_options.setStyleSheet("""
-                                            background-color: #eeeeee; 
                                             border-radius: 10px;
                                             font-size: 20px;
                                             color: #455A64;   
@@ -78,7 +77,6 @@ class SettingsPage(QWidget):
         for opt in [opt_terminate_process, opt_nt_terminate_process]:
             opt.setStyleSheet("""
                 font: 20px;
-                background-color: #eeeeee; 
                 color: #444444;
             """
             )

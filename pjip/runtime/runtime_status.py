@@ -6,6 +6,7 @@ from pjip.config.runtime_config.config_structure import ConfigRoot
 
 class RuntimeStatus:
     def __init__(self, logic, config_object: ConfigRoot):
+        self.studentmain_exists = False
         self.logic = logic
         self.config_object = config_object
 
@@ -15,6 +16,8 @@ class RuntimeStatus:
         self.gui = None
         self.window_handle = None
         self.studentmain_password = None
+        self.studentmain_directory = None
+        self.studentmain_path = None
 
         self.get_current_pid()
         self.get_current_process_name()
@@ -42,11 +45,18 @@ class RuntimeStatus:
         if IS_E_CLASSROOM_STUDENTMAIN:
             key_path = r"SOFTWARE\TopDomain\e-Learning Class Standard\1.00"
             value_name = "TargetDirectory"
-            self.studentmain_directory = self.logic.read_registry_value(key_path, value_name)
-            self.studentmain_path = os.path.join(self.studentmain_directory, "studentmain.exe")
-            print(self.studentmain_path)
+
+            self.set_studentmain_path(self.logic.read_registry_value(key_path, value_name))
         else:
             print('CLASSROOM IS NOT STUDENTMAIN')
+
+    def set_studentmain_path(self, directory):
+        print(rf'Studentmain path set: {directory}')
+        self.studentmain_directory = directory
+        if self.studentmain_directory:
+            self.studentmain_path = os.path.join(self.studentmain_directory, "studentmain.exe")
+            print(self.studentmain_path)
+            self.studentmain_exists = True
 
     def get_debug_state(self):
         self.debug = os.getenv('PJIP_DEBUG') or self.config_object.debug.debug

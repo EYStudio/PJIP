@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QMainWindow
 
+from .costume_widgets.blured_background import WallpaperBlurBackground
 from .main_widget import MainWidget
 from .resources import SVG_COLORED_LOGO
 from .utils.svg_utils import svg_to_icon
@@ -12,6 +13,8 @@ class MainWindow(QMainWindow):
     def __init__(self, config_object):
         super().__init__()
         self.initialization_window()
+
+        self.background = WallpaperBlurBackground(self, True)
 
         # self.adapter = None
 
@@ -25,15 +28,23 @@ class MainWindow(QMainWindow):
 
     def initialization_window(self):
         self.setWindowTitle("PJIP")
-        self.setMinimumSize(366, 488)
-        self.resize(366, 488)
-
-        # self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+        self.setMinimumSize(720, 405)
+        self.resize(720, 405)
 
         self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)
+
+        # self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
 
         self.setWindowIcon(svg_to_icon(SVG_COLORED_LOGO))
 
     def adapter_signal_connect(self, adapter):
         # self.adapter = adapter
         self.main_widget.adapter_signal_connect(adapter)
+
+    def paintEvent(self, event, /):
+        self.background.paint_event()
+        super().paintEvent(event)
+
+    def resizeEvent(self, event, /):
+        self.background.update_background()
+        super().resizeEvent(event)

@@ -1,1 +1,1 @@
-from .switch_button import SwitchButton
+from .sidebar import SideBar

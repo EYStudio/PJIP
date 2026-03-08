@@ -17,13 +17,14 @@ class UpdateState(Enum):
     IDLE = auto()
     CHECKING = auto()
     UPDATE_AVAILABLE = auto()
-    IS_LATEST = auto()
+    UP_TO_DATE = auto()
     LOCAL_NEWER = auto()
     NOT_FOUND = auto()
     ERROR = auto()
-    # WILL BE REMOVE IN VERSION 2.0
-    FIND_LATEST = UPDATE_AVAILABLE
+
     NORMAL = CHECKING
+    FIND_LATEST = UPDATE_AVAILABLE
+    IS_LATEST = UP_TO_DATE
 
 
 class PidStatus(Enum):

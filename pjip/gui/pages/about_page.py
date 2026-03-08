@@ -21,8 +21,11 @@ class AboutPage(QWidget):
 
     def init_ui(self):
         main_layout = QVBoxLayout()
-        main_layout.setContentsMargins(10, 3, 10, 3)
+        main_layout.setContentsMargins(3, 3, 3, 3)
         main_layout.setSpacing(5)
+
+        package = QWidget()
+        package_layout = QVBoxLayout(package)
 
         wrapper = ClickableWidget("https://github.com/Eystudio")
         wrapper_layout = QHBoxLayout(wrapper)
@@ -45,6 +48,22 @@ class AboutPage(QWidget):
                 border-radius: 20px;
             }
             """)
+
+        # self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
+        # self.setObjectName('about_page')
+        # self.setStyleSheet("""
+        # #about_page{
+        # background-color: rgba(250, 250, 250, 150);
+        # border-radius: 5px;
+        # }""")
+
+        package.setObjectName('package')
+        package.setStyleSheet("""
+        #package{
+        background-color: rgba(250, 250, 250, 150);
+        border: 1px solid rgba(255, 255, 255, 150); 
+        border-radius: 5px;
+        }""")
 
         studio_info_widget = QWidget()
         studio_info_widget.setObjectName('studio_info_widget')
@@ -83,10 +102,13 @@ class AboutPage(QWidget):
             }
         """)
 
-        main_layout.addWidget(wrapper)
-        main_layout.addWidget(studio_info_widget)
+        package_layout.addWidget(wrapper)
+        package_layout.addWidget(studio_info_widget)
+
+        main_layout.addWidget(package)
 
         self.setLayout(main_layout)
+
 
 class ClickableLabel(QLabel):
     def mousePressEvent(self, event):
@@ -98,7 +120,7 @@ class ClickableWidget(QWidget):
         super().__init__()
         self.url = url
         self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
 
     def mousePressEvent(self, event):
         QDesktopServices.openUrl(QUrl(self.url))
-

@@ -51,19 +51,12 @@ class UpdatePage(QWidget):
         switch_widget_auto_download_update = SwitchWidget('Auto download update')
         switch_widget_auto_download_update.setFixedHeight(55)
 
-        switch_widget_auto_download_update.setChecked(self.config_object.app.update.auto_download_update)
-        switch_widget_auto_download_update.setChecked(True)
-
-
-        self.current_version_display_label = QLabel()
-        # self.current_version_display_label.setWordWrap(True)
-
-        # self.current_version_display_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.current_version_display_label.setStyleSheet("""
-                                    background-color: #eeeeee; 
+        self.current_version_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.current_version_label.setStyleSheet("""
+                                    background-color: rgba(238, 238, 238, 120); 
                                     border-radius: 10px;
-                                    font-size: 18px;
-                                    /* border: 2px solid #cccccc; */
+                                    font-size: 24px;
+                                    border: 1px solid rgba(255, 255, 255, 150);
                                     color: #455A64;   
                                     margin-left: 5px;
                                     """)
@@ -88,10 +81,10 @@ class UpdatePage(QWidget):
 
         # self.update_state_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.update_state_label.setStyleSheet("""
-                                    background-color: #eeeeee; 
+                                    background-color: rgba(238, 238, 238, 120); 
                                     border-radius: 10px;
-                                    font-size: 18px;
-                                    /* border: 2px solid #cccccc; */
+                                    font-size: 24px;
+                                    border: 1px solid rgba(255, 255, 255, 150);
                                     color: #455A64;   
                                     margin-left: 5px;
                                     """)
@@ -114,18 +107,18 @@ class UpdatePage(QWidget):
             btn.setStyleSheet("""
                 QPushButton {
                     font: 20px;
-                    border: 2px solid #cccccc; 
+                    border: 1px solid rgba(255, 255, 255, 150); 
                     border-radius: 8px;        
-                    background-color: #eeeeee; 
+                    background-color: rgba(238, 238, 238, 100); 
                     color: #455A64;               
                 }
                 QPushButton:hover {
-                    background-color: #E2E2E2; 
-                    border: 2px solid #C4C4C4; 
+                    background-color: rgba(226, 226, 226, 100); 
+                    border: 1px solid rgba(255, 255, 255, 200); 
                 }
                 QPushButton:pressed {
-                    background-color: #D9D9D9; 
-                    border: 2px solid #B7B7B7;
+                    background-color: rgba(217, 217, 217, 100); 
+                    border: 1px solid rgba(255, 255, 255, 240);
                 }
             """)
 

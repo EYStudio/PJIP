@@ -27,7 +27,8 @@ class FunctionPage(QWidget):
 
         custom_terminate_frame.setStyleSheet("""
             #custom_terminate_frame {
-                background-color: #eeeeee; 
+                background-color: rgba(255, 255, 255, 120); 
+                border: 1px solid rgba(255, 255, 255, 150); 
                 border-radius: 10px;
                 font-size: 24px;
                 /* border: 2px solid #bbbbbb; */
@@ -41,7 +42,6 @@ class FunctionPage(QWidget):
 
         custom_terminate_title_label = QLabel("Terminate Process")
         custom_terminate_title_label.setStyleSheet("""
-            background-color: #eeeeee; 
             border-radius: 10px;
             font-size: 20px;
             color: #455A64;   
@@ -57,36 +57,36 @@ class FunctionPage(QWidget):
             QLineEdit {
                 font: 16px;
                 padding: 2px;
-                border: 2px solid #CCCCCC;
+                border: 1px solid rgba(0, 0, 0, 50);
                 border-radius: 8px;
-                background-color: #F0F0F0;
+                background-color: rgba(240, 240, 240, 50);
                 color: #666666;
             }
             QLineEdit:focus {
-                border: 2px solid #BBBBBB;
-                background-color: #FDF6FA;
+                border: 1px solid rgba(0, 0, 0, 70);
+                background-color: rgba(255, 255, 255, 50);
             }
         """)
 
         # self.custom_terminate_btn = QPushButton(" Kill ")
         self.custom_terminate_btn = QPushButton("Kill Process")
         self.custom_terminate_btn.setFixedHeight(42)
+        self.custom_terminate_btn.setMinimumWidth(120)
         self.custom_terminate_btn.setStyleSheet("""
             QPushButton {
-                font-size: 16px;
-                padding: 4px;
-                border: 2px solid #cccccc; 
+                font: 20px;
+                border: 1px solid rgba(0, 0, 0, 50);
                 border-radius: 8px;        
-                background-color: #eeeeee; 
-                color: #455A64;               
+                background-color: rgba(238, 238, 238, 100); 
+                color: #444444;               
             }
             QPushButton:hover {
-                background-color: #E2E2E2; 
-                border: 2px solid #C4C4C4; 
+                background-color: rgba(226, 226, 226, 100); 
+                border: 1px solid rgba(50, 50, 50, 50);
             }
             QPushButton:pressed {
-                background-color: #D9D9D9; 
-                border: 2px solid #B7B7B7;
+                background-color: rgba(217, 217, 217, 100); 
+                border: 1px solid rgba(100, 100, 100, 70);
             }
         """)
         self.custom_terminate_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
@@ -104,7 +104,8 @@ class FunctionPage(QWidget):
 
         studentmain_pwd_frame.setStyleSheet("""
             #studentmain_pwd_frame {
-                background-color: #eeeeee; 
+                background-color: rgba(255, 255, 255, 120); 
+                border: 1px solid rgba(255, 255, 255, 150); 
                 border-radius: 10px;
                 font-size: 24px;
                 /* border: 2px solid #bbbbbb; */
@@ -118,7 +119,6 @@ class FunctionPage(QWidget):
 
         studentmain_pwd_title_label = QLabel("Studentmain Password")
         studentmain_pwd_title_label.setStyleSheet("""
-            background-color: #eeeeee; 
             border-radius: 10px;
             font-size: 20px;
             color: #455A64;   
@@ -134,38 +134,37 @@ class FunctionPage(QWidget):
             QLineEdit {
                 font: 16px;
                 padding: 2px;
-                border: 2px solid #CCCCCC;
+                border: 1px solid rgba(0, 0, 0, 50);
                 border-radius: 8px;
-                background-color: #F0F0F0;
+                background-color: rgba(240, 240, 240, 50);
                 color: #666666;
             }
             QLineEdit:focus {
-                border: 2px solid #BBBBBB;
-                background-color: #FDF6FA;
+                border: 1px solid rgba(0, 0, 0, 70);
+                background-color: rgba(255, 255, 255, 50);
             }
         """)
 
         self.studentmain_pwd_label.setReadOnly(True)
 
-        # self.studentmain_pwd_btn = QPushButton(" Kill ")
-        self.studentmain_pwd_btn = QPushButton(" Copy ")
+        self.studentmain_pwd_btn = QPushButton("Copy")
         self.studentmain_pwd_btn.setFixedHeight(42)
+        self.studentmain_pwd_btn.setMinimumWidth(77)
         self.studentmain_pwd_btn.setStyleSheet("""
             QPushButton {
-                font-size: 16px;
-                padding: 4px;
-                border: 2px solid #cccccc; 
+                font: 20px;
+                border: 1px solid rgba(0, 0, 0, 50);
                 border-radius: 8px;        
-                background-color: #eeeeee; 
-                color: #455A64;               
+                background-color: rgba(238, 238, 238, 100); 
+                color: #444444;               
             }
             QPushButton:hover {
-                background-color: #E2E2E2; 
-                border: 2px solid #C4C4C4; 
+                background-color: rgba(226, 226, 226, 100); 
+                border: 1px solid rgba(50, 50, 50, 50);
             }
             QPushButton:pressed {
-                background-color: #D9D9D9; 
-                border: 2px solid #B7B7B7;
+                background-color: rgba(217, 217, 217, 100); 
+                border: 1px solid rgba(100, 100, 100, 70);
             }
         """)
         self.studentmain_pwd_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)

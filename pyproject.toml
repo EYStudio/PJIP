@@ -1,0 +1,22 @@
+[project]
+name = "pjip"
+description = "PJIP"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "packaging>=25.0",
+    "pillow>=12.1.1",
+    "psutil>=7.2.1",
+    "PySide6-Essentials>=6.10.1",
+    "pywin32>=311",
+    "requests>=2.32.5",
+    "tomli-w>=1.2.0",
+]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = {attr = "pjip.config.build_info.VERSION"}
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"

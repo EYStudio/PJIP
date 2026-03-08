@@ -1,8 +1,8 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, \
-    QSizePolicy, QStackedWidget, QLayout, QButtonGroup
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QStackedWidget
 
 from .pages import ToolPage, FunctionPage, SettingsPage, UpdatePage, AboutPage
+from .costume_widgets import SideBar
 
 
 class MainWidget(QWidget):
@@ -12,13 +12,7 @@ class MainWidget(QWidget):
         self.adapter = None
         self.live_frame = None
 
-        self.TASKBAR_BTN_HEIGHT = 32
-        self.TASKBAR_BTN_WIDTH = int(self.TASKBAR_BTN_HEIGHT * 2)
-        self.SPACING = 4
-
-        self.SIDEBAR_HEIGHT = self.TASKBAR_BTN_HEIGHT + self.SPACING * 2  # Fixed height
-
-        self.sidebar = self.sidebar_layout = None
+        self.sidebar = None
         self.sidebar_tabs = self.sidebar_button_group = None
 
         self.pages = self.stack_pages = None
@@ -27,15 +21,14 @@ class MainWidget(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        main_layout = QVBoxLayout()
-        main_layout.setContentsMargins(5, 4, 5, 5)
-        main_layout.setSpacing(2)
+        main_layout = QHBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(1)
 
-        # Sidebar
-        self.sidebar = QWidget()
-        self.sidebar_layout = QHBoxLayout(self.sidebar)
-        self.sidebar_layout.setContentsMargins(self.SPACING, self.SPACING, self.SPACING, self.SPACING)
-        # self.sidebar_layout.setSpacing(self.SPACING)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
+
+        self.setStyleSheet("""#QWidget{background-color: rgba(255,255,255, 0)}""")
+        # self.setStyleSheet("""background-color: rgba(0,0,0, 200)""")
 
         # Init stack_pages
         self.tool_page = ToolPage()
@@ -52,66 +45,14 @@ class MainWidget(QWidget):
             self.about_page,
         ]
 
-        self.sidebar_button_group = QButtonGroup(self)
-        self.sidebar_button_group.setExclusive(True)
-
-        base_btn_style = f"""
-            QPushButton {{
-                background-color: #e6e6e6;
-                border-radius: {self.TASKBAR_BTN_HEIGHT // 4}px; 
-                padding: 0px;
-                font-weight: bold; 
-                color: #444444;
-            }}
-            QPushButton:hover {{
-                background-color: #dcdcdc;
-            }}
-            QPushButton:pressed {{
-                background-color: #cbcbcb;
-            }}
-            QPushButton:checked {{
-                background-color: #4a90e2;
-                color: white;
-            }}
-        """
-
-        sidebar_container = QWidget()
-        sidebar_container_layout = QHBoxLayout(sidebar_container)
-        sidebar_container_layout.setContentsMargins(0, 0, 0, 0)
-        sidebar_container_layout.setSpacing(self.SPACING)
-
-        sidebar_container.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        sidebar_container_layout.setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
-
-        for index, widget in enumerate(self.pages):
-            page_name = widget.page_name
-            btn = QPushButton(page_name)
-            btn.setFixedSize(self.TASKBAR_BTN_WIDTH, self.TASKBAR_BTN_HEIGHT)
-            btn.setCheckable(True)
-            btn.setCursor(Qt.CursorShape.PointingHandCursor)
-            btn.setStyleSheet(base_btn_style)
-            btn.setToolTip(page_name)
-            self.sidebar_button_group.addButton(btn, index)
-            sidebar_container_layout.addWidget(btn)
-
-        self.sidebar_button_group.buttons()[0].setChecked(True)
-
-        self.sidebar_layout.addWidget(sidebar_container, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        # Issue in placing sidebar buttons in center
-        # self.sidebar_layout.addStretch()
-
-        self.sidebar.setFixedHeight(self.SIDEBAR_HEIGHT)
-        self.sidebar.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-
-        self.sidebar.setObjectName("sidebar")
+        self.sidebar = SideBar(self.pages)
 
         self.live_frame = QWidget()
         self.live_frame.setObjectName("live_frame")
 
         self.live_frame.setStyleSheet("""
             #live_frame {
-                background-color: #eeeeee; 
+                /* background-color: #eeeeee; */
                 border-radius: 10px;
                 font-size: 24px;
                 border: 4px solid #cccccc;
@@ -127,7 +68,7 @@ class MainWidget(QWidget):
         self.stack_pages = QStackedWidget()
         for page in self.pages:
             self.stack_pages.addWidget(page)
-        self.sidebar_button_group.idClicked.connect(self.stack_pages.setCurrentIndex)
+        self.sidebar.get_button_group().idClicked.connect(self.stack_pages.setCurrentIndex)
 
         live_frame_layout.addWidget(self.stack_pages)
 
@@ -157,12 +98,31 @@ class MainWidget(QWidget):
                 self.update_page.ui_change.emit(name, value)
             case 'GetStudentmainPasswordAdapter':
                 self.functions_page.ui_change.emit(name, value)
+            case 'StudentmainExistAdapter':
+                self.tool_page.ui_change.emit(name, value)
+                self.live_frame_change_since_studentmain_not_found(value)
+            case _:
+                for page in self.pages:
+                    page.ui_change.emit(name, value)
+
+    def live_frame_change_since_studentmain_not_found(self, studentmain_running_state):
+        if not studentmain_running_state:
+            self.live_frame.setStyleSheet("""
+                #live_frame {
+                    /* background-color: #eeeeee; */
+                    border-radius: 10px;
+                    font-size: 24px;
+                    /*border: 4px solid #E66926; */
+                    border: 4px solid #999999;
+                    color: #455A64;   
+                }
+            """)
 
     def live_frame_change(self, studentmain_running_state):
         if studentmain_running_state:
             self.live_frame.setStyleSheet("""
                 #live_frame {
-                    background-color: #eeeeee; 
+                    /* background-color: #eeeeee; */
                     border-radius: 10px;
                     font-size: 24px;
                     /*border: 4px solid #E66926; */
@@ -173,7 +133,7 @@ class MainWidget(QWidget):
         else:
             self.live_frame.setStyleSheet("""
                 #live_frame {
-                    background-color: #eeeeee; 
+                    /* background-color: #eeeeee; */
                     border-radius: 10px;
                     font-size: 24px;
                     border: 4px solid #3DC766;

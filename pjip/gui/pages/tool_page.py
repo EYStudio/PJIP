@@ -27,7 +27,7 @@ class ToolPage(QWidget):
 
         self.label_studentmain_state.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label_studentmain_state.setStyleSheet("""
-                                    background-color: #eeeeee; 
+                                    background-color: rgba(240, 240, 240, 100); 
                                     border-radius: 10px;
                                     font-size: 24px;
                                     border: 3px solid #cccccc;
@@ -60,18 +60,18 @@ class ToolPage(QWidget):
             btn.setStyleSheet("""
                 QPushButton {
                     font: 20px;
-                    border: 2px solid #cccccc; 
+                    border: 1px solid rgba(255, 255, 255, 150); 
                     border-radius: 8px;        
-                    background-color: #eeeeee; 
+                    background-color: rgba(238, 238, 238, 100); 
                     color: #444444;               
                 }
                 QPushButton:hover {
-                    background-color: #E2E2E2; 
-                    border: 2px solid #C4C4C4; 
+                    background-color: rgba(226, 226, 226, 100); 
+                    border: 1px solid rgba(255, 255, 255, 200); 
                 }
                 QPushButton:pressed {
-                    background-color: #D9D9D9; 
-                    border: 2px solid #B7B7B7;
+                    background-color: rgba(217, 217, 217, 100); 
+                    border: 1px solid rgba(255, 255, 255, 240);
                 }
             """)
             # cec2ff - b3b3f1 - dcb6d5 - cf8ba9 - b15e6c
@@ -91,9 +91,26 @@ class ToolPage(QWidget):
                 self.set_studentmain_state(value)
             case 'SuspendMonitorAdapter':
                 self.set_studentmain_suspend_state(value)
+            case 'StudentmainExistAdapter':
+                self.set_find_studentmain_state(value)
 
     def set_adapter(self, adapter):
         self.adapter = adapter
+
+    def set_find_studentmain_state(self, state):
+        if state:
+            pass
+        else:
+            self.label_studentmain_state.setText(f"Studentmain: Not found")
+            self.label_studentmain_state.setStyleSheet("""
+                                                background-color: rgba(150, 150, 150, 100); 
+                                                border-radius: 10px;
+                                                font-size: 24px;
+                                                border: 3px solid #cccccc;
+                                                color: #455A64;   
+                                                """)
+
+
 
     def set_studentmain_state(self, state):
         status = "not running" if not state else "running"
@@ -102,7 +119,7 @@ class ToolPage(QWidget):
 
         if state:
             self.label_studentmain_state.setStyleSheet("""
-                                        background-color: #FFE5E0; 
+                                        background-color: rgba(255, 229, 224, 200); 
                                         border-radius: 10px;
                                         font-size: 24px;
                                         border: 3px solid #cccccc;
@@ -111,7 +128,7 @@ class ToolPage(QWidget):
             self.kill_run_btn.setText("Kill studentmain")
         else:
             self.label_studentmain_state.setStyleSheet("""
-                                        background-color: #D3FDE3; 
+                                        background-color: rgba(211, 253, 227, 200); 
                                         border-radius: 10px;
                                         font-size: 24px;
                                         border: 3px solid #cccccc;
