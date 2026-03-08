@@ -40,7 +40,7 @@ VSVersionInfo(
           StringStruct('InternalName', f'{PROJECT_NAME_ABBREVIATION}'),
           StringStruct('OriginalFilename', f'{PROGRAM_FILE_NAME_LITE}.exe'),
           StringStruct('ProductName', f'{PROJECT_NAME_ABBREVIATION}'),
-          StringStruct('LegalCopyright', '{COPYRIGHT}'),
+          StringStruct('LegalCopyright', f'{COPYRIGHT}'),
           StringStruct('LegalTrademarks', f'{PROJECT_NAME_ABBREVIATION} is a trademark of Errorsia'),
           StringStruct('License', 'GPLv3'),
         ]
@@ -51,5 +51,5 @@ VSVersionInfo(
 )
 """
 
-with open("version.txt", "w", encoding="utf-8") as f:
+with open("../version.txt", "w", encoding="utf-8") as f:
     f.write(version_text)
