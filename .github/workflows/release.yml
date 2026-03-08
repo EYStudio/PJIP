@@ -55,7 +55,6 @@ jobs:
         --exclude-module pdb
         --exclude-module doctest
         --exclude-module ensurepip
-        --exclude-module distutils
         --exclude-module multiprocessing
         --exclude-module lib2to3
         --exclude-module test
