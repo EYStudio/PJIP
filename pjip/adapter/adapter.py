@@ -4,22 +4,22 @@
 from PySide6.QtCore import QObject, Signal, QThreadPool
 
 from pjip.core.enums import PidStatus
+from pjip.runtime import RuntimeStatus
 
 from .action import SuspendStudentmainAdapter, StartStudentmainAdapter, CleanIFEODebuggersAdapter, \
     CopyToClipboardAdapter, EditKillMethodAdapter
 from .dispatcher import TaskDispatcher
 from .polling import MonitorAdapter, SuspendMonitorAdapter, GetStudentmainPasswordAdapter, UpdateAdapter, \
-    RunTaskmgrAdapter
+    RunTaskmgrAdapter, StudentmainExistAdapter
 from .polling_manager import PollingManager
 from .task import TerminatePIDAdapter, TerminateProcessAdapter
 from ..app.constants import E_CLASSROOM_PROGRAM_NAME
 from ..config import RuntimeConfigManager
 
-
 class AdapterManager(QObject):
     ui_change = Signal(str, object)
 
-    def __init__(self, logic, gui, runtime_status, config_manager: RuntimeConfigManager):
+    def __init__(self, logic, gui, runtime_status: RuntimeStatus, config_manager: RuntimeConfigManager):
         super().__init__()
         self.on_demand_objects = {}
         self.logic = logic
@@ -28,7 +28,7 @@ class AdapterManager(QObject):
         self.config_manager = config_manager
         self.config_object = self.config_manager.get_config_object()
 
-        self.polling = PollingManager()
+        self.polling = PollingManager(self.ui_change)
         self.dispatcher = TaskDispatcher()
 
         # WILL BE DELETED IN NEXT VERSION
@@ -41,17 +41,20 @@ class AdapterManager(QObject):
 
         self.init_threadpools()
         self.init_workers()
-        self.connect_signals()
-        self.start_all()
+        # self.start_all()
 
     def init_threadpools(self):
         self.terminate_threadpool = QThreadPool()
         self.terminate_threadpool.setMaxThreadCount(2)
 
     def init_workers(self):
-        self.polling.add(MonitorAdapter(self.logic))
-        self.polling.add(SuspendMonitorAdapter(self.logic))
-        self.polling.add(GetStudentmainPasswordAdapter(self.logic, self.runtime_status))
+        if self.runtime_status.studentmain_exists:
+            self.start_studentmain_related_adapter()
+        else:
+            self.studentmain_exist_adapter = StudentmainExistAdapter(self.logic, self.runtime_status)
+            self.studentmain_exist_adapter.find_studentmain.connect(self.find_studentmain)
+            self.polling.add(self.studentmain_exist_adapter)
+
         # self.lifelong_adapters.append(DatabaseAdapter(logic, 2000))
         # self.lifelong_adapters.append(NetworkAdapter(logic, 5000))
 
@@ -77,6 +80,11 @@ class AdapterManager(QObject):
 
         self.init_run_taskmgr_adapter()
 
+    def start_studentmain_related_adapter(self):
+        self.polling.add(MonitorAdapter(self.logic))
+        self.polling.add(SuspendMonitorAdapter(self.logic))
+        self.polling.add(GetStudentmainPasswordAdapter(self.logic, self.runtime_status))
+
     def init_run_taskmgr_adapter(self):
         # WILL BE DELETED IN NEXT VERSION
         # thread = QThread()
@@ -94,13 +102,6 @@ class AdapterManager(QObject):
 
         # thread.start()
 
-    def connect_signals(self):
-        for adapter in self.polling.adapters:
-            adapter.change.connect(
-                lambda result, w=adapter:
-                self.ui_change.emit(type(w).__name__, result)
-            )
-
     def start_all(self):
         self.polling.start()
 
@@ -114,6 +115,13 @@ class AdapterManager(QObject):
         #     thread.quit()
         #     thread.wait()
         #     thread.deleteLater()
+
+    def find_studentmain(self):
+        print('===FIND STUDENTMAIN===')
+        self.polling.stop_specific(self.studentmain_exist_adapter)
+
+        self.start_studentmain_related_adapter()
+
 
     def ui_launched(self):
         pass
