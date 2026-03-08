@@ -35,7 +35,9 @@ jobs:
       run: pip install setuptools==70.0.0
 
     - name: Install project
-      run: pip install --no-build-isolation .
+      run: | 
+        pip install wheel
+        pip install --no-build-isolation .
 
     - name: Install PyInstaller
       run: pip install pyinstaller
