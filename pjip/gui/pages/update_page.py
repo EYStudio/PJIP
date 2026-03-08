@@ -1,8 +1,7 @@
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QGridLayout, QVBoxLayout, QSizePolicy
 
 from pjip.core.enums import UpdateState
-from ..costume_widgets.switch_button import SwitchWidget
 from ...config.runtime_config.config_structure import ConfigRoot
 
 
@@ -35,43 +34,43 @@ class UpdatePage(QWidget):
         version_display.setObjectName("version_display_frame")
 
         version_display.setStyleSheet("""
-                    #version_display_frame {
-                        background-color: #eeeeee; 
-                        border-radius: 10px;
-                        font-size: 24px;
-                        border: 2px solid #cccccc;
-                        color: #455A64;   
-                    }
-                """)
+            #version_display_frame {
+                background-color: rgba(238, 238, 238, 100); 
+                border-radius: 10px;
+                font-size: 24px;
+                border: 1px solid rgba(255, 255, 255, 150);
+                color: #455A64;   
+            }
+        """)
 
         version_display_frame_layout = QVBoxLayout(version_display)
         version_display_frame_layout.setContentsMargins(12, 5, 10, 5)
         version_display_frame_layout.setSpacing(3)
 
-        switch_widget_auto_download_update = SwitchWidget('Auto download update')
-        switch_widget_auto_download_update.setFixedHeight(55)
+        # switch_widget_auto_download_update = SwitchWidget('Auto download update')
+        # switch_widget_auto_download_update.setFixedHeight(55)
 
-        self.current_version_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.current_version_label.setStyleSheet("""
-                                    background-color: rgba(238, 238, 238, 120); 
-                                    border-radius: 10px;
-                                    font-size: 24px;
-                                    border: 1px solid rgba(255, 255, 255, 150);
-                                    color: #455A64;   
-                                    margin-left: 5px;
-                                    """)
+        # self.current_version_display_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.current_version_display_label = QLabel()
+        self.current_version_display_label.setStyleSheet("""
+            /* background-color: rgba(238, 238, 238, 100); 
+            border-radius: 10px; */
+            font-size: 20px;
+            /* border: 1px solid rgba(255, 255, 255, 150); */
+            color: #455A64;   
+        """)
         self.current_version_display_label.setText(f'Current version: N / a')
         self.current_version_display_label.setFixedHeight(40)
 
 
         self.latest_version_display_label = QLabel()
         self.latest_version_display_label.setStyleSheet("""
-                                    background-color: #eeeeee; 
-                                    border-radius: 10px;
-                                    font-size: 18px;
+                                    /* background-color: #eeeeee; 
+                                    border-radius: 10px; */
+                                    font-size: 20px;
                                     /* border: 2px solid #cccccc; */
                                     color: #455A64;   
-                                    margin-left: 5px;
+                                    /* margin-left: 5px; */
                                     """)
         self.latest_version_display_label.setText(f'Latest version: N/a')
         self.latest_version_display_label.setFixedHeight(40)
@@ -81,17 +80,17 @@ class UpdatePage(QWidget):
 
         # self.update_state_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.update_state_label.setStyleSheet("""
-                                    background-color: rgba(238, 238, 238, 120); 
-                                    border-radius: 10px;
-                                    font-size: 24px;
-                                    border: 1px solid rgba(255, 255, 255, 150);
-                                    color: #455A64;   
-                                    margin-left: 5px;
-                                    """)
+            /* background-color: rgba(238, 238, 238, 100); 
+            border-radius: 10px; */
+            font-size: 24px;
+            /* border: 1px solid rgba(255, 255, 255, 150); */
+            color: #455A64;   
+        """)
+
         self.update_state_label.setText(f'Getting updates')
         # self.update_state_label.setFixedHeight(100)
 
-        version_display_frame_layout.addWidget(switch_widget_auto_download_update)
+        # version_display_frame_layout.addWidget(switch_widget_auto_download_update)
         version_display_frame_layout.addWidget(self.current_version_display_label)
         version_display_frame_layout.addWidget(self.latest_version_display_label)
         version_display_frame_layout.addWidget(self.update_state_label)
@@ -155,7 +154,7 @@ class UpdatePage(QWidget):
         if state == UpdateState.UPDATE_AVAILABLE:
             self.update_state_label.setText(f'A new version is available: {content}')
             self.latest_version_display_label.setText(f'Latest version: {content}')
-        elif state == UpdateState.IS_LATEST:
+        elif state == UpdateState.UP_TO_DATE:
             self.update_state_label.setText('You are already using the latest version')
             self.latest_version_display_label.setText(f'Latest version: {self.current_version}')
         elif state == UpdateState.LOCAL_NEWER:
