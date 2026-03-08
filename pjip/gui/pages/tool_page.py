@@ -91,9 +91,26 @@ class ToolPage(QWidget):
                 self.set_studentmain_state(value)
             case 'SuspendMonitorAdapter':
                 self.set_studentmain_suspend_state(value)
+            case 'StudentmainExistAdapter':
+                self.set_find_studentmain_state(value)
 
     def set_adapter(self, adapter):
         self.adapter = adapter
+
+    def set_find_studentmain_state(self, state):
+        if state:
+            pass
+        else:
+            self.label_studentmain_state.setText(f"Studentmain: Not found")
+            self.label_studentmain_state.setStyleSheet("""
+                                                background-color: rgba(150, 150, 150, 100); 
+                                                border-radius: 10px;
+                                                font-size: 24px;
+                                                border: 3px solid #cccccc;
+                                                color: #455A64;   
+                                                """)
+
+
 
     def set_studentmain_state(self, state):
         status = "not running" if not state else "running"

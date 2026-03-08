@@ -98,6 +98,25 @@ class MainWidget(QWidget):
                 self.update_page.ui_change.emit(name, value)
             case 'GetStudentmainPasswordAdapter':
                 self.functions_page.ui_change.emit(name, value)
+            case 'StudentmainExistAdapter':
+                self.tool_page.ui_change.emit(name, value)
+                self.live_frame_change_since_studentmain_not_found(value)
+            case _:
+                for page in self.pages:
+                    page.ui_change.emit(name, value)
+
+    def live_frame_change_since_studentmain_not_found(self, studentmain_running_state):
+        if not studentmain_running_state:
+            self.live_frame.setStyleSheet("""
+                #live_frame {
+                    /* background-color: #eeeeee; */
+                    border-radius: 10px;
+                    font-size: 24px;
+                    /*border: 4px solid #E66926; */
+                    border: 4px solid #999999;
+                    color: #455A64;   
+                }
+            """)
 
     def live_frame_change(self, studentmain_running_state):
         if studentmain_running_state:
