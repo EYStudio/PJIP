@@ -53,5 +53,12 @@ VSVersionInfo(
 
 print(__file__)
 
-with open("version.txt", "w", encoding="utf-8") as f:
+import os
+
+SCRIPT_DIR = os.path.dirname(__file__)
+VERSION_FILE = os.path.join(SCRIPT_DIR, "version.txt")
+
+print(VERSION_FILE)
+
+with open(VERSION_FILE, "w", encoding="utf-8") as f:
     f.write(version_text)
