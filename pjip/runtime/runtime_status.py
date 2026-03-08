@@ -51,13 +51,12 @@ class RuntimeStatus:
             print('CLASSROOM IS NOT STUDENTMAIN')
 
     def set_studentmain_path(self, directory):
+        print(rf'Studentmain path set: {directory}')
         self.studentmain_directory = directory
         if self.studentmain_directory:
             self.studentmain_path = os.path.join(self.studentmain_directory, "studentmain.exe")
             print(self.studentmain_path)
             self.studentmain_exists = True
-
-        return self.studentmain_exists
 
     def get_debug_state(self):
         self.debug = os.getenv('PJIP_DEBUG') or self.config_object.debug.debug
