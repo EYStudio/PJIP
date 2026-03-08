@@ -5,12 +5,12 @@ STUDIO_NAME = 'EyStudio'
 STUDIO_MOTTO = 'Exception Ignite Evolution'
 DEVELOPERS = 'EyStudio developers'
 
-MAJOR_VER = 1
+MAJOR_VER = 2
 MINOR_VER = 0
 PATCH_VER = 0
 
 PRE_STAGE = "a"  # alpha / beta / rc
-PRE_NUM = 3  # a2 / b1 / rc3
+PRE_NUM = 1  # a2 / b1 / rc3
 
 # PEP 440 version
 if PRE_STAGE:
