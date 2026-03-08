@@ -1,4 +1,5 @@
 import datetime
+
 from pjip.config.build_info import VERSION, WIN_FILEVER, PROJECT_NAME_ABBREVIATION
 
 START_YEAR = 2024
@@ -53,5 +54,10 @@ VSVersionInfo(
 
 print(__file__)
 
-with open("version.txt", "w", encoding="utf-8") as f:
+import os
+
+BASE_DIR = os.path.dirname(__file__)
+VERSION_FILE = os.path.join(BASE_DIR, "version.txt")
+
+with open(VERSION_FILE, "w", encoding="utf-8") as f:
     f.write(version_text)
