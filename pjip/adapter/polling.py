@@ -17,14 +17,16 @@ class BaseAdapterInterface:
 
 class StudentmainExistAdapter(QObject, BaseAdapterInterface):
     find_studentmain = Signal()
+    change = Signal(bool)
+
     def __init__(self, logic, runtime_status, /):
         super().__init__()
         self.logic = logic
         self.runtime_status = runtime_status
         self.timer = QTimer(self)
-        self.timer.setInterval(500)
+        self.timer.setInterval(750)
         self.timer.timeout.connect(self.run_task)
-        self.last_result = None
+        self.emitted_not_found = False
 
         self.key_path = r"SOFTWARE\TopDomain\e-Learning Class Standard\1.00"
         self.value_name = "TargetDirectory"
@@ -33,8 +35,15 @@ class StudentmainExistAdapter(QObject, BaseAdapterInterface):
         self.timer.start()
 
     def run_task(self):
-        if self.runtime_status.set_studentmain_path(self.logic.read_registry_value(self.key_path, self.value_name)):
+        state = self.logic.read_registry_value(self.key_path, self.value_name)
+        if not state and not self.emitted_not_found:
+            self.emitted_not_found = True
+            self.change.emit(False)
+
+        if state:
+            self.runtime_status.set_studentmain_path(state)
             self.timer.stop()
+            self.change.emit(True)
             self.find_studentmain.emit()
 
     def stop(self):
