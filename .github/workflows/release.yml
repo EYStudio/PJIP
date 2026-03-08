@@ -36,7 +36,7 @@ jobs:
 
     - name: Package application
       run: >
-        pyinstaller -i resources/icons/icon.ico -n main -F -w --noconfirm --clean --version-file=tools/version.txt --noupx --log-level WARN
+        pyinstaller -i resources/icons/icon.ico -n main -F -w --noconfirm --clean --version-file=version.txt --noupx --log-level WARN
         --hidden-import=win32timezone
         --exclude-module tkinter
         --exclude-module turtle
