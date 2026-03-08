@@ -10,7 +10,7 @@ MINOR_VER = 0
 PATCH_VER = 0
 
 PRE_STAGE = "a"  # alpha / beta / rc
-PRE_NUM = 1  # a2 / b1 / rc3
+PRE_NUM = 2  # a2 / b1 / rc3
 
 # PEP 440 version
 if PRE_STAGE:
