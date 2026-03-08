@@ -71,6 +71,7 @@ class FunctionPage(QWidget):
         # self.custom_terminate_btn = QPushButton(" Kill ")
         self.custom_terminate_btn = QPushButton("Kill Process")
         self.custom_terminate_btn.setFixedHeight(42)
+        self.custom_terminate_btn.setMinimumWidth(120)
         self.custom_terminate_btn.setStyleSheet("""
             QPushButton {
                 font: 20px;
@@ -146,8 +147,9 @@ class FunctionPage(QWidget):
 
         self.studentmain_pwd_label.setReadOnly(True)
 
-        self.studentmain_pwd_btn = QPushButton(" Copy ")
+        self.studentmain_pwd_btn = QPushButton("Copy")
         self.studentmain_pwd_btn.setFixedHeight(42)
+        self.studentmain_pwd_btn.setMinimumWidth(77)
         self.studentmain_pwd_btn.setStyleSheet("""
             QPushButton {
                 font: 20px;
