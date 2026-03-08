@@ -1,0 +1,111 @@
+name: Package Application
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  id-token: "write"
+  contents: "write"
+  packages: "write"
+  pull-requests: "read"
+
+jobs:
+  win-pyinstaller:
+    name: Build package on Windows (Pyinstaller)
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+
+    - name: Generate version info
+      run: python tools/generate_version_info.py
+
+    - name: Package application
+      run: >
+        pyinstaller -i resources/icons/icon.ico -n main -F -w --clean --noupx --log-level WARN
+        --hidden-import=win32timezone
+        --exclude-module tkinter
+        --exclude-module turtle
+        --exclude-module unittest
+        --exclude-module pydoc
+        --exclude-module xml
+        --exclude-module xmlrpc
+        --exclude-module sqlite3
+        --exclude-module csv
+        --exclude-module ftplib
+        --exclude-module imaplib
+        --exclude-module smtplib
+        --exclude-module poplib
+        --exclude-module telnetlib
+        --exclude-module nntplib
+        --exclude-module pdb
+        --exclude-module doctest
+        --exclude-module ensurepip
+        --exclude-module distutils
+        --exclude-module multiprocessing
+        --exclude-module lib2to3
+        --exclude-module test
+        --exclude-module idlelib        
+        --exclude-module PySide6.QtHelp
+        --exclude-module PySide6.QtNetwork
+        --exclude-module PySide6.QtConcurrent
+        --exclude-module PySide6.QtDBus
+        --exclude-module PySide6.QtDesigner
+        --exclude-module PySide6.QtOpenGL
+        --exclude-module PySide6.QtOpenGLWidgets
+        --exclude-module PySide6.QtPrintSupport
+        --exclude-module PySide6.QtQml
+        --exclude-module PySide6.QtQuick
+        --exclude-module PySide6.QtQuickControls2
+        --exclude-module PySide6.QtQuickWidgets
+        --exclude-module PySide6.QtXml
+        --exclude-module PySide6.QtTest
+        --exclude-module PySide6.QtSql
+        --exclude-module PySide6.QtUiTools
+        run.py
+
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: win-pyinstaller
+        path: dist/main.exe
+
+  upload:
+    name: Upload releases
+    runs-on: ubuntu-latest
+    needs: [ win-pyinstaller ]
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+
+      - name: Organize artifacts
+        run: |
+          mv win-pyinstaller/main.exe pjip-${{ github.ref_name }}-win-x64.exe
+
+      - name: Upload release assets
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: ${{ github.ref_name }}
+          prerelease: true
+          title: Release ${{ github.ref_name }}
+          body: |
+            **This is an automatically generated pre-release build.**
+            Please review the build artifacts before publishing the final release.
+
+          files: |
+            pjip-${{ github.ref_name }}-win-x64.exe
