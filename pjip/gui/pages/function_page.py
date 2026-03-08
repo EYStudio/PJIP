@@ -73,20 +73,19 @@ class FunctionPage(QWidget):
         self.custom_terminate_btn.setFixedHeight(42)
         self.custom_terminate_btn.setStyleSheet("""
             QPushButton {
-                font-size: 16px;
-                padding: 4px;
-                border: 2px solid #cccccc; 
+                font: 20px;
+                border: 1px solid rgba(0, 0, 0, 50);
                 border-radius: 8px;        
-                background-color: #eeeeee; 
-                color: #455A64;               
+                background-color: rgba(238, 238, 238, 100); 
+                color: #444444;               
             }
             QPushButton:hover {
-                background-color: #E2E2E2; 
-                border: 2px solid #C4C4C4; 
+                background-color: rgba(226, 226, 226, 100); 
+                border: 1px solid rgba(50, 50, 50, 50);
             }
             QPushButton:pressed {
-                background-color: #D9D9D9; 
-                border: 2px solid #B7B7B7;
+                background-color: rgba(217, 217, 217, 100); 
+                border: 1px solid rgba(100, 100, 100, 70);
             }
         """)
         self.custom_terminate_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
@@ -151,20 +150,19 @@ class FunctionPage(QWidget):
         self.studentmain_pwd_btn.setFixedHeight(42)
         self.studentmain_pwd_btn.setStyleSheet("""
             QPushButton {
-                font-size: 16px;
-                padding: 4px;
-                border: 2px solid #cccccc; 
+                font: 20px;
+                border: 1px solid rgba(0, 0, 0, 50);
                 border-radius: 8px;        
-                background-color: #eeeeee; 
-                color: #455A64;               
+                background-color: rgba(238, 238, 238, 100); 
+                color: #444444;               
             }
             QPushButton:hover {
-                background-color: #E2E2E2; 
-                border: 2px solid #C4C4C4; 
+                background-color: rgba(226, 226, 226, 100); 
+                border: 1px solid rgba(50, 50, 50, 50);
             }
             QPushButton:pressed {
-                background-color: #D9D9D9; 
-                border: 2px solid #B7B7B7;
+                background-color: rgba(217, 217, 217, 100); 
+                border: 1px solid rgba(100, 100, 100, 70);
             }
         """)
         self.studentmain_pwd_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
