@@ -51,5 +51,7 @@ VSVersionInfo(
 )
 """
 
-with open("../version.txt", "w", encoding="utf-8") as f:
+print(__file__)
+
+with open("version.txt", "w", encoding="utf-8") as f:
     f.write(version_text)
