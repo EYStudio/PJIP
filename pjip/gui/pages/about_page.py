@@ -60,10 +60,11 @@ class AboutPage(QWidget):
         package.setObjectName('package')
         package.setStyleSheet("""
         #package{
-        background-color: rgba(250, 250, 250, 150);
-        border: 1px solid rgba(255, 255, 255, 150); 
-        border-radius: 5px;
-        }""")
+            background-color: rgba(250, 250, 250, 100);
+            border: 1px solid rgba(255, 255, 255, 150); 
+            border-radius: 10px;
+        }
+        """)
 
         studio_info_widget = QWidget()
         studio_info_widget.setObjectName('studio_info_widget')
