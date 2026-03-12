@@ -2,7 +2,7 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QGridLayout, QVBoxLayout, QSizePolicy
 
 from pjip.core.enums import UpdateState
-from ...config.runtime_config.config_structure import ConfigRoot
+from pjip.config.runtime_config.config_structure import ConfigRoot
 
 
 class UpdatePage(QWidget):
