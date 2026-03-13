@@ -14,7 +14,12 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.initialization_window()
 
-        self.background = WallpaperBlurBackground(self, True)
+        enable_blured_background = False
+
+        if not enable_blured_background:
+            self.setStyleSheet("""background-color: #fbfbfb""")
+
+        self.background = WallpaperBlurBackground(self, enable_blured_background)
 
         # self.adapter = None
 
