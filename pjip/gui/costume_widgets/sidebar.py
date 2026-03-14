@@ -11,14 +11,16 @@ class SideBar(QWidget):
 
         self.setObjectName("sidebar")
 
-        self.TASKBAR_BTN_HEIGHT = 56
+        self.TASKBAR_BTN_HEIGHT = 40
         # self.TASKBAR_BTN_WIDTH = int(self.TASKBAR_BTN_HEIGHT * 2)
-        self.TASKBAR_BTN_WIDTH = 66
+        self.TASKBAR_BTN_WIDTH = 80
         self.SPACING = 4
+
+        self.margin = 6
 
         # Sidebar
         self.sidebar_layout = QVBoxLayout(self)
-        self.sidebar_layout.setContentsMargins(0,0,0,0)
+        self.sidebar_layout.setContentsMargins(self.margin, self.margin, self.margin, self.margin)
 
         self.sidebar_button_group = QButtonGroup()
         self.sidebar_button_group.setExclusive(True)
@@ -27,24 +29,26 @@ class SideBar(QWidget):
             QPushButton {{
                background-color: rgba(255, 255, 255, 100);
                /* border-radius: {self.TASKBAR_BTN_HEIGHT // 4}px; */
-               border-radius: 0px; 
-               padding: 0px;
+               border-radius: {self.TASKBAR_BTN_HEIGHT // 4}px;
+               /* border-radius: 0px;  */
+               padding-left: 10px;
                font-weight: bold; 
-               color: #444444;
-               border-left: 5px solid rgba(255, 255, 255, 0);
+               color: #101828;
+               /* border-left: 5px solid rgba(255, 255, 255, 0); */
+               text-align: left;
             }}
             QPushButton:hover {{
                background-color: rgba(220, 220, 220, 100);
-               border-left: 5px solid rgba(220, 220, 220, 0); 
+               /* border-left: 5px solid rgba(220, 220, 220, 0);  */
             }}
             QPushButton:pressed {{
-               background-color: rgba(220, 220, 220, 100);
-               border-left: 5px solid rgba(240, 240, 240, 50); 
+               background-color: rgba(185, 185, 185, 100);
+               /* border-left: 5px solid rgba(240, 240, 240, 50);  */
             }}
             QPushButton:checked {{
                /* background-color: #4a90e2; */
                background-color: rgba(74, 144, 226, 100);
-               border-left: 5px solid rgba(220, 220, 220, 75);
+               /* border-left: 5px solid rgba(220, 220, 220, 75); */
                color: white;
             }}
         """
@@ -62,6 +66,7 @@ class SideBar(QWidget):
         for index, widget in enumerate(self.pages):
             page_name = widget.page_name
             btn = QPushButton(page_name)
+
             btn.setFixedSize(self.TASKBAR_BTN_WIDTH, self.TASKBAR_BTN_HEIGHT)
             btn.setCheckable(True)
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -78,7 +83,7 @@ class SideBar(QWidget):
         # Issue in placing sidebar buttons in center
         # self.sidebar_layout.addStretch()
 
-        self.setFixedWidth(self.TASKBAR_BTN_WIDTH)
+        self.setFixedWidth(self.TASKBAR_BTN_WIDTH + 2 * self.margin)
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
 
         # self.setStyleSheet("""
