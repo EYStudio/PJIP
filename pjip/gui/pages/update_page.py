@@ -163,8 +163,10 @@ class UpdatePage(QWidget):
             self.latest_version_display_label.setText(f'Latest version: {content}')
         elif state == UpdateState.NOT_FOUND:
             self.update_state_label.setText('No updates found')
+            self.latest_version_display_label.setText(f'Latest version: N/A')
         elif state == UpdateState.ERROR:
             self.update_state_label.setText('An error has occurred while checking for updates.')
+            self.latest_version_display_label.setText(f'Latest version: N/A')
         elif state == UpdateState.IDLE:
             self.update_state_label.setText('Update check has not started yet.')
             self.latest_version_display_label.setText('Latest version: N/A')
