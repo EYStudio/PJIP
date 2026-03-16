@@ -9,10 +9,9 @@ class ToolPage(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.page_name = 'Tools'
         self.studentmain_state = None
+        self.page_name = 'Tools'
         self.kill_run_btn = self.suspend_resume_btn = self.run_taskmgr_btn = self.clean_ifeo_debuggers_btn = None
-        self.label_studentmain_state = None
         self.adapter = None
         self.init_ui()
 
@@ -23,18 +22,7 @@ class ToolPage(QWidget):
         main_layout.setContentsMargins(3, 3, 3, 3)
         main_layout.setSpacing(5)
 
-        self.label_studentmain_state = QLabel()
 
-        self.label_studentmain_state.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label_studentmain_state.setStyleSheet("""
-                                    background-color: rgba(240, 240, 240, 100); 
-                                    border-radius: 10px;
-                                    font-size: 24px;
-                                    border: 3px solid #cccccc;
-                                    color: #455A64;   
-                                    """)
-        self.label_studentmain_state.setText(f'Not detecting')
-        # self.label_studentmain_state.setFixedHeight(100)
 
         button_layout = QGridLayout()
 
@@ -76,7 +64,6 @@ class ToolPage(QWidget):
             """)
             # cec2ff - b3b3f1 - dcb6d5 - cf8ba9 - b15e6c
 
-        main_layout.addWidget(self.label_studentmain_state)
 
         main_layout.addLayout(button_layout)
 
@@ -100,41 +87,13 @@ class ToolPage(QWidget):
     def set_find_studentmain_state(self, state):
         if state:
             pass
-        else:
-            self.label_studentmain_state.setText(f"Studentmain: Not found")
-            self.label_studentmain_state.setStyleSheet("""
-                                                background-color: rgba(150, 150, 150, 100); 
-                                                border-radius: 10px;
-                                                font-size: 24px;
-                                                border: 3px solid #cccccc;
-                                                color: #455A64;   
-                                                """)
-
-
 
     def set_studentmain_state(self, state):
         status = "not running" if not state else "running"
-        self.label_studentmain_state.setText(f"Studentmain: {status}")
         self.studentmain_state = state
-
         if state:
-            self.label_studentmain_state.setStyleSheet("""
-                                        background-color: rgba(255, 229, 224, 200); 
-                                        border-radius: 10px;
-                                        font-size: 24px;
-                                        border: 3px solid #cccccc;
-                                        color: #E66926;   
-                                        """)
             self.kill_run_btn.setText("Kill studentmain")
         else:
-            self.label_studentmain_state.setStyleSheet("""
-                                        background-color: rgba(211, 253, 227, 200); 
-                                        border-radius: 10px;
-                                        font-size: 24px;
-                                        border: 3px solid #cccccc;
-                                        /* color: #16DC2D;   */
-                                        color: green;
-                                        """)
             self.kill_run_btn.setText("Run studentmain")
 
     def handle_studentmain(self):
