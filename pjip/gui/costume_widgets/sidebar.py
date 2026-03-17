@@ -13,10 +13,10 @@ class SideBar(QWidget):
 
         self.TASKBAR_BTN_HEIGHT = 40
         # self.TASKBAR_BTN_WIDTH = int(self.TASKBAR_BTN_HEIGHT * 2)
-        self.TASKBAR_BTN_WIDTH = 80
-        self.SPACING = 4
+        self.TASKBAR_BTN_WIDTH = 140
+        self.SPACING = 5
 
-        self.margin = 6
+        self.margin = 8
 
         # Sidebar
         self.sidebar_layout = QVBoxLayout(self)
@@ -27,29 +27,30 @@ class SideBar(QWidget):
 
         base_btn_style = f"""
             QPushButton {{
-               background-color: rgba(255, 255, 255, 100);
-               /* border-radius: {self.TASKBAR_BTN_HEIGHT // 4}px; */
-               border-radius: {self.TASKBAR_BTN_HEIGHT // 4}px;
-               /* border-radius: 0px;  */
-               padding-left: 10px;
-               font-weight: bold; 
-               color: #101828;
-               /* border-left: 5px solid rgba(255, 255, 255, 0); */
-               text-align: left;
+                background-color: rgba(255, 255, 255, 100);
+                /* border-radius: {self.TASKBAR_BTN_HEIGHT // 4}px; */
+                border-radius: {self.TASKBAR_BTN_HEIGHT // 5}px;
+                /* border-radius: 0px;  */
+                padding-left: 20px;
+                font-size: 16px;
+                color: #4a5565;
+                /* border-left: 5px solid rgba(255, 255, 255, 0); */
+                text-align: left;
             }}
             QPushButton:hover {{
-               background-color: rgba(220, 220, 220, 100);
-               /* border-left: 5px solid rgba(220, 220, 220, 0);  */
+                background-color: rgba(150, 150, 150, 30);
+                /* border-left: 5px solid rgba(220, 220, 220, 0);  */
             }}
             QPushButton:pressed {{
-               background-color: rgba(185, 185, 185, 100);
-               /* border-left: 5px solid rgba(240, 240, 240, 50);  */
+                background-color: rgba(150, 150, 150, 50);
+                /* border-left: 5px solid rgba(240, 240, 240, 50);  */
             }}
             QPushButton:checked {{
-               /* background-color: #4a90e2; */
-               background-color: rgba(74, 144, 226, 100);
-               /* border-left: 5px solid rgba(220, 220, 220, 75); */
-               color: white;
+                /* background-color: #4a90e2; */
+                background-color: rgba(150, 150, 150, 70);
+                /* border-left: 5px solid rgba(220, 220, 220, 75); */
+                font-weight: bold; 
+                color: #101828;
             }}
         """
 
