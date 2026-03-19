@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QStackedWidget
 
 from .pages import ToolPage, FunctionPage, SettingsPage, UpdatePage, AboutPage
 from .costume_widgets import SideBar
+from .pages.studentmain_page import StudentmainPage
 
 
 class MainWidget(QWidget):
@@ -32,6 +33,7 @@ class MainWidget(QWidget):
 
         # Init stack_pages
         self.tool_page = ToolPage()
+        self.studentmain_info_page = StudentmainPage()
         self.functions_page = FunctionPage()
         self.settings_page = SettingsPage(self.config_object)
         self.update_page = UpdatePage(self.config_object)
@@ -39,6 +41,7 @@ class MainWidget(QWidget):
 
         self.pages = [
             self.tool_page,
+            self.studentmain_info_page,
             self.functions_page,
             self.settings_page,
             self.update_page,
@@ -82,6 +85,7 @@ class MainWidget(QWidget):
         self.adapter.ui_change.connect(self.signal_handler)
 
         self.tool_page.set_adapter(self.adapter)
+        self.studentmain_info_page.set_adapter(self.adapter)
         self.functions_page.set_adapter(self.adapter)
         self.settings_page.set_adapter(self.adapter)
         self.update_page.set_adapter(self.adapter)
@@ -91,15 +95,19 @@ class MainWidget(QWidget):
         match name:
             case 'MonitorAdapter':
                 self.tool_page.ui_change.emit(name, value)
+                self.studentmain_info_page.ui_change.emit(name, value)
                 self.live_frame_change(value)
             case 'SuspendMonitorAdapter':
                 self.tool_page.ui_change.emit(name, value)
+                self.studentmain_info_page.ui_change.emit(name, value)
             case 'UpdateAdapter':
                 self.update_page.ui_change.emit(name, value)
             case 'GetStudentmainPasswordAdapter':
                 self.functions_page.ui_change.emit(name, value)
+                self.studentmain_info_page.ui_change.emit(name, value)
             case 'StudentmainExistAdapter':
                 self.tool_page.ui_change.emit(name, value)
+                self.studentmain_info_page.ui_change.emit(name, value)
                 self.live_frame_change_since_studentmain_not_found(value)
             case _:
                 for page in self.pages:
