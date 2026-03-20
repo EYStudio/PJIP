@@ -16,8 +16,11 @@ class MainWindow(QMainWindow):
 
         enable_blured_background = False
 
+        self.setObjectName('MainWindow')
+
         if not enable_blured_background:
-            self.setStyleSheet("""background-color: #fbfbfb""")
+            self.setStyleSheet("""#MainWindow{background-color: #fbfbfb}""")
+            # self.setStyleSheet("""#MainWindow{background-color: #070707}""")
 
         self.background = WallpaperBlurBackground(self, enable_blured_background)
 
@@ -33,8 +36,8 @@ class MainWindow(QMainWindow):
 
     def initialization_window(self):
         self.setWindowTitle("PJIP")
-        self.setMinimumSize(720, 405)
-        self.resize(720, 405)
+        self.setMinimumSize(960 - 16, 540 - 9)
+        self.resize(960 - 16, 540 - 9)
 
         self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)
 
