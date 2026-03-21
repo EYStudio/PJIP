@@ -1,5 +1,5 @@
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QGridLayout, QVBoxLayout
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QWidget, QPushButton, QGridLayout, QVBoxLayout
 
 from pjip.core.enums import SuspendState
 
