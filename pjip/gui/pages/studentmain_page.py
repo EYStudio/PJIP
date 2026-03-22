@@ -168,6 +168,14 @@ class StudentmainPage(QWidget):
                     """)
                 self.label_studentmain_state.setText(f"Studentmain: running (suspended)")
 
+            case SuspendState.RUNNING:
+                self.label_studentmain_state.setStyleSheet(
+                    self.label_studentmain_state_base_qss + """
+                        background-color: rgba(255, 229, 224, 200); 
+                        color: #E66926;   
+                    """)
+                self.label_studentmain_state.setText(f"Studentmain: running")
+
     def signal_handler(self, name, value):
         match name:
             case 'MonitorAdapter':
