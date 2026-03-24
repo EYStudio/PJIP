@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QStackedWidget
 
+from .costume_widgets.right_sidebar import RightSidebar
 from .pages import ToolPage, FunctionPage, SettingsPage, UpdatePage, AboutPage
 from .costume_widgets import SideBar
 from .pages.studentmain_page import StudentmainPage
@@ -50,6 +51,8 @@ class MainWidget(QWidget):
 
         self.sidebar = SideBar(self.pages)
 
+        self.right_sidebar = RightSidebar()
+
         self.live_frame = QWidget()
         self.live_frame.setObjectName("live_frame")
 
@@ -76,7 +79,8 @@ class MainWidget(QWidget):
         live_frame_layout.addWidget(self.stack_pages)
 
         main_layout.addWidget(self.sidebar)
-        main_layout.addWidget(self.live_frame, 1)
+        main_layout.addWidget(self.live_frame, 5)
+        main_layout.addWidget(self.right_sidebar, 1)
 
         self.setLayout(main_layout)
 
@@ -89,9 +93,11 @@ class MainWidget(QWidget):
         self.functions_page.set_adapter(self.adapter)
         self.settings_page.set_adapter(self.adapter)
         self.update_page.set_adapter(self.adapter)
+        self.right_sidebar.set_adapter(self.adapter)
 
     def signal_handler(self, name, value):
         print(f'Signal: {name}, {value}')
+        self.right_sidebar.ui_change.emit(name, value)
         match name:
             case 'MonitorAdapter':
                 self.tool_page.ui_change.emit(name, value)
