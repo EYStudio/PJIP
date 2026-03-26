@@ -22,3 +22,31 @@
 - **挂起极域**: 挂起运行中的极域进程, 支持恢复
 - **获取极域密码**: 尝试获取极域密码
 - **界面友好**: 基于 `Pyside6` 构建, 操作简单直观
+
+## 安装依赖
+
+本项目基于 `Python 3.x` 运行。
+
+在开始之前, 建议先准备好 `Python` 环境并克隆仓库: 
+```bash
+git clone https://github.com/Eystudio/PJIP.git
+cd PJIP
+```
+
+如果你使用虚拟环境(推荐): 
+
+```bash
+python -m venv venv
+source venv/bin/activate  # Windows 使用 venv\Scripts\activate
+```
+
+然后根据项目配置文件安装依赖: 
+
+```bash
+pip install .
+```
+如果你更习惯使用 requirements.txt, 也可以: 
+
+```bash
+pip install -r requirements.txt
+```
