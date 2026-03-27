@@ -50,3 +50,21 @@ pip install .
 ```bash
 pip install -r requirements.txt
 ```
+
+## 开发者公告
+
+来自开发者的话:
+
+> 由于个人时间有限, 本项目将暂时进入维护模式, 后续更新将以不定期为主。
+> 
+> 同时, 在开发过程中 Python 与 PySide6 的诸多限制逐渐显现, 项目推进已基本停滞, 未来也不会再进行较大规模的功能更新。
+> 
+> 敬请期待基于全新语言 和 UI 框架打造的下一代极域管理工具。
+
+## 贡献
+
+欢迎提供建议或改进代码!
+欢迎提交 Issue 或 Pull Request 来改进本项目。
+如有建议或问题, 请联系作者或在 GitHub 上留言。
+
+Copyright (C) 2025 Errorsia, Yusulif
