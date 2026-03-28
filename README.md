@@ -22,3 +22,33 @@ It provides features such as killing processes, suspending/resuming Studentmain,
 - **Suspend Studentmain**: Suspend the process with the ability to resume later  
 - **Retrieve Studentmain Password**: Attempt to extract the password  
 - **User‑friendly UI**: Built with `PySide6`, simple and easy to use  
+
+## Installation
+
+This project runs on `Python 3.x`.
+
+Before getting started, prepare your Python environment and clone the repository:
+
+```bash
+git clone https://github.com/Eystudio/PJIP.git
+cd PJIP
+```
+
+If you prefer using a virtual environment (recommended):
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+Then install the dependencies according to the project configuration:
+
+```bash
+pip install .
+```
+
+If you prefer using requirements.txt, you can also run:
+
+```bash
+pip install -r requirements.txt
+```
