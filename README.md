@@ -52,3 +52,13 @@ If you prefer using requirements.txt, you can also run:
 ```bash
 pip install -r requirements.txt
 ```
+
+## Developer Notice
+
+> A message from the developer:
+> 
+> Due to limited personal time, this project will temporarily enter maintenance mode, and future updates will be released irregularly.
+> 
+> Additionally, various limitations encountered with Python and PySide6 during development have significantly slowed progress. As a result, no major updates are expected in the near future.
+> 
+> Please look forward to the next-generation Studentmain management tool, built with a new language and a new UI framework.
