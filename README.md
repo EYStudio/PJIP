@@ -62,3 +62,11 @@ pip install -r requirements.txt
 > Additionally, various limitations encountered with Python and PySide6 during development have significantly slowed progress. As a result, no major updates are expected in the near future.
 > 
 > Please look forward to the next-generation Studentmain management tool, built with a new language and a new UI framework.
+
+## Contributing
+
+Suggestions and code improvements are always welcome!
+Feel free to open an Issue or submit a Pull Request.
+If you have ideas or questions, you can contact the author or leave a message on GitHub.
+
+Copyright (C) 2025 Errorsia & Yusulif
