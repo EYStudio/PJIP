@@ -1,9 +1,12 @@
 
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt
 
 
-class TransparentOverlay(QWidget):
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout
+from PySide6.QtCore import Qt
+
+class InfoOverlay(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowFlags(
