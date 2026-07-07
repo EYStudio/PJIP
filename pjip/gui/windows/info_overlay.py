@@ -17,13 +17,19 @@ class InfoOverlay(QWidget):
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
-        layout = QVBoxLayout(self)
+        # 外层布局
+        outer_layout = QVBoxLayout(self)
+        outer_layout.setContentsMargins(0, 0, 0, 0)
 
-        # A 行
-        self.label_a_prefix = QLabel("A:", self)
-        self.label_a_prefix.setStyleSheet("color: white; font-size: 18px;")
-        self.label_a_value = QLabel("xxx", self)
-        self.label_a_value.setStyleSheet("color: green; font-size: 18px;")
+        # 容器：半透明黑底
+        container = QWidget(self)
+        container.setObjectName("overlay_container")
+        container.setStyleSheet("""
+            #overlay_container {
+                background-color: rgba(0, 0, 0, 100);
+                border-radius: 8px;
+            }
+        """)
 
         # B 行
         self.label_b_prefix = QLabel("B:", self)
