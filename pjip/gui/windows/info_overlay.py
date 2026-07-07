@@ -31,13 +31,11 @@ class InfoOverlay(QWidget):
             }
         """)
 
-        # B 行
-        self.label_b_prefix = QLabel("B:", self)
-        self.label_b_prefix.setStyleSheet("color: white; font-size: 18px;")
-        self.label_b_value = QLabel("xxx", self)
-        self.label_b_value.setStyleSheet("color: red; font-size: 18px;")
+        # 容器布局
+        layout = QVBoxLayout(container)
+        layout.setContentsMargins(8, 8, 8, 8)
 
-        # 布局
+        # A 行
         row_a = QWidget()
         row_a_layout = QVBoxLayout(row_a)
         row_a_layout.setContentsMargins(0,0,0,0)
