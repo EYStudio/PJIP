@@ -17,11 +17,11 @@ class InfoOverlay(QWidget):
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
-        # 外层布局
+        # outer layout
         outer_layout = QVBoxLayout(self)
         outer_layout.setContentsMargins(0, 0, 0, 0)
 
-        # 容器：半透明黑底
+        # Container
         container = QWidget(self)
         container.setObjectName("overlay_container")
         container.setStyleSheet("""
@@ -31,11 +31,11 @@ class InfoOverlay(QWidget):
             }
         """)
 
-        # 容器布局
+        # layout
         layout = QVBoxLayout(container)
         layout.setContentsMargins(8, 8, 8, 8)
 
-        # A 行
+        # row 1
         row_a = QWidget()
         row_a_layout = QHBoxLayout(row_a)
         row_a_layout.setContentsMargins(0, 0, 0, 0)
@@ -46,7 +46,7 @@ class InfoOverlay(QWidget):
         row_a_layout.addWidget(self.label_a_prefix)
         row_a_layout.addWidget(self.label_a_value)
 
-        # B 行
+        # row 2
         row_b = QWidget()
         row_b_layout = QHBoxLayout(row_b)
         row_b_layout.setContentsMargins(0, 0, 0, 0)
@@ -59,6 +59,11 @@ class InfoOverlay(QWidget):
 
         layout.addWidget(row_a)
         layout.addWidget(row_b)
+
+        outer_layout.addWidget(container)
+
+        self.resize(250, 90)
+        self.move(80, 40)
 
     def update_a(self, text, color="green"):
         self.label_a_value.setText(text)
