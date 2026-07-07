@@ -37,14 +37,23 @@ class InfoOverlay(QWidget):
 
         # A 行
         row_a = QWidget()
-        row_a_layout = QVBoxLayout(row_a)
-        row_a_layout.setContentsMargins(0,0,0,0)
+        row_a_layout = QHBoxLayout(row_a)
+        row_a_layout.setContentsMargins(0, 0, 0, 0)
+        self.label_a_prefix = QLabel("Studentmain:", row_a)
+        self.label_a_prefix.setStyleSheet("color: white; font-size: 18px;")
+        self.label_a_value = QLabel("Not Running", row_a)
+        self.label_a_value.setStyleSheet("color: green; font-size: 18px;")
         row_a_layout.addWidget(self.label_a_prefix)
         row_a_layout.addWidget(self.label_a_value)
 
+        # B 行
         row_b = QWidget()
-        row_b_layout = QVBoxLayout(row_b)
-        row_b_layout.setContentsMargins(0,0,0,0)
+        row_b_layout = QHBoxLayout(row_b)
+        row_b_layout.setContentsMargins(0, 0, 0, 0)
+        self.label_b_prefix = QLabel("B:", row_b)
+        self.label_b_prefix.setStyleSheet("color: white; font-size: 18px;")
+        self.label_b_value = QLabel("xxx", row_b)
+        self.label_b_value.setStyleSheet("color: red; font-size: 18px;")
         row_b_layout.addWidget(self.label_b_prefix)
         row_b_layout.addWidget(self.label_b_value)
 
