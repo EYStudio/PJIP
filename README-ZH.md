@@ -8,7 +8,7 @@
 
 [English Documentation](README.md) | [中文文档](README-ZH.md)
 
-一个基于 `Python` 的极域课堂管理辅助工具。。
+一个基于 `Python` 的极域课堂管理辅助工具。
 
 ---
 
