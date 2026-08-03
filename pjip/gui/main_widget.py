@@ -8,9 +8,10 @@ from .pages.studentmain_page import StudentmainPage
 
 
 class MainWidget(QWidget):
-    def __init__(self, config_object):
+    def __init__(self, config_object, info_overlay):
         super().__init__()
         self.config_object = config_object
+        self.info_overlay = info_overlay
         self.adapter = None
         self.live_frame = None
 
@@ -80,7 +81,7 @@ class MainWidget(QWidget):
 
         main_layout.addWidget(self.sidebar)
         main_layout.addWidget(self.live_frame, 5)
-        main_layout.addWidget(self.right_sidebar, 1)
+        # main_layout.addWidget(self.right_sidebar, 1)
 
         self.setLayout(main_layout)
 
